@@ -1,0 +1,215 @@
+{
+  "experiment": "date-only-representation-time-zone-cases",
+  "sampleNote": "Chosen edge cases only; these rows are not population error rates.",
+  "fixtures": [
+    {
+      "label": "winter",
+      "value": "2024-01-15"
+    },
+    {
+      "label": "summer",
+      "value": "2024-07-15"
+    },
+    {
+      "label": "leap-day",
+      "value": "2024-02-29"
+    }
+  ],
+  "timeZones": [
+    "UTC",
+    "Europe/London",
+    "America/Los_Angeles",
+    "Asia/Kolkata",
+    "Pacific/Kiritimati"
+  ],
+  "parentRuntime": {
+    "node": "v22.22.0",
+    "v8": "12.4.254.21-node.33",
+    "icu": "77.1",
+    "platform": "darwin",
+    "architecture": "arm64"
+  },
+  "zoneProvenance": [
+    {
+      "node": "v22.22.0",
+      "v8": "12.4.254.21-node.33",
+      "icu": "77.1",
+      "tzEnvironment": "UTC",
+      "resolvedTimeZone": "UTC"
+    },
+    {
+      "node": "v22.22.0",
+      "v8": "12.4.254.21-node.33",
+      "icu": "77.1",
+      "tzEnvironment": "Europe/London",
+      "resolvedTimeZone": "Europe/London"
+    },
+    {
+      "node": "v22.22.0",
+      "v8": "12.4.254.21-node.33",
+      "icu": "77.1",
+      "tzEnvironment": "America/Los_Angeles",
+      "resolvedTimeZone": "America/Los_Angeles"
+    },
+    {
+      "node": "v22.22.0",
+      "v8": "12.4.254.21-node.33",
+      "icu": "77.1",
+      "tzEnvironment": "Asia/Kolkata",
+      "resolvedTimeZone": "Asia/Calcutta"
+    },
+    {
+      "node": "v22.22.0",
+      "v8": "12.4.254.21-node.33",
+      "icu": "77.1",
+      "tzEnvironment": "Pacific/Kiritimati",
+      "resolvedTimeZone": "Pacific/Kiritimati"
+    }
+  ],
+  "invalidDateChecks": [
+    {
+      "input": "2023-02-29",
+      "rejected": true
+    },
+    {
+      "input": "2024-02-30",
+      "rejected": true
+    },
+    {
+      "input": "2024-2-09",
+      "rejected": true
+    },
+    {
+      "input": "2024-02-09T00:00:00Z",
+      "rejected": true
+    }
+  ],
+  "validation": {
+    "rowCount": 15,
+    "knownTimezoneAssertions": 6,
+    "allPreservedStringsEqualInput": true,
+    "allInvalidInputsRejected": true
+  },
+  "rows": [
+    {
+      "timeZone": "UTC",
+      "label": "winter",
+      "input": "2024-01-15",
+      "localConstructThenIso": "2024-01-15",
+      "parseAsUtcThenReadLocal": "2024-01-15",
+      "preserveValidatedDateOnlyString": "2024-01-15"
+    },
+    {
+      "timeZone": "UTC",
+      "label": "summer",
+      "input": "2024-07-15",
+      "localConstructThenIso": "2024-07-15",
+      "parseAsUtcThenReadLocal": "2024-07-15",
+      "preserveValidatedDateOnlyString": "2024-07-15"
+    },
+    {
+      "timeZone": "UTC",
+      "label": "leap-day",
+      "input": "2024-02-29",
+      "localConstructThenIso": "2024-02-29",
+      "parseAsUtcThenReadLocal": "2024-02-29",
+      "preserveValidatedDateOnlyString": "2024-02-29"
+    },
+    {
+      "timeZone": "Europe/London",
+      "label": "winter",
+      "input": "2024-01-15",
+      "localConstructThenIso": "2024-01-15",
+      "parseAsUtcThenReadLocal": "2024-01-15",
+      "preserveValidatedDateOnlyString": "2024-01-15"
+    },
+    {
+      "timeZone": "Europe/London",
+      "label": "summer",
+      "input": "2024-07-15",
+      "localConstructThenIso": "2024-07-14",
+      "parseAsUtcThenReadLocal": "2024-07-15",
+      "preserveValidatedDateOnlyString": "2024-07-15"
+    },
+    {
+      "timeZone": "Europe/London",
+      "label": "leap-day",
+      "input": "2024-02-29",
+      "localConstructThenIso": "2024-02-29",
+      "parseAsUtcThenReadLocal": "2024-02-29",
+      "preserveValidatedDateOnlyString": "2024-02-29"
+    },
+    {
+      "timeZone": "America/Los_Angeles",
+      "label": "winter",
+      "input": "2024-01-15",
+      "localConstructThenIso": "2024-01-15",
+      "parseAsUtcThenReadLocal": "2024-01-14",
+      "preserveValidatedDateOnlyString": "2024-01-15"
+    },
+    {
+      "timeZone": "America/Los_Angeles",
+      "label": "summer",
+      "input": "2024-07-15",
+      "localConstructThenIso": "2024-07-15",
+      "parseAsUtcThenReadLocal": "2024-07-14",
+      "preserveValidatedDateOnlyString": "2024-07-15"
+    },
+    {
+      "timeZone": "America/Los_Angeles",
+      "label": "leap-day",
+      "input": "2024-02-29",
+      "localConstructThenIso": "2024-02-29",
+      "parseAsUtcThenReadLocal": "2024-02-28",
+      "preserveValidatedDateOnlyString": "2024-02-29"
+    },
+    {
+      "timeZone": "Asia/Kolkata",
+      "label": "winter",
+      "input": "2024-01-15",
+      "localConstructThenIso": "2024-01-14",
+      "parseAsUtcThenReadLocal": "2024-01-15",
+      "preserveValidatedDateOnlyString": "2024-01-15"
+    },
+    {
+      "timeZone": "Asia/Kolkata",
+      "label": "summer",
+      "input": "2024-07-15",
+      "localConstructThenIso": "2024-07-14",
+      "parseAsUtcThenReadLocal": "2024-07-15",
+      "preserveValidatedDateOnlyString": "2024-07-15"
+    },
+    {
+      "timeZone": "Asia/Kolkata",
+      "label": "leap-day",
+      "input": "2024-02-29",
+      "localConstructThenIso": "2024-02-28",
+      "parseAsUtcThenReadLocal": "2024-02-29",
+      "preserveValidatedDateOnlyString": "2024-02-29"
+    },
+    {
+      "timeZone": "Pacific/Kiritimati",
+      "label": "winter",
+      "input": "2024-01-15",
+      "localConstructThenIso": "2024-01-14",
+      "parseAsUtcThenReadLocal": "2024-01-15",
+      "preserveValidatedDateOnlyString": "2024-01-15"
+    },
+    {
+      "timeZone": "Pacific/Kiritimati",
+      "label": "summer",
+      "input": "2024-07-15",
+      "localConstructThenIso": "2024-07-14",
+      "parseAsUtcThenReadLocal": "2024-07-15",
+      "preserveValidatedDateOnlyString": "2024-07-15"
+    },
+    {
+      "timeZone": "Pacific/Kiritimati",
+      "label": "leap-day",
+      "input": "2024-02-29",
+      "localConstructThenIso": "2024-02-28",
+      "parseAsUtcThenReadLocal": "2024-02-29",
+      "preserveValidatedDateOnlyString": "2024-02-29"
+    }
+  ]
+}

@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en" data-release="token-herd-2026-08-24" data-boot-id="2026-08-24T03:29:00Z">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#201B15">
+  <link rel="icon" href="data:,">
+  <title>Token Herd | Nikita Vorontsov</title>
+  <meta name="description" content="A 60-second canvas game. Herd loose tokens into a context window.">
+  <link rel="canonical" href="https://nikitavorontsov.com/play/">
+  <style>
+    @font-face {
+      font-family: "Bricolage Grotesque";
+      font-style: normal;
+      font-weight: 600 700;
+      font-display: swap;
+      src: url("fonts/bricolage-grotesque-latin.woff2") format("woff2");
+    }
+
+    @font-face {
+      font-family: "Public Sans";
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url("fonts/public-sans-latin.woff2") format("woff2");
+    }
+
+    @font-face {
+      font-family: "Spline Sans Mono";
+      font-style: normal;
+      font-weight: 500 600;
+      font-display: swap;
+      src: url("fonts/spline-sans-mono-latin.woff2") format("woff2");
+    }
+
+    :root {
+      color-scheme: light;
+      --paper: #F7F4EE;
+      --surface: #FFFFFF;
+      --hairline: #E6DFD2;
+      --ink: #201B15;
+      --spruce: #2F6B52;
+      --amber: #8F6400;
+      --red: #A33D2A;
+      --night: #121814;
+      --night-line: #26352C;
+      --night-ink: #F1EBDD;
+      font-family: "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { overflow-x: hidden; }
+
+    body {
+      min-width: 0;
+      margin: 0;
+      background:
+        linear-gradient(90deg, transparent 0 31px, rgba(163, 61, 42, .1) 31px 32px, transparent 32px),
+        var(--paper);
+      overflow-x: hidden;
+      overflow-wrap: anywhere;
+    }
+
+    a { color: var(--spruce); text-underline-offset: .18em; }
+    a:hover { text-decoration-thickness: 2px; }
+
+    button, canvas, a { -webkit-tap-highlight-color: transparent; }
+
+    :focus-visible {
+      outline: 3px solid var(--amber);
+      outline-offset: 3px;
+    }
+
+    .shell {
+      width: min(100% - 32px, 64rem);
+      margin: 0 auto;
+      padding: 32px 0 44px;
+    }
+
+    .form-line {
+      display: flex;
+      min-width: 0;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 0 10px;
+      border-bottom: 1px solid var(--hairline);
+      color: #625B51;
+      font: 600 11px/1.4 "Spline Sans Mono", monospace;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+    }
+
+    .form-line span { min-width: 0; }
+
+    .intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(15rem, 23rem);
+      gap: 28px;
+      align-items: end;
+      padding: 30px 0 24px;
+    }
+
+    .intro > *, .score-strip > *, .footer-grid > * { min-width: 0; }
+
+    h1 {
+      margin: 0;
+      font: 700 clamp(3.25rem, 9vw, 7rem)/.86 "Bricolage Grotesque", sans-serif;
+      letter-spacing: -.065em;
+    }
+
+    .instruction {
+      max-width: 32rem;
+      margin: 0 0 3px;
+      font-size: 14.5px;
+      line-height: 1.55;
+    }
+
+    .score-strip {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border: 1px solid var(--hairline);
+      border-radius: 10px 10px 0 0;
+      overflow: hidden;
+      background: var(--surface);
+      box-shadow: 0 8px 22px rgba(32, 27, 21, .06);
+    }
+
+    .score-cell {
+      min-width: 0;
+      padding: 12px 15px 11px;
+      border-right: 1px solid var(--hairline);
+    }
+
+    .score-cell:last-child { border-right: 0; }
+
+    .score-label {
+      display: block;
+      margin-bottom: 3px;
+      color: #6B6358;
+      font: 600 11px/1.2 "Public Sans", sans-serif;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+    }
+
+    .score-value {
+      display: block;
+      font: 700 clamp(1.55rem, 4vw, 2.25rem)/1 "Bricolage Grotesque", sans-serif;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .score-unit {
+      margin-left: 3px;
+      color: #6B6358;
+      font: 500 11px/1 "Spline Sans Mono", monospace;
+    }
+
+    .playfield-wrap {
+      position: relative;
+      min-width: 0;
+      padding: 9px;
+      border: 1px solid var(--ink);
+      border-top: 0;
+      border-radius: 0 0 10px 10px;
+      background: var(--ink);
+      box-shadow: 0 12px 28px rgba(32, 27, 21, .12);
+    }
+
+    #game {
+      display: block;
+      width: 100%;
+      height: clamp(320px, 56vw, 540px);
+      border: 1px solid #35483C;
+      border-radius: 7px;
+      background: var(--night);
+      touch-action: none;
+      cursor: crosshair;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: minmax(0, auto) minmax(0, 1fr);
+      gap: 16px;
+      align-items: center;
+      padding: 18px 0 12px;
+    }
+
+    #start {
+      min-height: 44px;
+      padding: 10px 17px;
+      border: 1px solid #23523E;
+      border-radius: 7px;
+      color: #FFFFFF;
+      background: var(--spruce);
+      font: 700 13.5px/1.2 "Public Sans", sans-serif;
+      cursor: pointer;
+      box-shadow: 0 3px 0 #1D4535;
+      transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+
+    #start:hover { transform: translateY(-1px); box-shadow: 0 4px 0 #1D4535; }
+    #start:active { transform: translateY(2px); box-shadow: 0 1px 0 #1D4535; }
+    #start:disabled { cursor: not-allowed; opacity: .5; }
+
+    #status {
+      min-width: 0;
+      margin: 0;
+      color: #625B51;
+      font: 500 12px/1.45 "Spline Sans Mono", monospace;
+    }
+
+    #fallback {
+      margin: 8px 0 16px;
+      padding: 12px 14px;
+      border-left: 3px solid var(--red);
+      background: #FFF7F4;
+      color: var(--red);
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+
+    [hidden] { display: none !important; }
+
+    .notes {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1px;
+      margin-top: 18px;
+      border: 1px solid var(--hairline);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--hairline);
+    }
+
+    .note {
+      min-width: 0;
+      padding: 17px 18px;
+      background: rgba(255, 255, 255, .68);
+    }
+
+    .note strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 12px;
+      letter-spacing: .03em;
+      text-transform: uppercase;
+    }
+
+    .note p { margin: 0; font-size: 13.5px; line-height: 1.55; }
+
+    footer {
+      margin-top: 38px;
+      padding-top: 18px;
+      border-top: 1px solid var(--hairline);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .disclosure { margin: 0; font-size: 13.5px; line-height: 1.55; }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 16px;
+      font-size: 13.5px;
+    }
+
+    @keyframes ready-pulse {
+      0%, 100% { opacity: .45; }
+      50% { opacity: .9; }
+    }
+
+    .playfield-wrap::after {
+      position: absolute;
+      right: 18px;
+      bottom: 18px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #86C7A4;
+      content: "";
+      animation: ready-pulse 1.8s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @media (max-width: 700px) {
+      body { background: var(--paper); }
+      .shell { width: min(100% - 24px, 64rem); padding-top: 20px; }
+      .intro { grid-template-columns: minmax(0, 1fr); gap: 18px; padding: 24px 0 20px; }
+      h1 { font-size: clamp(3.2rem, 19vw, 5.2rem); }
+      .score-cell { padding: 11px 10px 10px; }
+      .controls { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+      #start { width: 100%; }
+      .notes, .footer-grid { grid-template-columns: minmax(0, 1fr); }
+      .footer-links { gap: 8px 18px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: .01ms !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+      .playfield-wrap::after { opacity: .55; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="form-line">
+      <span>Form PLAY-01 · Waiting room</span>
+      <span>One local round</span>
+    </div>
+
+    <header class="intro">
+      <h1>Token<br>Herd</h1>
+      <p class="instruction">Move the magnet. Herd loose tokens into the context window.</p>
+    </header>
+
+    <section aria-labelledby="game-heading">
+      <h2 id="game-heading" hidden>Token Herd playfield</h2>
+      <div class="score-strip" aria-label="Round score">
+        <div class="score-cell">
+          <span class="score-label">Time</span>
+          <span class="score-value"><span id="time">60</span><span class="score-unit">sec</span></span>
+        </div>
+        <div class="score-cell">
+          <span class="score-label">Score</span>
+          <span class="score-value" id="score">0</span>
+        </div>
+        <div class="score-cell">
+          <span class="score-label">Local best</span>
+          <span class="score-value" id="best">0</span>
+        </div>
+      </div>
+
+      <div class="playfield-wrap">
+        <canvas id="game" width="900" height="540" tabindex="0" aria-label="Token Herd playfield. Move the magnet and lead tokens into the labeled context window.">
+          Token Herd needs canvas support. Use the homepage and ledger links below if the playfield is unavailable.
+        </canvas>
+      </div>
+
+      <div class="controls">
+        <button id="start" type="button">Start 60-second round</button>
+        <p id="status" aria-live="polite">Ready.</p>
+      </div>
+      <p id="fallback" hidden>This browser cannot open the playfield. The homepage and ledger still work.</p>
+    </section>
+
+    <section class="notes" aria-label="How the game works">
+      <div class="note">
+        <strong>Controls</strong>
+        <p>Use a pointer or touch. Arrow keys move the magnet when the playfield has focus. Enter starts again.</p>
+      </div>
+      <div class="note">
+        <strong>Data</strong>
+        <p>Scores stay in this browser. The game sends no play data and uses no analytics.</p>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-grid">
+        <p class="disclosure">Maintained by Nikita Vorontsov. Built with AI.</p>
+        <nav class="footer-links" aria-label="Nikita Vorontsov links">
+          <a href="/">Homepage</a>
+          <a href="https://github.com/GenesisClawbot/ledger">Public ledger</a>
+        </nav>
+      </div>
+    </footer>
+  </main>
+  <script type="module" src="main.mjs"></script>
+</body>
+</html>

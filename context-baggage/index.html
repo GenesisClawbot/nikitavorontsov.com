@@ -1,0 +1,700 @@
+<!doctype html>
+<html lang="en" data-build="context-baggage-20260825-01">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Compare the exact byte weight of local instruction files and find repeated long passages. Nothing leaves your browser.">
+  <link rel="icon" href="data:,">
+  <title>Context Baggage Claim</title>
+  <style>
+    @font-face {
+      font-family: Bricolage;
+      src: url('/play/fonts/bricolage-grotesque-latin.woff2') format('woff2');
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Public Sans';
+      src: url('/play/fonts/public-sans-latin.woff2') format('woff2');
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Spline Mono';
+      src: url('/play/fonts/spline-sans-mono-latin.woff2') format('woff2');
+      font-display: swap;
+    }
+
+    :root {
+      --runway: #101b2d;
+      --terminal: #eaf6f7;
+      --ticket: #fbfdf8;
+      --orange: #f4512c;
+      --teal: #087f79;
+      --sky: #79cfdf;
+      --ink: #101b2d;
+      --muted: #536170;
+      --line: #9baeb5;
+      --focus: #f4512c;
+      --shadow: rgba(16, 27, 45, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--terminal);
+      color: var(--ink);
+      font-family: 'Public Sans', sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-width: 0;
+      min-height: 100vh;
+      margin: 0;
+      background:
+        linear-gradient(90deg, rgba(16, 27, 45, 0.045) 1px, transparent 1px) 0 0 / 4rem 100%,
+        var(--terminal);
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button,
+    .file-picker {
+      min-height: 2.9rem;
+      padding: 0.72rem 1rem;
+      border: 2px solid var(--ink);
+      border-radius: 0;
+      background: var(--orange);
+      color: var(--ink);
+      box-shadow: 4px 4px 0 var(--ink);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.76rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      line-height: 1.35;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    button:hover:not(:disabled),
+    .file-picker:hover {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.48;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 4px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .site-header,
+    main,
+    footer {
+      width: min(74rem, calc(100% - 2rem));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      padding-block: 1.1rem;
+      border-bottom: 2px solid var(--ink);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.74rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-header a {
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    main {
+      padding-block: clamp(2.5rem, 7vw, 6rem);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(19rem, 0.7fr);
+      gap: clamp(2rem, 7vw, 6rem);
+      align-items: center;
+      margin-bottom: clamp(3rem, 8vw, 6.5rem);
+    }
+
+    .eyebrow,
+    .tag-code,
+    .manifest-kicker {
+      margin: 0 0 0.75rem;
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      color: var(--teal);
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-family: Bricolage, sans-serif;
+      line-height: 0.96;
+      letter-spacing: -0.045em;
+      overflow-wrap: anywhere;
+    }
+
+    h1 {
+      max-width: 11ch;
+      font-size: clamp(3.4rem, 9vw, 7.7rem);
+    }
+
+    h2 {
+      font-size: clamp(2rem, 5vw, 4.2rem);
+    }
+
+    h3 {
+      font-size: clamp(1.35rem, 3vw, 2rem);
+    }
+
+    .lede {
+      max-width: 40rem;
+      margin: 1.5rem 0 0;
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      line-height: 1.55;
+    }
+
+    .truth-label {
+      max-width: 42rem;
+      margin: 1.3rem 0 0;
+      padding: 0.7rem 0.85rem;
+      border-left: 7px solid var(--orange);
+      background: var(--ticket);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    .claim-tag {
+      position: relative;
+      width: min(100%, 24rem);
+      margin-inline: auto;
+      padding: 1.3rem 1.4rem 1.5rem 4rem;
+      border: 2px solid var(--ink);
+      background: var(--orange);
+      color: var(--ink);
+      box-shadow: 12px 14px 0 var(--ink);
+      transform: rotate(2deg);
+    }
+
+    .claim-tag::before {
+      position: absolute;
+      top: 50%;
+      left: 1.35rem;
+      width: 1rem;
+      height: 1rem;
+      border: 3px solid var(--ink);
+      border-radius: 50%;
+      content: '';
+      transform: translateY(-50%);
+    }
+
+    .tag-code {
+      color: var(--ink);
+    }
+
+    .tag-name {
+      display: block;
+      font-family: Bricolage, sans-serif;
+      font-size: clamp(1.7rem, 5vw, 3rem);
+      font-weight: 700;
+      line-height: 0.95;
+      overflow-wrap: anywhere;
+    }
+
+    .tag-route {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-top: 1.2rem;
+      padding-top: 0.8rem;
+      border-top: 2px dashed rgba(255, 255, 255, 0.75);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+    }
+
+    .workbench {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(17rem, 0.42fr);
+      gap: clamp(1rem, 4vw, 2.5rem);
+      align-items: start;
+    }
+
+    .drop-card {
+      min-width: 0;
+      padding: clamp(1.1rem, 4vw, 2.2rem);
+      background: var(--runway);
+      color: #fff;
+      box-shadow: 9px 10px 0 var(--sky);
+    }
+
+    .drop-card .eyebrow {
+      color: var(--sky);
+    }
+
+    .drop-card h2 {
+      max-width: 13ch;
+      margin-bottom: 1rem;
+    }
+
+    #drop-zone {
+      display: grid;
+      place-items: center;
+      min-height: 15rem;
+      margin-top: 1.3rem;
+      padding: 2rem;
+      border: 2px dashed var(--sky);
+      background:
+        repeating-linear-gradient(-45deg, transparent 0 12px, rgba(121, 207, 223, 0.055) 12px 24px),
+        rgba(255, 255, 255, 0.035);
+      text-align: center;
+    }
+
+    #drop-zone.is-dragging {
+      border-style: solid;
+      background-color: rgba(121, 207, 223, 0.13);
+    }
+
+    .drop-copy {
+      max-width: 28rem;
+    }
+
+    .drop-copy strong {
+      display: block;
+      margin-bottom: 0.8rem;
+      font-family: Bricolage, sans-serif;
+      font-size: clamp(1.5rem, 4vw, 2.4rem);
+      line-height: 1;
+    }
+
+    .drop-copy p,
+    .privacy-note,
+    #status,
+    #manifest-status {
+      overflow-wrap: anywhere;
+      line-height: 1.55;
+    }
+
+    .drop-copy p {
+      margin: 0 0 1.2rem;
+      color: #d8e5e8;
+    }
+
+    .file-picker {
+      display: inline-grid;
+      place-items: center;
+    }
+
+    .privacy-note {
+      margin: 1rem 0 0;
+      color: #d8e5e8;
+      font-size: 0.84rem;
+    }
+
+    #status {
+      min-height: 1.5rem;
+      margin: 0.8rem 0 0;
+      color: var(--sky);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.8rem;
+    }
+
+    .queue-card {
+      min-width: 0;
+      padding: 1.2rem;
+      border-top: 8px solid var(--orange);
+      background: var(--ticket);
+      box-shadow: 6px 6px 0 var(--line);
+    }
+
+    .queue-card h3 {
+      margin-bottom: 0.6rem;
+    }
+
+    .queue-card > p {
+      margin: 0 0 1rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      line-height: 1.5;
+    }
+
+    #file-list {
+      display: grid;
+      gap: 0.65rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .queued-file {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.65rem;
+      align-items: center;
+      padding: 0.7rem;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.72rem;
+    }
+
+    .queued-file span {
+      overflow-wrap: anywhere;
+    }
+
+    .remove-button {
+      min-height: 2.1rem;
+      padding: 0.35rem 0.5rem;
+      background: transparent;
+      color: var(--ink);
+      box-shadow: none;
+      font-size: 0.66rem;
+    }
+
+    .queue-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      margin-top: 1rem;
+    }
+
+    #clear-button {
+      background: transparent;
+      color: var(--ink);
+    }
+
+    #manifest {
+      margin-top: clamp(4rem, 9vw, 7rem);
+      scroll-margin-top: 2rem;
+    }
+
+    .manifest-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1.5rem;
+      align-items: end;
+      margin-bottom: 1.4rem;
+    }
+
+    .manifest-head p {
+      max-width: 31rem;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .manifest-board {
+      overflow: hidden;
+      border: 3px solid var(--runway);
+      background: var(--runway);
+      color: #fff;
+      box-shadow: 12px 14px 0 var(--shadow);
+    }
+
+    .board-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid #5d6d7e;
+      color: var(--sky);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .totals {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      border-bottom: 1px solid #5d6d7e;
+    }
+
+    .total {
+      min-width: 0;
+      padding: clamp(1rem, 4vw, 1.8rem);
+      border-right: 1px solid #5d6d7e;
+    }
+
+    .total:last-child {
+      border-right: 0;
+    }
+
+    .total strong {
+      display: block;
+      font-family: Bricolage, sans-serif;
+      font-size: clamp(1.8rem, 5vw, 3.5rem);
+      line-height: 1;
+      overflow-wrap: anywhere;
+    }
+
+    .total span {
+      color: #b9c8ce;
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+    }
+
+    .file-manifest {
+      display: grid;
+    }
+
+    .manifest-row {
+      display: grid;
+      grid-template-columns: minmax(9rem, 1fr) minmax(8rem, 1.4fr) auto auto;
+      gap: 1rem;
+      align-items: center;
+      padding: 1rem;
+      border-bottom: 1px solid #435263;
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.76rem;
+    }
+
+    .manifest-row:last-child {
+      border-bottom: 0;
+    }
+
+    .manifest-name {
+      overflow-wrap: anywhere;
+      font-weight: 700;
+    }
+
+    .weight-track {
+      height: 0.75rem;
+      background: #263545;
+    }
+
+    .weight-fill {
+      display: block;
+      height: 100%;
+      background: var(--orange);
+    }
+
+    .manifest-detail {
+      color: #c4d2d7;
+      white-space: nowrap;
+    }
+
+    .duplicate-panel {
+      margin-top: 2.5rem;
+      padding: clamp(1rem, 4vw, 2rem);
+      border: 2px solid var(--ink);
+      background: var(--ticket);
+    }
+
+    .duplicate-panel h3 {
+      margin-bottom: 0.7rem;
+    }
+
+    .duplicate-panel > p {
+      max-width: 48rem;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    #duplicate-list {
+      display: grid;
+      gap: 0.8rem;
+      margin: 1.2rem 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .duplicate-item {
+      padding: 0.9rem;
+      border-left: 6px solid var(--teal);
+      background: #fff;
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.74rem;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    footer {
+      margin-top: clamp(4rem, 9vw, 7rem);
+      padding-block: 1.5rem 2.5rem;
+      border-top: 2px solid var(--ink);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.74rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 48rem) {
+      .hero,
+      .workbench {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .manifest-head {
+        align-items: start;
+        flex-direction: column;
+      }
+
+      .manifest-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+      }
+
+      .weight-track {
+        grid-column: 1 / -1;
+        grid-row: 2;
+      }
+    }
+
+    @media (max-width: 30rem) {
+      .site-header,
+      .tag-route,
+      .board-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .totals {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .total {
+        border-right: 0;
+        border-bottom: 1px solid #5d6d7e;
+      }
+
+      .total:last-child {
+        border-bottom: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="/">Nikita Vorontsov</a>
+    <span>Context terminal / local baggage desk</span>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Instruction files, weighed before departure</p>
+        <h1 id="page-title">Context Baggage Claim</h1>
+        <p class="lede">Your fresh session arrived with a steamer trunk of instructions and nobody packed a toothbrush. Find which file brought the anvil.</p>
+        <p class="truth-label">This weighs only the files you choose. It does not know what Claude loaded. Bytes are not tokens.</p>
+      </div>
+
+      <div class="claim-tag" aria-label="Example baggage tag for a CLAUDE.md file">
+        <p class="tag-code">Bag 001 / instruction cargo</p>
+        <span class="tag-name">CLAUDE.md</span>
+        <div class="tag-route"><span>Local file</span><span>Weight: exact</span></div>
+      </div>
+    </section>
+
+    <section class="workbench" aria-labelledby="drop-heading">
+      <div class="drop-card">
+        <p class="eyebrow">Baggage intake</p>
+        <h2 id="drop-heading">Put the docs on the belt.</h2>
+        <div id="drop-zone">
+          <div class="drop-copy">
+            <strong>Drop text or Markdown files here</strong>
+            <p>Choose CLAUDE.md, AGENTS.md, rule files, or any other instructions you want to compare.</p>
+            <button id="choose-button" class="file-picker" type="button">Choose files</button>
+            <input id="file-input" type="file" multiple accept=".md,.markdown,.txt,text/plain,text/markdown" hidden>
+          </div>
+        </div>
+        <p class="privacy-note">The files stay in this browser. Nothing is uploaded or saved.</p>
+        <p id="status" aria-live="polite"></p>
+      </div>
+
+      <aside class="queue-card" aria-labelledby="queue-heading">
+        <p class="eyebrow">Selected cargo</p>
+        <h3 id="queue-heading">Waiting to weigh</h3>
+        <p>Select at least one UTF-8 plain-text or Markdown file. Remove anything you did not mean to add.</p>
+        <ul id="file-list">
+          <li class="queued-file" id="empty-queue"><span>No files on the belt.</span></li>
+        </ul>
+        <div class="queue-actions">
+          <button id="weigh-button" type="button" disabled>Weigh the files</button>
+          <button id="clear-button" type="button" disabled>Clear</button>
+        </div>
+      </aside>
+    </section>
+
+    <section id="manifest" hidden aria-labelledby="manifest-heading">
+      <div class="manifest-head">
+        <div>
+          <p class="eyebrow">Arrivals manifest</p>
+          <h2 id="manifest-heading" tabindex="-1">Your context baggage</h2>
+        </div>
+        <p>Largest files arrive first. Bars show each file's share of the selected bytes. No token estimate is hiding in the hold.</p>
+      </div>
+
+      <div class="manifest-board">
+        <div class="board-top"><span>Selected files only</span><span id="manifest-status" aria-live="polite"></span></div>
+        <div class="totals">
+          <div class="total"><strong id="total-bytes">0 B</strong><span>UTF-8 bytes</span></div>
+          <div class="total"><strong id="total-lines">0</strong><span>Lines</span></div>
+          <div class="total"><strong id="total-words">0</strong><span>Words</span></div>
+        </div>
+        <div class="file-manifest" id="file-manifest"></div>
+      </div>
+
+      <div class="duplicate-panel">
+        <p class="manifest-kicker">Repeated cargo</p>
+        <h3>Long passages packed more than once</h3>
+        <p id="duplicate-summary">Only repeated passages across different selected entries appear here. Each selection counts separately. File contents stay off the manifest.</p>
+        <ul id="duplicate-list"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer>Maintained by <strong>Nikita Vorontsov</strong>. Built with AI.</footer>
+  <script type="module" src="./main.mjs?v=context-baggage-20260825-01"></script>
+</body>
+</html>

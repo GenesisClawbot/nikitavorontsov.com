@@ -1,0 +1,713 @@
+<!doctype html>
+<html lang="en" data-build="pr-warrant-20260825-02">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pin one public GitHub pull request to its exact commits and end review loops with one closed material-defect verdict.">
+  <link rel="icon" href="data:,">
+  <title>PR Warrant</title>
+  <style>
+    @font-face {
+      font-family: Bricolage;
+      src: url('/play/fonts/bricolage-grotesque-latin.woff2') format('woff2');
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Public Sans';
+      src: url('/play/fonts/public-sans-latin.woff2') format('woff2');
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Spline Mono';
+      src: url('/play/fonts/spline-sans-mono-latin.woff2') format('woff2');
+      font-display: swap;
+    }
+
+    :root {
+      --folder: #cae0e3;
+      --paper: #fffdf5;
+      --ink: #172238;
+      --muted: #526071;
+      --blue: #0f5b73;
+      --red: #d94b36;
+      --red-text: #982f27;
+      --tape: #f6cc4c;
+      --line: #8aa0a9;
+      --shadow: rgba(23, 34, 56, 0.2);
+      --focus: #d94b36;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--folder);
+      color: var(--ink);
+      font-family: 'Public Sans', sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-width: 0;
+      min-height: 100vh;
+      margin: 0;
+      background:
+        linear-gradient(90deg, transparent 0 3.9rem, rgba(23, 34, 56, 0.07) 3.9rem 4rem) 0 0 / 4rem 100%,
+        linear-gradient(rgba(255, 255, 255, 0.13), rgba(255, 255, 255, 0.13));
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      min-height: 3rem;
+      padding: 0.72rem 1rem;
+      border: 2px solid var(--ink);
+      border-radius: 0;
+      background: var(--tape);
+      color: var(--ink);
+      box-shadow: 4px 4px 0 var(--ink);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.055em;
+      line-height: 1.35;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 4px;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .site-header,
+    main,
+    footer {
+      width: min(74rem, calc(100% - 2rem));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      padding-block: 1.1rem;
+      border-bottom: 2px solid var(--ink);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-header a {
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    main {
+      padding-block: clamp(2.5rem, 7vw, 6rem);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(19rem, 0.68fr);
+      gap: clamp(2rem, 7vw, 6rem);
+      align-items: center;
+      margin-bottom: clamp(3rem, 8vw, 6rem);
+    }
+
+    .eyebrow,
+    .field-label,
+    .docket-label,
+    .output-label {
+      margin: 0 0 0.75rem;
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      color: var(--blue);
+    }
+
+    h1,
+    h2,
+    h3 {
+      margin: 0;
+      font-family: Bricolage, sans-serif;
+      line-height: 0.94;
+      letter-spacing: -0.045em;
+      overflow-wrap: anywhere;
+    }
+
+    h1 {
+      max-width: 10ch;
+      font-size: clamp(3.8rem, 10vw, 8rem);
+    }
+
+    h2 {
+      font-size: clamp(2.1rem, 5vw, 4.4rem);
+    }
+
+    h3 {
+      font-size: clamp(1.4rem, 3vw, 2.15rem);
+    }
+
+    .lede {
+      max-width: 42rem;
+      margin: 1.5rem 0 0;
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+      line-height: 1.55;
+    }
+
+    .truth-strip {
+      max-width: 43rem;
+      margin: 1.3rem 0 0;
+      padding: 0.75rem 0.9rem;
+      border-left: 7px solid var(--red);
+      background: var(--paper);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      line-height: 1.55;
+    }
+
+    .evidence-folder {
+      position: relative;
+      width: min(100%, 25rem);
+      margin-inline: auto;
+      padding: 1.5rem;
+      border: 2px solid var(--ink);
+      background: var(--paper);
+      box-shadow: 12px 14px 0 var(--ink);
+      transform: rotate(1.2deg);
+    }
+
+    .evidence-folder::before {
+      position: absolute;
+      top: -0.9rem;
+      left: 1rem;
+      width: 7.5rem;
+      height: 0.9rem;
+      border: 2px solid var(--ink);
+      border-bottom: 0;
+      background: var(--paper);
+      content: '';
+    }
+
+    .evidence-tape {
+      margin: 1.4rem -2.1rem 1.2rem;
+      padding: 0.75rem 2rem;
+      border-block: 2px solid var(--ink);
+      background: var(--tape);
+      font-family: 'Spline Mono', monospace;
+      font-size: clamp(0.82rem, 2vw, 1rem);
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-align: center;
+      text-transform: uppercase;
+      transform: rotate(-5deg);
+    }
+
+    .case-number {
+      display: block;
+      font-family: Bricolage, sans-serif;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .scope-list {
+      display: grid;
+      gap: 0.65rem;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.74rem;
+    }
+
+    .scope-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 0.65rem;
+      border-top: 1px solid var(--line);
+    }
+
+    .scope-list strong {
+      color: var(--red-text);
+      text-transform: uppercase;
+    }
+
+    .intake {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(16rem, 0.38fr);
+      gap: clamp(1rem, 4vw, 2.5rem);
+      align-items: start;
+    }
+
+    .intake-panel {
+      min-width: 0;
+      padding: clamp(1.2rem, 4vw, 2.3rem);
+      background: var(--ink);
+      color: #fff;
+      box-shadow: 9px 10px 0 var(--red);
+    }
+
+    .intake-panel .eyebrow {
+      color: #8dd4df;
+    }
+
+    .intake-panel h2 {
+      max-width: 12ch;
+      margin-bottom: 1rem;
+    }
+
+    .intake-panel > p {
+      max-width: 42rem;
+      color: #d7e1e8;
+      line-height: 1.55;
+    }
+
+    .lookup-form {
+      margin-top: 1.5rem;
+    }
+
+    .field-label {
+      display: block;
+      color: #8dd4df;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 0.8rem;
+      align-items: stretch;
+    }
+
+    #pr-url {
+      width: 100%;
+      min-width: 0;
+      min-height: 3.2rem;
+      padding: 0.8rem 0.9rem;
+      border: 2px solid #fff;
+      border-radius: 0;
+      background: #fff;
+      color: var(--ink);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.83rem;
+    }
+
+    #lookup-status {
+      min-height: 1.6rem;
+      margin: 0.8rem 0 0;
+      color: #8dd4df;
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .boundary-card {
+      padding: 1.25rem;
+      border-top: 8px solid var(--tape);
+      background: var(--paper);
+      box-shadow: 6px 6px 0 var(--line);
+    }
+
+    .boundary-card h3 {
+      margin-bottom: 0.8rem;
+    }
+
+    .boundary-card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    .boundary-card p + p {
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--line);
+    }
+
+    #warrant {
+      margin-top: clamp(4rem, 9vw, 7rem);
+      scroll-margin-top: 2rem;
+    }
+
+    .warrant-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1.5rem;
+      align-items: end;
+      margin-bottom: 1.5rem;
+    }
+
+    .status-stamp {
+      flex: none;
+      padding: 0.5rem 0.7rem;
+      border: 4px double var(--red);
+      color: var(--red-text);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transform: rotate(-3deg);
+    }
+
+    .docket {
+      position: relative;
+      overflow: hidden;
+      border: 3px solid var(--ink);
+      background: var(--paper);
+      box-shadow: 12px 14px 0 var(--shadow);
+    }
+
+    .docket-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.9rem 1rem;
+      border-bottom: 2px solid var(--ink);
+      background: var(--tape);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .case-title {
+      padding: clamp(1.1rem, 4vw, 2rem);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .case-title a {
+      display: inline-block;
+      margin-top: 0.7rem;
+      color: var(--blue);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.76rem;
+      font-weight: 700;
+      overflow-wrap: anywhere;
+    }
+
+    .identity-grid,
+    .change-grid {
+      display: grid;
+      margin: 0;
+    }
+
+    .identity-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      border-bottom: 1px solid var(--line);
+    }
+
+    .change-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .identity-item,
+    .change-item {
+      min-width: 0;
+      padding: clamp(1rem, 3vw, 1.5rem);
+      border-right: 1px solid var(--line);
+    }
+
+    .identity-item:last-child,
+    .change-item:last-child {
+      border-right: 0;
+    }
+
+    .identity-item dt,
+    .change-item dt {
+      margin-bottom: 0.45rem;
+      color: var(--muted);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .identity-item dd,
+    .change-item dd {
+      margin: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .identity-item dd {
+      font-family: 'Spline Mono', monospace;
+      font-size: clamp(0.72rem, 2vw, 0.9rem);
+      line-height: 1.5;
+    }
+
+    .change-item dd {
+      font-family: Bricolage, sans-serif;
+      font-size: clamp(1.5rem, 4vw, 2.5rem);
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .artifacts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: clamp(1rem, 4vw, 2.5rem);
+      margin-top: 2.5rem;
+    }
+
+    .artifact {
+      min-width: 0;
+    }
+
+    .artifact-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: end;
+      margin-bottom: 0.8rem;
+    }
+
+    .artifact-head h3 {
+      max-width: 13ch;
+    }
+
+    .copy-button {
+      flex: none;
+      background: var(--paper);
+    }
+
+    pre {
+      min-height: 20rem;
+      max-height: 32rem;
+      margin: 0;
+      padding: 1.1rem;
+      overflow: auto;
+      border: 2px solid var(--ink);
+      background: var(--ink);
+      color: #e8f2f4;
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.72rem;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    .copy-status {
+      min-height: 1.35rem;
+      margin: 0.55rem 0 0;
+      color: var(--blue);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.72rem;
+    }
+
+    footer {
+      margin-top: clamp(4rem, 9vw, 7rem);
+      padding-block: 1.5rem 2.5rem;
+      border-top: 2px solid var(--ink);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.74rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 50rem) {
+      .hero,
+      .intake,
+      .artifacts {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .warrant-head {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 38rem) {
+      .field-row,
+      .identity-grid,
+      .change-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .identity-item,
+      .change-item {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .identity-item:last-child,
+      .change-item:last-child {
+        border-bottom: 0;
+      }
+
+      .artifact-head,
+      .site-header,
+      .docket-top {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .copy-button {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="/">Nikita Vorontsov</a>
+    <span>Review jurisdiction / one diff only</span>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Scope papers for easily distracted agents</p>
+        <h1 id="page-title">PR Warrant</h1>
+        <p class="lede">Give the reviewer one pull request. Pin the commits. Set a material defect bar. End with one closed verdict.</p>
+        <p class="truth-strip">This guards scope and asks one closed question. It does not prove that a reviewer obeyed the warrant.</p>
+      </div>
+
+      <div class="evidence-folder" aria-label="Example review case file">
+        <p class="docket-label">Docket / exact review scope</p>
+        <span class="case-number">REPO #123</span>
+        <div class="evidence-tape">One diff. One verdict.</div>
+        <ul class="scope-list">
+          <li><span>Named PR</span><strong>Admitted</strong></li>
+          <li><span>Wider history</span><strong>Denied</strong></li>
+          <li><span>Final question</span><strong>Closed</strong></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="intake" aria-labelledby="intake-heading">
+      <div class="intake-panel">
+        <p class="eyebrow">Issue the warrant</p>
+        <h2 id="intake-heading">Name the pull request.</h2>
+        <p>Public GitHub pull requests only. On issue, this page makes one request to GitHub's public API and pins the response.</p>
+
+        <form id="warrant-form" class="lookup-form">
+          <label class="field-label" for="pr-url">GitHub pull request URL</label>
+          <div class="field-row">
+            <input id="pr-url" type="url" required disabled inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://github.com/owner/repo/pull/123">
+            <button id="issue-button" type="submit" disabled>Issue warrant</button>
+          </div>
+          <p id="lookup-status" aria-live="polite">Loading the warrant desk…</p>
+        </form>
+      </div>
+
+      <aside class="boundary-card" aria-labelledby="boundary-heading">
+        <p class="eyebrow">Review ceasefire</p>
+        <h3 id="boundary-heading">One closed verdict.</h3>
+        <p>The brief asks only for verified high- or medium-severity defects. The reviewer must answer YES with evidence or NO.</p>
+        <p>If the answer is NO, the review stops.</p>
+        <p>The URL and result are not saved. There is no account, analytics, or server here. PR prose stays out of the copied artifacts.</p>
+      </aside>
+    </section>
+
+    <section id="warrant" hidden aria-labelledby="warrant-heading">
+      <div class="warrant-head">
+        <div>
+          <p class="eyebrow">Warrant returned</p>
+          <h2 id="warrant-heading" tabindex="-1">Review this one.</h2>
+        </div>
+        <span id="pr-status" class="status-stamp">Open</span>
+      </div>
+
+      <div class="docket">
+        <div class="docket-top"><span id="case-id">Case pending</span><span>GitHub API record</span></div>
+        <div class="case-title">
+          <p class="docket-label">Pull request title, shown as untrusted display text</p>
+          <h3 id="pr-title"></h3>
+          <a id="canonical-link" href="https://github.com/" target="_blank" rel="noreferrer">Open the exact PR on GitHub</a>
+        </div>
+        <dl class="identity-grid">
+          <div class="identity-item"><dt>Base identity</dt><dd id="base-identity"></dd></div>
+          <div class="identity-item"><dt>Head identity</dt><dd id="head-identity"></dd></div>
+        </dl>
+        <dl class="change-grid">
+          <div class="change-item"><dt>Commits</dt><dd id="commit-count">0</dd></div>
+          <div class="change-item"><dt>Files</dt><dd id="file-count">0</dd></div>
+          <div class="change-item"><dt>Additions</dt><dd id="addition-count">0</dd></div>
+          <div class="change-item"><dt>Deletions</dt><dd id="deletion-count">0</dd></div>
+        </dl>
+      </div>
+
+      <div class="artifacts">
+        <section class="artifact" aria-labelledby="brief-heading">
+          <div class="artifact-head">
+            <div>
+              <p class="output-label">For the reviewer</p>
+              <h3 id="brief-heading">Copy the brief</h3>
+            </div>
+            <button id="copy-brief" class="copy-button" type="button">Copy brief</button>
+          </div>
+          <pre id="review-brief"></pre>
+          <p id="brief-copy-status" class="copy-status" aria-live="polite"></p>
+        </section>
+
+        <section class="artifact" aria-labelledby="check-heading">
+          <div class="artifact-head">
+            <div>
+              <p class="output-label">For the repository</p>
+              <h3 id="check-heading">Copy the shell check</h3>
+            </div>
+            <button id="copy-check" class="copy-button" type="button">Copy check</button>
+          </div>
+          <pre id="shell-check"></pre>
+          <p id="check-copy-status" class="copy-status" aria-live="polite"></p>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer>Maintained by <strong>Nikita Vorontsov</strong>. Built with AI.</footer>
+  <script type="module" src="./main.mjs?v=pr-warrant-20260825-02" onerror="document.getElementById('lookup-status').textContent='The warrant desk could not load. Reload the page.'"></script>
+</body>
+</html>

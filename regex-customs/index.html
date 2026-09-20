@@ -1,0 +1,775 @@
+<!doctype html>
+<html lang="en" data-build="regex-customs-20260825-01">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Compare ASCII-only letter counting with Unicode letter-code-point counting. The text stays local.">
+  <title>Regex Customs · Find what A–Z leaves at the border</title>
+  <link rel="icon" href="data:,">
+  <style>
+    @font-face {
+      font-family: "Bricolage";
+      src: url("/play/fonts/bricolage-grotesque-latin.woff2") format("woff2");
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Public Sans";
+      src: url("/play/fonts/public-sans-latin.woff2") format("woff2");
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Spline Mono";
+      src: url("/play/fonts/spline-sans-mono-latin.woff2") format("woff2");
+      font-display: swap;
+    }
+
+    :root {
+      --desk: #0b1f2d;
+      --desk-raised: #123448;
+      --paper: #f4f3e8;
+      --paper-deep: #e7e5d7;
+      --ink: #17242b;
+      --muted: #536269;
+      --rule: #99a3a1;
+      --declaration: #ffd84d;
+      --stamp: #b9342a;
+      --stamp-dark: #84251f;
+      --white: #ffffff;
+      --focus: #33798d;
+      --shadow: #06131c;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      color-scheme: dark;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-width: 0;
+      margin: 0;
+      color: var(--white);
+      background-color: var(--desk);
+      background-image:
+        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      background-size: 32px 32px;
+      font-family: "Public Sans", system-ui, sans-serif;
+      line-height: 1.55;
+    }
+
+    button,
+    textarea {
+      font: inherit;
+    }
+
+    button {
+      min-height: 46px;
+      border: 2px solid var(--ink);
+      border-radius: 0;
+      padding: 0.72rem 1rem;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "Spline Mono", ui-monospace, monospace;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 3px 3px 0 var(--ink);
+      transition: transform 120ms ease, box-shadow 120ms ease;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translate(-1px, -1px);
+      box-shadow: 5px 5px 0 var(--ink);
+    }
+
+    button:active:not(:disabled) {
+      transform: translate(2px, 2px);
+      box-shadow: 1px 1px 0 var(--ink);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 4px;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 2rem));
+      margin: 0 auto;
+    }
+
+    .masthead {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 1.25rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .wordmark,
+    .jurisdiction,
+    .eyebrow,
+    .field-label,
+    .counter-label,
+    .caption-label,
+    .status,
+    .method-code {
+      font-family: "Spline Mono", ui-monospace, monospace;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .wordmark {
+      margin: 0;
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+
+    .jurisdiction {
+      margin: 0;
+      color: #c0d0d8;
+      font-size: 0.7rem;
+      text-align: right;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(260px, 0.82fr);
+      align-items: center;
+      gap: clamp(2rem, 6vw, 5rem);
+      padding: clamp(3.25rem, 8vw, 7rem) 0 clamp(2.5rem, 6vw, 5rem);
+    }
+
+    .eyebrow {
+      display: inline-block;
+      margin: 0 0 1rem;
+      padding: 0.3rem 0.5rem;
+      color: var(--ink);
+      background: var(--declaration);
+      font-size: 0.72rem;
+      font-weight: 800;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin-top: 0;
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: "Bricolage", "Public Sans", sans-serif;
+      line-height: 0.98;
+    }
+
+    h1 {
+      max-width: 750px;
+      margin-bottom: 1.35rem;
+      font-size: clamp(3rem, 8vw, 6.8rem);
+      font-weight: 800;
+      letter-spacing: -0.055em;
+    }
+
+    .hero-copy {
+      max-width: 650px;
+      margin-bottom: 0;
+      color: #d6e1e5;
+      font-size: clamp(1.05rem, 2vw, 1.3rem);
+    }
+
+    .border-mark {
+      position: relative;
+      min-height: 330px;
+      padding: 2rem;
+      color: var(--ink);
+      background: var(--declaration);
+      border: 2px solid var(--ink);
+      box-shadow: 12px 12px 0 var(--shadow);
+      transform: rotate(1.5deg);
+    }
+
+    .border-mark::before,
+    .border-mark::after {
+      position: absolute;
+      z-index: 0;
+      content: "";
+      border: 3px solid var(--stamp);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .border-mark::before {
+      width: 150px;
+      height: 150px;
+      right: 1.2rem;
+      bottom: 1.4rem;
+      transform: rotate(-13deg);
+    }
+
+    .border-mark::after {
+      width: 118px;
+      height: 118px;
+      right: 2.2rem;
+      bottom: 2.4rem;
+    }
+
+    .mark-kicker,
+    .mark-rule,
+    .mark-verdict {
+      position: relative;
+      z-index: 1;
+      font-family: "Spline Mono", ui-monospace, monospace;
+    }
+
+    .mark-kicker {
+      margin-bottom: 2.4rem;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .mark-rule {
+      margin-bottom: 0.85rem;
+      font-size: clamp(2.7rem, 7vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -0.08em;
+    }
+
+    .mark-verdict {
+      max-width: 210px;
+      margin-bottom: 0;
+      color: var(--stamp-dark);
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    .workbench {
+      margin-bottom: clamp(3rem, 7vw, 6rem);
+      color: var(--ink);
+      background: var(--paper);
+      border: 1px solid #c5c5b7;
+      box-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+    }
+
+    .bench-header {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 2rem;
+      align-items: start;
+      padding: clamp(1.5rem, 4vw, 3rem);
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .bench-header h2 {
+      margin-bottom: 0.7rem;
+      font-size: clamp(2rem, 4vw, 3.6rem);
+      letter-spacing: -0.04em;
+    }
+
+    .bench-header p {
+      max-width: 650px;
+      margin-bottom: 0;
+      color: var(--muted);
+    }
+
+    .form-number {
+      min-width: 106px;
+      padding: 0.7rem;
+      border: 2px solid var(--ink);
+      font-family: "Spline Mono", ui-monospace, monospace;
+      font-size: 0.68rem;
+      font-weight: 700;
+      line-height: 1.35;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .inspection-form {
+      padding: clamp(1.5rem, 4vw, 3rem);
+    }
+
+    .field-label {
+      display: block;
+      margin-bottom: 0.65rem;
+      font-size: 0.75rem;
+      font-weight: 800;
+    }
+
+    textarea {
+      display: block;
+      width: 100%;
+      min-height: 230px;
+      resize: vertical;
+      border: 2px solid var(--ink);
+      border-radius: 0;
+      padding: 1.15rem;
+      color: var(--ink);
+      background: var(--white);
+      font-family: "Spline Mono", ui-monospace, monospace;
+      font-size: 1rem;
+      line-height: 1.6;
+      box-shadow: inset 0 0 0 4px var(--paper-deep);
+    }
+
+    textarea::placeholder {
+      color: #6b777c;
+    }
+
+    .privacy-note {
+      margin: 0.8rem 0 1.25rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .primary-action {
+      color: var(--ink);
+      background: var(--declaration);
+    }
+
+    .secondary-action {
+      background: var(--white);
+    }
+
+    .clear-action {
+      margin-left: auto;
+      color: var(--stamp-dark);
+      border-color: var(--stamp-dark);
+      box-shadow: 3px 3px 0 var(--stamp-dark);
+    }
+
+    .status {
+      min-height: 1.5rem;
+      margin: 1.25rem 0 0;
+      color: var(--muted);
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: 0.03em;
+    }
+
+    .result {
+      scroll-margin-top: 1rem;
+      border-top: 2px solid var(--ink);
+    }
+
+    .result[hidden] {
+      display: none;
+    }
+
+    .result-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: center;
+      padding: 1.4rem clamp(1.5rem, 4vw, 3rem);
+      color: var(--white);
+      background: var(--desk-raised);
+    }
+
+    .result-header h2 {
+      margin-bottom: 0;
+      font-size: clamp(1.7rem, 3vw, 2.5rem);
+      letter-spacing: -0.03em;
+    }
+
+    .result-header button {
+      flex: 0 0 auto;
+    }
+
+    .counter-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .counter {
+      min-width: 0;
+      min-height: 180px;
+      padding: clamp(1.25rem, 3vw, 2rem);
+      border-right: 1px solid var(--rule);
+    }
+
+    .counter:last-child {
+      border-right: 0;
+    }
+
+    .counter.stopped {
+      position: relative;
+      color: var(--stamp-dark);
+      background: #f6dcd5;
+      border-left: 6px double var(--stamp);
+    }
+
+    .counter-label {
+      display: block;
+      min-height: 2.8em;
+      margin-bottom: 1.15rem;
+      color: currentColor;
+      font-size: 0.68rem;
+      font-weight: 800;
+    }
+
+    .counter-value {
+      display: block;
+      font-family: "Public Sans", system-ui, sans-serif;
+      font-size: clamp(2.5rem, 6vw, 4.8rem);
+      font-weight: 800;
+      line-height: 0.9;
+      letter-spacing: -0.06em;
+      overflow-wrap: anywhere;
+    }
+
+    .counter:last-child .counter-value {
+      font-size: clamp(2.3rem, 4.7vw, 4.1rem);
+      white-space: nowrap;
+    }
+
+    .manifest {
+      display: grid;
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    }
+
+    .script-manifest,
+    .method-manifest {
+      min-width: 0;
+      padding: clamp(1.5rem, 4vw, 3rem);
+    }
+
+    .script-manifest {
+      border-right: 1px solid var(--rule);
+    }
+
+    .manifest h3 {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      letter-spacing: -0.02em;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: "Spline Mono", ui-monospace, monospace;
+      font-size: 0.88rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    caption {
+      margin-bottom: 0.65rem;
+      color: var(--muted);
+      font-size: 0.78rem;
+      text-align: left;
+    }
+
+    th,
+    td {
+      padding: 0.7rem 0;
+      border-bottom: 1px solid var(--rule);
+      text-align: left;
+    }
+
+    td:last-child,
+    thead th:last-child {
+      text-align: right;
+    }
+
+    tbody th {
+      font-weight: 500;
+    }
+
+    .method-box {
+      padding: 1rem;
+      border: 1px solid var(--rule);
+      background: var(--paper-deep);
+    }
+
+    .method-code {
+      margin-bottom: 0.55rem;
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+
+    .method-box p:last-child {
+      margin-bottom: 0;
+    }
+
+    .limits {
+      padding: 0 clamp(1.5rem, 4vw, 3rem) clamp(1.75rem, 4vw, 3rem);
+    }
+
+    .limits p {
+      margin: 0;
+      padding-top: 1rem;
+      color: var(--muted);
+      border-top: 1px solid var(--rule);
+      font-size: 0.9rem;
+    }
+
+    footer {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 1.5rem;
+      align-items: end;
+      padding: 0 0 2.5rem;
+      color: #c0d0d8;
+      font-size: 0.82rem;
+    }
+
+    footer p {
+      margin-bottom: 0;
+    }
+
+    footer a {
+      color: var(--white);
+    }
+
+    .disclosure {
+      max-width: 640px;
+    }
+
+    @media (max-width: 820px) {
+      .hero,
+      .manifest {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .border-mark {
+        width: min(430px, 100%);
+        min-height: 290px;
+      }
+
+      .counter-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .counter:nth-child(2) {
+        border-right: 0;
+      }
+
+      .counter:nth-child(-n + 2) {
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .script-manifest {
+        border-right: 0;
+        border-bottom: 1px solid var(--rule);
+      }
+    }
+
+    @media (max-width: 540px) {
+      .shell {
+        width: min(100% - 1rem, 1120px);
+      }
+
+      .masthead,
+      .bench-header,
+      .result-header,
+      footer {
+        align-items: flex-start;
+      }
+
+      .masthead,
+      .result-header,
+      footer {
+        flex-direction: column;
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .jurisdiction {
+        text-align: left;
+      }
+
+      .hero {
+        padding-top: 2.5rem;
+      }
+
+      h1 {
+        font-size: clamp(2.8rem, 16vw, 4.6rem);
+      }
+
+      .border-mark {
+        min-height: 270px;
+        padding: 1.35rem;
+        transform: none;
+      }
+
+      .bench-header {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .form-number {
+        width: 100%;
+      }
+
+      .actions button {
+        width: 100%;
+      }
+
+      .clear-action {
+        margin-left: 0;
+      }
+
+      .result-header {
+        display: grid;
+      }
+
+      .result-header button {
+        width: 100%;
+      }
+
+      .counter-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .counter,
+      .counter:nth-child(2) {
+        border-right: 0;
+        border-bottom: 1px solid var(--rule);
+      }
+
+      .counter:last-child {
+        border-bottom: 0;
+      }
+
+      .counter.stopped {
+        border-left-width: 6px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="shell masthead">
+    <p class="wordmark">Regex Customs</p>
+    <p class="jurisdiction">Unicode inspection desk · local processing only</p>
+  </header>
+
+  <main class="shell">
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Fixed border inspection</p>
+        <h1 id="page-title">Find what A–Z leaves at the border.</h1>
+        <p class="hero-copy">Compare the letters admitted by <code>[A-Za-z]</code> with the Unicode letter code points admitted by <code>\p{L}</code>. Korean, Han, accented Latin, and other letters should not become invisible paperwork.</p>
+      </div>
+
+      <aside class="border-mark" aria-label="ASCII-only rule inspection notice">
+        <p class="mark-kicker">Declaration RC–26 · Counter class</p>
+        <p class="mark-rule">[A-Za-z]</p>
+        <p class="mark-verdict">Valid pattern. Incomplete border policy.</p>
+      </aside>
+    </section>
+
+    <section class="workbench" aria-labelledby="bench-heading">
+      <header class="bench-header">
+        <div>
+          <h2 id="bench-heading">Present text for inspection</h2>
+          <p>This fixed check counts letter code points two ways. It does not alter the text or decide whether the writing is good.</p>
+        </div>
+        <div class="form-number">Form<br>RC–AZ–01</div>
+      </header>
+
+      <form id="inspection-form" class="inspection-form">
+        <label class="field-label" for="source-text">Text under declaration</label>
+        <textarea id="source-text" spellcheck="false" placeholder="Paste multilingual text here…"></textarea>
+        <p class="privacy-note">The text stays in this browser. Nothing is uploaded, saved, or analyzed elsewhere.</p>
+        <div class="actions">
+          <button id="inspect-button" class="primary-action" type="submit">Inspect the border</button>
+          <button id="sample-button" class="secondary-action" type="button">Try ABC 한글 猫</button>
+          <button id="clear-button" class="clear-action" type="button">Clear desk</button>
+        </div>
+        <p id="status" class="status" aria-live="polite">The inspection module is loading. If this message remains, reload the page.</p>
+      </form>
+
+      <section id="result" class="result" hidden aria-labelledby="result-heading">
+        <header class="result-header">
+          <h2 id="result-heading" tabindex="-1">Customs declaration</h2>
+          <button id="copy-button" type="button" disabled>Copy declaration</button>
+        </header>
+
+        <div class="counter-grid" aria-label="Letter count comparison">
+          <div class="counter">
+            <span class="counter-label">[A-Za-z] admitted</span>
+            <strong id="ascii-count" class="counter-value">0</strong>
+          </div>
+          <div class="counter">
+            <span class="counter-label">\p{L} letter code points</span>
+            <strong id="unicode-count" class="counter-value">0</strong>
+          </div>
+          <div class="counter stopped">
+            <span class="counter-label">Outside A–Z</span>
+            <strong id="outside-count" class="counter-value">0</strong>
+          </div>
+          <div class="counter">
+            <span class="counter-label">A–Z coverage</span>
+            <strong id="coverage" class="counter-value">0%</strong>
+          </div>
+        </div>
+
+        <div class="manifest">
+          <section class="script-manifest" aria-labelledby="script-heading">
+            <h3 id="script-heading">Script manifest</h3>
+            <table>
+              <caption>Letter code points by detected script group</caption>
+              <thead>
+                <tr><th scope="col">Script</th><th scope="col">Letters</th></tr>
+              </thead>
+              <tbody id="script-table-body"></tbody>
+            </table>
+          </section>
+
+          <section class="method-manifest" aria-labelledby="method-heading">
+            <h3 id="method-heading">Inspection method</h3>
+            <div class="method-box">
+              <p class="method-code">Exact fixed comparison</p>
+              <p><code>[A-Za-z]</code> counts ASCII letters. <code>\p{L}</code> counts Unicode letter code points. The difference is the number of letter code points the ASCII-only counter ignores.</p>
+            </div>
+          </section>
+        </div>
+
+        <div class="limits">
+          <p>This desk does not run arbitrary regex. It does not count words, tokens, or SEO scores. “Other scripts” groups letter code points outside the Latin, Hangul, and Han groups shown separately.</p>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="shell">
+    <p class="disclosure">Maintained by <strong>Nikita Vorontsov</strong>. Built with AI. The method and limits are printed beside the result.</p>
+    <p><a href="/">Back to nikitavorontsov.com</a></p>
+  </footer>
+
+  <script type="module" src="./main.mjs?v=regex-customs-20260825-01"></script>
+</body>
+</html>

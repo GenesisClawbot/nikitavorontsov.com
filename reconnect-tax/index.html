@@ -1,0 +1,569 @@
+<!doctype html>
+<html lang="en" data-build="reconnect-tax-20260825-01">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Turn RECONNECTING notices in a terminal log into an editable incident receipt. Processing stays in your browser.">
+  <link rel="icon" href="data:,">
+  <title>Reconnect Tax Receipt</title>
+  <style>
+    @font-face {
+      font-family: Bricolage;
+      src: url('/play/fonts/bricolage-grotesque-latin.woff2') format('woff2');
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Public Sans';
+      src: url('/play/fonts/public-sans-latin.woff2') format('woff2');
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: 'Spline Mono';
+      src: url('/play/fonts/spline-sans-mono-latin.woff2') format('woff2');
+      font-display: swap;
+    }
+
+    :root {
+      --paper: #f7f4ee;
+      --sheet: #fffdf7;
+      --ink: #201b15;
+      --graphite: #2a3439;
+      --spruce: #2f6b52;
+      --caution: #c64b13;
+      --highlighter: #f2c94c;
+      --line: #c9c0b1;
+      --muted: #655e55;
+      --shadow: rgba(32, 27, 21, 0.13);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'Public Sans', sans-serif;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(242, 201, 76, 0.11), transparent 22rem),
+        linear-gradient(rgba(42, 52, 57, 0.035) 1px, transparent 1px);
+      background-size: auto, 100% 28px;
+    }
+
+    button,
+    textarea,
+    input {
+      font: inherit;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    a:hover {
+      text-decoration-thickness: 3px;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--ink);
+      outline-offset: 4px;
+    }
+
+    .terminal-card :focus-visible {
+      outline-color: var(--highlighter);
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .site-header,
+    main,
+    footer {
+      width: min(72rem, calc(100% - 2rem));
+      margin-inline: auto;
+    }
+
+    .site-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-block: 1.2rem;
+      border-bottom: 2px solid var(--ink);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.78rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .site-header a {
+      font-weight: 700;
+      text-decoration: none;
+    }
+
+    main {
+      padding-block: clamp(2.5rem, 7vw, 6rem);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.72fr);
+      gap: clamp(2rem, 7vw, 6rem);
+      align-items: center;
+      margin-bottom: clamp(3rem, 8vw, 6.5rem);
+    }
+
+    .eyebrow,
+    .field-label,
+    .receipt-kicker,
+    .side-note h3 {
+      margin: 0 0 0.75rem;
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      color: var(--spruce);
+    }
+
+    h1,
+    h2 {
+      margin: 0;
+      font-family: Bricolage, sans-serif;
+      line-height: 0.96;
+      letter-spacing: -0.045em;
+    }
+
+    h1 {
+      max-width: 12ch;
+      font-size: clamp(3.25rem, 9vw, 7.6rem);
+    }
+
+    h2 {
+      font-size: clamp(2rem, 5vw, 4.2rem);
+    }
+
+    .lede {
+      max-width: 40rem;
+      margin: 1.5rem 0 0;
+      font-size: clamp(1.05rem, 2vw, 1.32rem);
+      line-height: 1.55;
+    }
+
+    .truth-label {
+      display: inline-block;
+      margin: 1.5rem 0 0;
+      padding: 0.55rem 0.7rem;
+      border: 2px solid var(--ink);
+      background: var(--highlighter);
+      box-shadow: 4px 4px 0 var(--ink);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.77rem;
+      font-weight: 700;
+      line-height: 1.45;
+      transform: rotate(-1deg);
+    }
+
+    .reconnect-strip {
+      position: relative;
+      padding: 1rem 1rem 1.6rem;
+      border: 2px solid var(--ink);
+      background: var(--sheet);
+      box-shadow: 10px 12px 0 var(--shadow);
+      font-family: 'Spline Mono', monospace;
+      transform: rotate(1.2deg);
+    }
+
+    .reconnect-strip::after,
+    .receipt-paper::after {
+      position: absolute;
+      right: 0;
+      bottom: -1px;
+      left: 0;
+      height: 13px;
+      background: linear-gradient(135deg, transparent 8px, var(--paper) 0) 0 0 / 16px 16px repeat-x;
+      content: '';
+    }
+
+    .strip-head,
+    .strip-foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      color: var(--muted);
+      font-size: 0.68rem;
+      text-transform: uppercase;
+    }
+
+    .attempt-rail {
+      display: grid;
+      gap: 0.55rem;
+      margin-block: 1.4rem;
+    }
+
+    .attempt {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.65rem 0.75rem;
+      border-left: 5px solid var(--line);
+      background: rgba(42, 52, 57, 0.055);
+      font-size: clamp(0.78rem, 2.4vw, 1rem);
+    }
+
+    .attempt:last-child {
+      border-left-color: var(--caution);
+      background: rgba(198, 75, 19, 0.1);
+    }
+
+    .workbench {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(15rem, 0.42fr);
+      gap: clamp(1rem, 4vw, 2.6rem);
+      align-items: start;
+    }
+
+    .terminal-card {
+      min-width: 0;
+      padding: clamp(1.1rem, 3vw, 2rem);
+      border: 2px solid var(--ink);
+      background: var(--graphite);
+      color: var(--sheet);
+      box-shadow: 8px 8px 0 var(--highlighter);
+    }
+
+    .terminal-card h2 {
+      max-width: 15ch;
+      margin-bottom: 1rem;
+      font-size: clamp(2rem, 5vw, 3.6rem);
+    }
+
+    .terminal-card .field-label {
+      display: block;
+      color: var(--highlighter);
+    }
+
+    #log {
+      display: block;
+      width: 100%;
+      min-height: 16rem;
+      resize: vertical;
+      padding: 1rem;
+      border: 2px solid var(--sheet);
+      border-radius: 0;
+      background: #151b1e;
+      color: #f4f0e7;
+      caret-color: var(--highlighter);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.86rem;
+      line-height: 1.55;
+    }
+
+    #log::placeholder {
+      color: #aeb7b8;
+      opacity: 1;
+    }
+
+    .privacy-note,
+    .hint,
+    #status {
+      overflow-wrap: anywhere;
+      font-size: 0.84rem;
+      line-height: 1.5;
+    }
+
+    .privacy-note {
+      margin: 0.8rem 0 1rem;
+      color: #d8dedc;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    button {
+      min-height: 2.9rem;
+      padding: 0.72rem 1rem;
+      border: 2px solid var(--ink);
+      border-radius: 0;
+      background: var(--highlighter);
+      color: var(--ink);
+      box-shadow: 4px 4px 0 var(--ink);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translate(2px, 2px);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      filter: grayscale(1);
+      opacity: 0.5;
+    }
+
+    #status {
+      min-height: 1.5rem;
+      margin: 0.9rem 0 0;
+      color: var(--highlighter);
+      font-family: 'Spline Mono', monospace;
+    }
+
+    .side-note {
+      padding: 1.2rem;
+      border-top: 7px solid var(--caution);
+      background: var(--sheet);
+      box-shadow: 5px 5px 0 var(--line);
+    }
+
+    .side-note p,
+    .side-note li {
+      font-size: 0.92rem;
+      line-height: 1.55;
+    }
+
+    .side-note ul {
+      margin: 0.75rem 0 0;
+      padding-left: 1.2rem;
+    }
+
+    .side-note code {
+      padding: 0.1rem 0.25rem;
+      background: rgba(42, 52, 57, 0.08);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.82em;
+    }
+
+    #receipt {
+      margin-top: clamp(4rem, 9vw, 7rem);
+      scroll-margin-top: 2rem;
+    }
+
+    .receipt-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      align-items: end;
+      margin-bottom: 1.5rem;
+    }
+
+    .receipt-head p {
+      max-width: 30rem;
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .receipt-stage {
+      display: grid;
+      place-items: center;
+      padding: clamp(1rem, 6vw, 4rem);
+      border: 2px solid var(--ink);
+      background:
+        repeating-linear-gradient(90deg, transparent 0 18px, rgba(32, 27, 21, 0.035) 18px 19px),
+        var(--line);
+    }
+
+    .receipt-paper {
+      position: relative;
+      width: min(100%, 36rem);
+      padding: clamp(1rem, 4vw, 2rem) clamp(1rem, 5vw, 2.6rem) 2.8rem;
+      background: var(--sheet);
+      box-shadow: 11px 13px 0 rgba(32, 27, 21, 0.18);
+      transform: rotate(-0.45deg);
+    }
+
+    .receipt-kicker {
+      display: flex;
+      justify-content: space-between;
+      padding-bottom: 0.8rem;
+      border-bottom: 2px dashed var(--ink);
+    }
+
+    #receipt-text {
+      display: block;
+      width: 100%;
+      min-height: 25rem;
+      resize: vertical;
+      margin-top: 1rem;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      color: var(--ink);
+      font-family: 'Spline Mono', monospace;
+      font-size: clamp(0.72rem, 2vw, 0.88rem);
+      line-height: 1.55;
+    }
+
+    #receipt-text:focus-visible {
+      outline-offset: 8px;
+    }
+
+    .review-panel {
+      width: min(100%, 36rem);
+      margin: 2rem auto 0;
+    }
+
+    .review-label {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0.7rem;
+      align-items: start;
+      line-height: 1.5;
+    }
+
+    .review-label input {
+      width: 1.2rem;
+      height: 1.2rem;
+      margin-top: 0.12rem;
+      accent-color: var(--spruce);
+    }
+
+    .review-panel .button-row {
+      margin-top: 1rem;
+    }
+
+    footer {
+      padding-block: 1.5rem 2.5rem;
+      border-top: 2px solid var(--ink);
+      font-family: 'Spline Mono', monospace;
+      font-size: 0.75rem;
+      line-height: 1.6;
+    }
+
+    @media (max-width: 48rem) {
+      .hero,
+      .workbench {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .reconnect-strip {
+        width: min(100%, 28rem);
+      }
+
+      .receipt-head {
+        align-items: start;
+        flex-direction: column;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <a href="/">Nikita Vorontsov</a>
+    <span>Incident desk / local utility</span>
+  </header>
+
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Terminal paperwork for transport tantrums</p>
+        <h1 id="page-title">Reconnect Tax Receipt</h1>
+        <p class="lede">Your terminal kept yelling <code>RECONNECTING</code>. Print what it actually said, not what it may have cost.</p>
+        <p class="truth-label">This is not a bill. It counts matching notices. It cannot see charges, tokens, or completed retries.</p>
+      </div>
+
+      <div class="reconnect-strip" aria-label="Example reconnect sequence">
+        <div class="strip-head"><span>Transport incident</span><span>Unsettled</span></div>
+        <div class="attempt-rail">
+          <div class="attempt"><span>RECONNECTING</span><strong>1/5</strong></div>
+          <div class="attempt"><span>RECONNECTING</span><strong>2/5</strong></div>
+          <div class="attempt"><span>RECONNECTING</span><strong>3/5</strong></div>
+          <div class="attempt"><span>RECONNECTING</span><strong>4/5</strong></div>
+        </div>
+        <div class="strip-foot"><span>Observed labels</span><span>Cost unknown</span></div>
+      </div>
+    </section>
+
+    <section class="workbench" aria-labelledby="paste-heading">
+      <div class="terminal-card">
+        <p class="eyebrow">Counter 01 / paste</p>
+        <h2 id="paste-heading">Bring the tantrum.</h2>
+        <label class="field-label" for="log">Paste the terminal log</label>
+        <textarea id="log" spellcheck="false" placeholder="RECONNECTING 1/5&#10;RECONNECTING 2/5&#10;RECONNECTING 3/5"></textarea>
+        <p class="privacy-note">The log stays in this browser. Nothing is uploaded or saved.</p>
+        <div class="button-row">
+          <button id="make-button" type="button">Print the receipt</button>
+        </div>
+        <p id="status" aria-live="polite"></p>
+      </div>
+
+      <aside class="side-note" aria-labelledby="counted-heading">
+        <h3 id="counted-heading">What gets counted</h3>
+        <p>Every <code>RECONNECTING n/n</code> marker in the pasted text becomes one line item.</p>
+        <ul>
+          <li>No account lookup.</li>
+          <li>No token estimate.</li>
+          <li>No charge claim.</li>
+        </ul>
+      </aside>
+    </section>
+
+    <section id="receipt" hidden aria-labelledby="receipt-heading">
+      <div class="receipt-head">
+        <div>
+          <p class="eyebrow">Counter 02 / review</p>
+          <h2 id="receipt-heading" tabindex="-1">Your incident receipt</h2>
+        </div>
+        <p>Edit anything that needs context. The copy and download buttons stay locked until you review it.</p>
+      </div>
+
+      <div class="receipt-stage">
+        <div class="receipt-paper">
+          <div class="receipt-kicker"><span>Reconnect tax</span><span>Not a bill</span></div>
+          <label class="field-label" for="receipt-text">Editable receipt</label>
+          <textarea id="receipt-text" aria-describedby="review-note"></textarea>
+        </div>
+      </div>
+
+      <div class="review-panel">
+        <label class="review-label">
+          <input id="review-check" type="checkbox">
+          <span id="review-note">I reviewed the receipt and removed anything I do not want to share.</span>
+        </label>
+        <div class="button-row">
+          <button id="copy-button" type="button" disabled>Copy receipt</button>
+          <button id="save-button" type="button" disabled>Download receipt</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>Maintained by <strong>Nikita Vorontsov</strong>. Built with AI.</footer>
+  <script type="module" src="./main.mjs?v=reconnect-tax-20260825-01"></script>
+</body>
+</html>

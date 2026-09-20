@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en" data-boot-id="one-bug-please-20260828-01">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Stop one tiny coding-agent fix before it becomes a scope reactor.">
+  <meta name="theme-color" content="#F7F4EE">
+  <link rel="icon" href="data:,">
+  <title>One Bug, Please</title>
+  <style>
+    @font-face {
+      font-family: "Bricolage Grotesque";
+      src: url("../play/fonts/bricolage-grotesque-latin.woff2") format("woff2");
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Public Sans";
+      src: url("../play/fonts/public-sans-latin.woff2") format("woff2");
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Spline Sans Mono";
+      src: url("../play/fonts/spline-sans-mono-latin.woff2") format("woff2");
+      font-display: swap;
+    }
+    :root {
+      color-scheme: light;
+      --paper: #f7f4ee;
+      --surface: #fffdf8;
+      --line: #e6dfd2;
+      --ink: #201b15;
+      --spruce: #2f6b52;
+      --amber: #8f6400;
+      --red: #a33d2a;
+      --shadow: 0 14px 34px rgb(32 27 21 / 10%);
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--paper); overflow-x: hidden; }
+    body {
+      min-width: 0;
+      margin: 0;
+      overflow-x: hidden;
+      color: var(--ink);
+      background: var(--paper);
+      font: 14.5px/1.5 "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    button, input { font: inherit; }
+    button, a, input { -webkit-tap-highlight-color: transparent; }
+    a { min-height: 44px; min-width: 44px; display: inline-flex; align-items: center; }
+    button {
+      min-height: 44px;
+      min-width: 44px;
+      border: 1px solid var(--ink);
+      border-radius: 7px;
+      color: var(--ink);
+      background: var(--surface);
+      cursor: pointer;
+    }
+    button:disabled { cursor: not-allowed; opacity: .48; }
+    button:focus-visible, a:focus-visible, input:focus-visible {
+      outline: 3px solid var(--amber);
+      outline-offset: 3px;
+    }
+    .masthead, footer {
+      width: min(1320px, calc(100% - 40px));
+      margin-inline: auto;
+    }
+    .masthead {
+      min-width: 0;
+      min-height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .wordmark, h1, .result-card h2 { font-family: "Bricolage Grotesque", sans-serif; }
+    .wordmark { color: var(--ink); font-size: 16px; font-weight: 800; letter-spacing: .08em; text-decoration: none; }
+    .header-actions { display: flex; gap: 8px; }
+    .game-shell {
+      width: min(1320px, calc(100% - 40px));
+      min-width: 0;
+      margin: 0 auto 32px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(360px, .92fr);
+      border: 1px solid var(--ink);
+      border-radius: 10px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+    .scene-panel, .decision-panel, .repair-scene, .status-grid, .ticket-block,
+    .how-to-card, .checks-card, .proposal-card, .reveal-card, .result-card, .ship-wrap { min-width: 0; }
+    .game-shell > *, .repair-scene > *, .machine-frame > *, .status-grid > *,
+    .checks-card ol > *, .proposal-paths > *, .proposal-costs > *, .result-grid > *,
+    .decision-buttons > *, .result-actions > * { min-width: 0; }
+    .scene-panel { padding: clamp(20px, 3vw, 40px); background: #efe8dc; }
+    .decision-panel { padding: clamp(20px, 3vw, 40px); border-left: 1px solid var(--ink); }
+    h1 { margin: 4px 0 8px; font-size: clamp(38px, 6vw, 72px); line-height: .92; letter-spacing: -.05em; }
+    h2 { overflow-wrap: anywhere; }
+    .eyebrow, .readout-row, .proposal-number, .metric-label, dt, dd,
+    #seed, #turn, #context, #files, #lines, #challenge-url {
+      font-family: "Spline Sans Mono", monospace;
+      font-variant-numeric: tabular-nums;
+    }
+    .eyebrow { margin: 0; font-size: 11px; font-weight: 700; letter-spacing: .12em; }
+    .readout-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; }
+    .repair-scene { display: grid; grid-template-columns: 70px minmax(0, 1fr); gap: 14px; align-items: stretch; }
+    .fuse-panel { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    #context { font: 800 28px/1 "Bricolage Grotesque", sans-serif; }
+    .warning-lamp { width: 14px; height: 14px; border: 1px solid var(--ink); border-radius: 50%; background: #c9c0b2; box-shadow: inset 0 0 0 3px var(--surface); }
+    .fuse-track { position: relative; width: 24px; flex: 1; min-height: 190px; border: 1px solid var(--ink); background: #d7cfc1; overflow: hidden; }
+    #context-fuse { position: absolute; inset: auto 0 0; height: 100%; background: var(--spruce); transform-origin: bottom; }
+    .machine-frame { position: relative; height: clamp(240px, 48vh, 520px); height: clamp(240px, 48svh, 520px); min-height: 0; margin: 0; display: grid; grid-template-rows: minmax(0, 1fr) auto; border: 1px solid var(--ink); background: var(--paper); overflow: hidden; }
+    .machine-images { position: relative; min-height: 0; overflow: hidden; }
+    .machine-frame img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; }
+    .machine-frame img[hidden] { display: none; }
+    #machine-previous { z-index: 1; }
+    .machine-frame figcaption { padding: 10px 12px; border-top: 1px solid var(--ink); overflow-wrap: anywhere; }
+    .status-grid { display: grid; grid-template-columns: minmax(0, 1.3fr) minmax(140px, .7fr); gap: 12px; margin-top: 14px; }
+    .status-grid section { border: 1px solid var(--ink); padding: 12px; background: rgb(255 253 248 / 74%); }
+    .status-grid section:only-child { grid-column: 1 / -1; }
+    .status-grid h2 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    .status-grid ol { margin: 0; padding-left: 22px; }
+    .status-grid p { margin: 4px 0; }
+    .how-to-card, .checks-card { margin-bottom: 20px; padding: 14px 16px; border: 1px solid var(--ink); background: var(--paper); }
+    .how-to-card { box-shadow: inset 4px 0 0 var(--amber); }
+    .how-to-card h2, .checks-card h2 { margin: 0 0 8px; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; }
+    .how-to-card ol, .checks-card ol { margin: 0; padding-left: 22px; }
+    .how-to-card li + li, .checks-card li + li { margin-top: 5px; }
+    .checks-card li strong { font-family: "Spline Sans Mono", monospace; font-size: 11px; }
+    [data-phase]:not([data-phase="briefing"]) .how-to-card { display: none; }
+    .ticket-block, .proposal-card, .reveal-card, .result-card { border-bottom: 1px solid var(--line); padding-bottom: 20px; margin-bottom: 20px; }
+    .ticket-block h2, .proposal-card h2, .reveal-card h2 { margin: 6px 0 8px; font-size: clamp(24px, 3vw, 38px); line-height: 1.05; }
+    .proposal-paths { padding: 10px 12px 10px 30px; background: var(--paper); border: 1px solid var(--line); font-family: "Spline Sans Mono", monospace; font-size: 12px; overflow-wrap: anywhere; }
+    .proposal-costs, .result-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+    .proposal-costs div, .result-grid div { padding: 10px; border: 1px solid var(--line); }
+    dt { font-size: 11px; text-transform: uppercase; }
+    dd { margin: 4px 0 0; font-size: 15px; font-weight: 700; }
+    .decision-buttons { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+    .result-actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 14px; }
+    #reject { border-color: var(--red); color: var(--red); }
+    #approve, #result-share { border-color: var(--spruce); color: #fff; background: var(--spruce); }
+    .stamp { width: max-content; margin: 0; padding: 5px 9px; border: 2px solid currentColor; color: var(--spruce); font: 800 15px/1 "Spline Sans Mono", monospace; transform: rotate(-1deg); }
+    .stamp.scope { color: var(--red); transform: rotate(1deg); }
+    #next, .result-actions > * { width: 100%; }
+    .start-control { width: 100%; border-color: var(--spruce); color: #fff; background: var(--spruce); font-weight: 800; }
+    .ship-wrap { margin-top: 18px; padding: 14px; border: 1px solid var(--ink); background: #f0e4c8; }
+    .ship-control { width: 100%; min-height: 64px; border: 2px solid var(--ink); color: #fff; background: var(--red); font: 800 18px/1 "Spline Sans Mono", monospace; box-shadow: inset 0 -7px 0 rgb(32 27 21 / 20%); }
+    #ship-condition, #boot-status { margin: 8px 0 0; font-size: 12px; }
+    .challenge-fallback { margin-top: 12px; }
+    .challenge-fallback label { display: block; margin-bottom: 6px; }
+    #challenge-url { width: 100%; min-height: 44px; padding: 8px; border: 1px solid var(--ink); border-radius: 7px; }
+    footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; padding: 8px 0 28px; font-size: 12px; }
+    footer p { margin: 0; }
+    .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+    [data-motion="approve"] .proposal-card { animation: stamp-card 450ms ease; }
+    [data-motion="reject"] .proposal-card { animation: chute-card 300ms ease; }
+    [data-motion="ship"] .ship-control { animation: pull-lever 400ms ease; }
+    [data-motion="approve"] #context-fuse { transition: height 450ms ease; }
+    [data-motion="approve"] #warning-lamp { animation: warning-lamp 450ms steps(2, end); }
+    [data-swap="active"] #machine-current { animation: machine-in 450ms ease; }
+    [data-swap="active"] #machine-previous { animation: machine-out 450ms ease; }
+    @keyframes stamp-card { 50% { transform: scale(.985); } }
+    @keyframes chute-card { to { transform: translateY(8px); opacity: .72; } }
+    @keyframes pull-lever { 50% { transform: translateY(7px); box-shadow: inset 0 0 0 rgb(32 27 21 / 20%); } }
+    @keyframes machine-in { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes machine-out { from { opacity: 1; } to { opacity: 0; } }
+    @keyframes warning-lamp { 50% { background: var(--amber); box-shadow: 0 0 0 5px rgb(143 100 0 / 18%), inset 0 0 0 3px var(--surface); } }
+    @media (min-width: 761px) and (max-height: 900px) {
+      .masthead { min-height: 56px; }
+      .scene-panel, .decision-panel { padding: 20px; }
+      h1 { font-size: 48px; }
+      .readout-row p { margin-block: 8px; }
+      .ticket-block, .proposal-card, .reveal-card, .result-card { padding-bottom: 12px; margin-bottom: 12px; }
+      .proposal-card { padding-bottom: 5px; }
+      .ticket-block h2, .proposal-card h2, .reveal-card h2 { margin: 4px 0 6px; font-size: 28px; }
+      .ticket-block > p:last-child, .proposal-card > p { margin-block: 8px; }
+      .how-to-card, .checks-card { margin-bottom: 12px; padding: 10px 12px; }
+      .how-to-card ol { font-size: 13px; line-height: 1.35; }
+      .how-to-card li + li { margin-top: 2px; }
+      .checks-card { padding: 8px 10px; }
+      .checks-card h2 { margin-bottom: 4px; }
+      .checks-card ol { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; padding-left: 18px; font-size: 11.5px; line-height: 1.3; }
+      .checks-card li + li { margin-top: 0; }
+      .proposal-paths { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2px 20px; margin-block: 8px; padding-block: 7px; }
+      .proposal-costs div { padding: 7px; }
+      .proposal-costs dd { margin-top: 2px; }
+      .decision-buttons { margin-top: 10px; }
+      .ship-wrap { margin-top: 12px; }
+    }
+    @media (max-width: 760px) {
+      .masthead, footer, .game-shell { width: min(100% - 24px, 680px); }
+      .game-shell { grid-template-columns: minmax(0, 1fr); }
+      .decision-panel { border-left: 0; border-top: 1px solid var(--ink); }
+      .machine-frame { height: min(280px, 48vh); height: min(280px, 48svh); }
+      .status-grid { grid-template-columns: minmax(0, 1fr) minmax(128px, .6fr); }
+    }
+    @media (max-width: 420px) {
+      .masthead { align-items: flex-start; padding-block: 12px; }
+      .header-actions { flex-direction: column; }
+      .scene-panel, .decision-panel { padding: 16px; }
+      .repair-scene { grid-template-columns: 54px minmax(0, 1fr); }
+      .fuse-track { min-height: 134px; }
+      .status-grid, .proposal-costs, .result-grid, .result-actions { grid-template-columns: minmax(0, 1fr); }
+      .decision-buttons { gap: 8px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="masthead">
+    <a class="wordmark" href="/">NIKITA VORONTSOV</a>
+    <div class="header-actions">
+      <button id="sound" type="button" aria-pressed="false" disabled>Sound off</button>
+      <button id="shortcuts" type="button" aria-pressed="true" disabled>Shortcuts on</button>
+      <button id="share" type="button" disabled>Share challenge</button>
+    </div>
+  </header>
+
+  <main id="game-shell" class="game-shell" data-phase="briefing" data-motion="idle">
+    <section class="scene-panel" aria-labelledby="game-title">
+      <div class="title-block">
+        <p class="eyebrow">TEN PROPOSALS. ONE BUG.</p>
+        <h1 id="game-title">One Bug, Please</h1>
+        <p>Keep one tiny fix from becoming a nuclear reactor.</p>
+      </div>
+
+      <div class="readout-row" aria-label="Run status">
+        <p>Seed <strong id="seed">---- ----</strong></p>
+        <p>Turn <strong id="turn">1 / 10</strong></p>
+      </div>
+
+      <div class="repair-scene">
+        <div class="fuse-panel">
+          <p class="metric-label">Context</p>
+          <strong id="context">100</strong>
+          <span id="warning-lamp" class="warning-lamp" aria-hidden="true"></span>
+          <div class="fuse-track" aria-hidden="true"><span id="context-fuse"></span></div>
+        </div>
+        <figure id="machine-frame" class="machine-frame" data-stage="0">
+          <div class="machine-images">
+            <img id="machine-previous" alt="" width="1200" height="900" decoding="async" hidden>
+            <img id="machine-current" src="./assets/machine-stage-0.webp" alt="" width="1200" height="900" decoding="async">
+          </div>
+          <figcaption id="machine-stage">Stage 0. A tiny patch bot waits at an empty repair bench.</figcaption>
+        </figure>
+      </div>
+
+      <div class="status-grid">
+        <section aria-labelledby="blast-label">
+          <h2 id="blast-label">Blast radius</h2>
+          <p><strong id="files">0</strong> unique files</p>
+          <p><strong id="lines">0</strong> changed lines</p>
+        </section>
+      </div>
+    </section>
+
+    <section class="decision-panel" aria-labelledby="ticket-label">
+      <div class="ticket-block">
+        <p id="ticket-label" class="eyebrow">THE TICKET</p>
+        <h2 id="ticket-title">Profile dropdown clips behind the settings panel</h2>
+        <p id="ticket-brief">At the failing width, the profile menu opens under the settings panel edge.</p>
+      </div>
+
+      <section class="how-to-card" aria-labelledby="how-to-label">
+        <h2 id="how-to-label">How to play</h2>
+        <ol>
+          <li>Approve applies the proposal's files and lines. It spends the card's context cost.</li>
+          <li>Reject applies no work. It spends 2 context on review.</li>
+          <li>Context is the finite fuse. Pass all 3 acceptance checks. Ship before it reaches 0.</li>
+        </ol>
+      </section>
+
+      <section class="checks-card" aria-labelledby="checks-label">
+        <h2 id="checks-label">Acceptance checks</h2>
+        <ol id="checks">
+          <li>Not checked: reproduce</li>
+          <li>Not checked: repair</li>
+          <li>Not checked: regression</li>
+        </ol>
+      </section>
+
+      <section id="proposal" class="proposal-card" aria-labelledby="proposal-heading" hidden>
+        <p class="proposal-number">Proposal <span id="proposal-number">1</span></p>
+        <h2 id="proposal-heading" tabindex="-1">Waiting for the agent</h2>
+        <p id="proposal-pitch"></p>
+        <ul id="proposal-paths" class="proposal-paths"></ul>
+        <dl class="proposal-costs">
+          <div><dt>Estimate</dt><dd><span id="proposal-lines">0</span> lines</dd></div>
+          <div><dt>Context</dt><dd><span id="proposal-cost">0</span> points</dd></div>
+        </dl>
+        <div class="decision-buttons">
+          <button id="reject" type="button" disabled>Reject <span aria-hidden="true">R</span></button>
+          <button id="approve" type="button" disabled>Approve <span aria-hidden="true">A</span></button>
+        </div>
+      </section>
+
+      <section id="reveal" class="reveal-card" hidden aria-labelledby="reveal-heading">
+        <p id="reveal-verdict" class="stamp"></p>
+        <h2 id="reveal-heading" tabindex="-1">Decision recorded</h2>
+        <p id="reveal-copy"></p>
+        <button id="next" type="button" disabled>Next proposal <span aria-hidden="true">Enter</span></button>
+      </section>
+
+      <section id="result" class="result-card" hidden aria-labelledby="result-heading">
+        <p class="eyebrow">FINAL BLAST RADIUS</p>
+        <h2 id="result-heading" tabindex="-1">SURGICAL PATCH</h2>
+        <p id="result-ticket"></p>
+        <dl class="result-grid">
+          <div><dt>Seed</dt><dd id="result-seed"></dd></div>
+          <div><dt>Files</dt><dd id="result-files"></dd></div>
+          <div><dt>Lines</dt><dd id="result-lines"></dd></div>
+          <div><dt>Context</dt><dd id="result-context"></dd></div>
+          <div><dt>Scope approved</dt><dd id="result-scope"></dd></div>
+          <div><dt>Machine</dt><dd id="result-stage"></dd></div>
+        </dl>
+        <div class="result-actions">
+          <button id="result-share" type="button" disabled>Challenge a friend</button>
+          <button id="new-ticket" type="button" disabled>Play a new ticket</button>
+        </div>
+      </section>
+
+      <button id="start" class="start-control" type="button" disabled>Start the repair</button>
+      <div class="ship-wrap">
+        <button id="ship" class="ship-control" type="button" disabled aria-describedby="ship-condition">SHIP THE PATCH <span aria-hidden="true">S</span></button>
+        <p id="ship-condition">Finish 3 acceptance checks to ship.</p>
+      </div>
+
+      <div id="challenge-fallback" class="challenge-fallback" hidden>
+        <label for="challenge-url">Select and copy this challenge URL</label>
+        <input id="challenge-url" type="text" readonly>
+      </div>
+      <p id="boot-status" role="status">Loading the repair bench. If this message stays here, the game did not start.</p>
+    </section>
+  </main>
+
+  <p id="live-region" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></p>
+
+  <footer>
+    <p>Maintained by Nikita Vorontsov. Built with AI.</p>
+    <p>No account, upload, analytics, or saved score. <a href="/ledger/">Read the public ledger.</a></p>
+  </footer>
+
+  <script type="module" src="./main.mjs?v=one-bug-please-20260828-01"></script>
+</body>
+</html>

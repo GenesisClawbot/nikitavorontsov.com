@@ -1,0 +1,796 @@
+<!doctype html>
+<html lang="en" data-build="one-small-fix-20260825-01">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#2a3439">
+  <title>One Small Fix: Claude Code transcript rescue</title>
+  <meta name="description" content="Turn a local Claude Code transcript into an editable scope receipt or Conversation Lifeboat. Nothing is uploaded.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http%3A%2F%2Fwww.w3.org%2Fsvg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%232a3439'/%3E%3Cpath d='M13 11h38v42H13z' fill='%23f7f4ee'/%3E%3Cpath d='M20 23h24v6H20zm0 12h15v6H20z' fill='%23e96b2c'/%3E%3C%2Fsvg%3E">
+  <style>
+    @font-face {
+      font-family: "Bricolage";
+      src: url("/play/fonts/bricolage-grotesque-latin.woff2") format("woff2");
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Public Sans";
+      src: url("/play/fonts/public-sans-latin.woff2") format("woff2");
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Spline Mono";
+      src: url("/play/fonts/spline-sans-mono-latin.woff2") format("woff2");
+      font-display: swap;
+    }
+
+    :root {
+      --paper: #f7f4ee;
+      --sheet: #fffdf7;
+      --ink: #201b15;
+      --graphite: #2a3439;
+      --spruce: #2f6b52;
+      --caution: #c64b13;
+      --highlighter: #f2c94c;
+      --line: #c9c0b1;
+      --muted: #655e55;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-width: 320px;
+      background: var(--graphite);
+    }
+
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      font-family: "Public Sans", system-ui, sans-serif;
+      background:
+        linear-gradient(rgba(32, 27, 21, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(32, 27, 21, 0.045) 1px, transparent 1px),
+        var(--paper);
+      background-size: 24px 24px;
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit;
+    }
+
+    button,
+    input[type="file"] {
+      cursor: pointer;
+    }
+
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
+    summary:focus-visible,
+    a:focus-visible,
+    [tabindex="-1"]:focus-visible {
+      outline: 3px solid var(--highlighter);
+      outline-offset: 4px;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    .utility-bar {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 10px clamp(14px, 3vw, 34px);
+      background: var(--graphite);
+      color: var(--paper);
+      font-family: "Spline Mono", monospace;
+      font-size: 0.67rem;
+      letter-spacing: 0.08em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .utility-bar p {
+      margin: 0;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.12fr) minmax(350px, 0.88fr);
+      min-height: calc(100vh - 36px);
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .intro,
+    .loader {
+      min-width: 0;
+      padding: clamp(28px, 6vw, 88px);
+    }
+
+    .intro {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 64px;
+      border-right: 1px solid var(--ink);
+    }
+
+    .eyebrow,
+    .field-label,
+    .section-label,
+    .metric-label,
+    .receipt-kicker {
+      font-family: "Spline Mono", monospace;
+      font-size: 0.69rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      line-height: 1.4;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 0 0 24px;
+    }
+
+    .eyebrow::before {
+      width: 40px;
+      height: 10px;
+      background: var(--caution);
+      content: "";
+    }
+
+    h1 {
+      max-width: 7ch;
+      margin: 0;
+      font-family: "Bricolage", sans-serif;
+      font-size: clamp(4.6rem, 11vw, 10rem);
+      font-weight: 700;
+      letter-spacing: -0.085em;
+      line-height: 0.72;
+      overflow-wrap: anywhere;
+    }
+
+    .lede {
+      max-width: 47ch;
+      margin: 36px 0 0;
+      font-size: clamp(1.05rem, 1.7vw, 1.3rem);
+      line-height: 1.5;
+    }
+
+    .job-slip {
+      position: relative;
+      width: min(440px, 100%);
+      margin: 0 0 0 auto;
+      padding: 22px 26px 24px 48px;
+      border: 1px solid var(--ink);
+      background: var(--highlighter);
+      box-shadow: 8px 8px 0 var(--ink);
+      transform: rotate(-1.5deg);
+    }
+
+    .job-slip::before {
+      position: absolute;
+      top: 15px;
+      bottom: 15px;
+      left: 16px;
+      width: 14px;
+      background: radial-gradient(circle, var(--paper) 0 3px, var(--ink) 3.5px 4px, transparent 4.5px) center top / 12px 20px repeat-y;
+      content: "";
+    }
+
+    .job-slip p {
+      margin: 0;
+    }
+
+    .job-slip .slip-title {
+      margin-bottom: 10px;
+      font-family: "Spline Mono", monospace;
+      font-size: 0.67rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .job-slip .slip-copy {
+      font-family: "Bricolage", sans-serif;
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.04em;
+      line-height: 1.05;
+    }
+
+    .loader {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: var(--sheet);
+    }
+
+    .loader h2,
+    .receipt-heading {
+      margin: 0;
+      font-family: "Bricolage", sans-serif;
+      font-size: clamp(2.3rem, 5vw, 4.4rem);
+      letter-spacing: -0.06em;
+      line-height: 0.9;
+      overflow-wrap: anywhere;
+    }
+
+    .loader-copy {
+      max-width: 39ch;
+      margin: 22px 0 30px;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    .dropzone {
+      position: relative;
+      display: grid;
+      min-height: 236px;
+      place-items: center;
+      border: 2px dashed var(--graphite);
+      background:
+        linear-gradient(135deg, transparent 0 45%, rgba(242, 201, 76, 0.45) 45% 55%, transparent 55% 100%) 0 0 / 22px 22px,
+        var(--paper);
+      text-align: center;
+      transition: background-color 160ms ease, transform 160ms ease;
+    }
+
+    .dropzone.is-dragging {
+      background-color: var(--highlighter);
+      transform: scale(1.015);
+    }
+
+    .dropzone-inner {
+      max-width: 290px;
+      padding: 24px;
+      background: var(--paper);
+    }
+
+    .dropzone strong {
+      display: block;
+      margin-bottom: 8px;
+      font-family: "Bricolage", sans-serif;
+      font-size: 1.5rem;
+      letter-spacing: -0.04em;
+    }
+
+    .dropzone span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.84rem;
+      line-height: 1.45;
+    }
+
+    #transcript {
+      width: 100%;
+      margin-top: 18px;
+      padding: 10px;
+      border: 1px solid var(--ink);
+      background: var(--sheet);
+      font-family: "Spline Mono", monospace;
+      font-size: 0.72rem;
+    }
+
+    .privacy-note {
+      margin: 18px 0 0;
+      padding-left: 14px;
+      border-left: 5px solid var(--spruce);
+      font-size: 0.8rem;
+      font-weight: 700;
+      line-height: 1.5;
+    }
+
+    details {
+      margin-top: 22px;
+      border-top: 1px solid var(--line);
+      padding-top: 16px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      line-height: 1.55;
+    }
+
+    summary {
+      width: fit-content;
+      color: var(--ink);
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    code {
+      padding: 2px 4px;
+      background: #ece6da;
+      color: var(--ink);
+      font-family: "Spline Mono", monospace;
+      font-size: 0.9em;
+      overflow-wrap: anywhere;
+    }
+
+    .receipt-section {
+      position: relative;
+      padding: clamp(44px, 8vw, 110px) clamp(14px, 5vw, 72px);
+      overflow: hidden;
+      background: var(--graphite);
+    }
+
+    .receipt-section::before {
+      position: absolute;
+      inset: 0;
+      background: repeating-linear-gradient(125deg, transparent 0 34px, rgba(255, 255, 255, 0.025) 35px 36px);
+      content: "";
+      pointer-events: none;
+    }
+
+    .continuous-sheet {
+      position: relative;
+      width: min(1080px, 100%);
+      margin: 0 auto;
+      padding: clamp(30px, 5vw, 64px) clamp(34px, 7vw, 92px);
+      background:
+        radial-gradient(circle, var(--graphite) 0 4px, transparent 4.5px) 12px 8px / 20px 24px repeat-y,
+        radial-gradient(circle, var(--graphite) 0 4px, transparent 4.5px) calc(100% - 12px) 8px / 20px 24px repeat-y,
+        repeating-linear-gradient(0deg, rgba(42, 52, 57, 0.035) 0 1px, transparent 1px 5px),
+        var(--sheet);
+      box-shadow: 16px 20px 0 rgba(0, 0, 0, 0.22);
+      animation: feed-sheet 620ms cubic-bezier(0.18, 0.8, 0.22, 1) both;
+    }
+
+    @keyframes feed-sheet {
+      from {
+        opacity: 0;
+        transform: translateY(-54px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .receipt-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 28px;
+      padding-bottom: 26px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .receipt-kicker {
+      margin: 0 0 12px;
+      color: var(--caution);
+    }
+
+    .scope-stamp {
+      flex: 0 0 auto;
+      padding: 10px 12px 8px;
+      border: 4px double var(--caution);
+      color: var(--caution);
+      font-family: "Spline Mono", monospace;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      line-height: 1.15;
+      text-align: center;
+      text-transform: uppercase;
+      transform: rotate(3deg);
+    }
+
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .metric {
+      min-width: 0;
+      padding: 28px 20px 26px 0;
+      border-right: 1px solid var(--line);
+    }
+
+    .metric + .metric {
+      padding-left: 20px;
+    }
+
+    .metric:last-child {
+      border-right: 0;
+    }
+
+    .metric-value {
+      display: block;
+      margin-top: 8px;
+      font-family: "Bricolage", sans-serif;
+      font-size: clamp(2rem, 5vw, 4rem);
+      font-weight: 700;
+      letter-spacing: -0.07em;
+      line-height: 0.9;
+      overflow-wrap: anywhere;
+    }
+
+    .evidence-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 0;
+      border-bottom: 1px solid var(--ink);
+    }
+
+    .evidence-block {
+      min-width: 0;
+      padding: 30px 30px 30px 0;
+    }
+
+    .evidence-block + .evidence-block {
+      padding-right: 0;
+      padding-left: 30px;
+      border-left: 1px solid var(--ink);
+    }
+
+    .evidence-block h3 {
+      margin: 0 0 16px;
+      font-family: "Spline Mono", monospace;
+      font-size: 0.72rem;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }
+
+    .evidence-block ol {
+      margin: 0;
+      padding-left: 1.35rem;
+      font-family: "Spline Mono", monospace;
+      font-size: 0.76rem;
+      line-height: 1.55;
+      overflow-wrap: anywhere;
+    }
+
+    .evidence-block li + li {
+      margin-top: 8px;
+    }
+
+    .empty-row {
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .review {
+      padding-top: 30px;
+    }
+
+    .output-picker {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+      width: min(430px, 100%);
+      margin-bottom: 24px;
+    }
+
+    #output-kind {
+      width: 100%;
+      min-height: 48px;
+      border: 1px solid var(--ink);
+      border-radius: 0;
+      padding: 10px 42px 10px 12px;
+      background: var(--sheet);
+      color: var(--ink);
+      font-family: "Spline Mono", monospace;
+      font-size: 0.78rem;
+      font-weight: 700;
+    }
+
+    .review label[for="receipt-text"] {
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    #receipt-text {
+      width: 100%;
+      min-height: 400px;
+      resize: vertical;
+      border: 1px solid var(--ink);
+      border-radius: 0;
+      padding: 20px;
+      background: #f0ece2;
+      color: var(--ink);
+      font-family: "Spline Mono", monospace;
+      font-size: 0.76rem;
+      line-height: 1.55;
+    }
+
+    .scope-note {
+      margin: 10px 0 22px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      max-width: 58ch;
+      font-size: 0.85rem;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .check-row input {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 auto;
+      margin: 0;
+      accent-color: var(--spruce);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .action {
+      min-height: 48px;
+      border: 1px solid var(--ink);
+      border-radius: 0;
+      padding: 12px 18px;
+      background: var(--ink);
+      color: var(--paper);
+      font-family: "Spline Mono", monospace;
+      font-size: 0.73rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .action.secondary {
+      background: transparent;
+      color: var(--ink);
+    }
+
+    .action:not(:disabled):hover {
+      background: var(--caution);
+      color: var(--ink);
+    }
+
+    .action:disabled {
+      border-color: var(--line);
+      background: #ddd6ca;
+      color: #81786d;
+      cursor: not-allowed;
+    }
+
+    .site-foot {
+      display: flex;
+      justify-content: space-between;
+      gap: 26px;
+      padding: 20px clamp(14px, 3vw, 34px);
+      background: var(--paper);
+      font-family: "Spline Mono", monospace;
+      font-size: 0.68rem;
+      line-height: 1.5;
+    }
+
+    .site-foot p {
+      max-width: 70ch;
+      margin: 0;
+    }
+
+    @media (max-width: 860px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .intro {
+        border-right: 0;
+        border-bottom: 1px solid var(--ink);
+      }
+
+      .job-slip {
+        margin-left: 0;
+      }
+
+      .metrics {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .metric:nth-child(2) {
+        border-right: 0;
+      }
+
+      .metric:nth-child(-n + 2) {
+        border-bottom: 1px solid var(--line);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .utility-bar,
+      .site-foot,
+      .receipt-head,
+      .check-row {
+        flex-direction: column;
+      }
+
+      .intro,
+      .loader {
+        padding: 34px 20px;
+      }
+
+      h1 {
+        font-size: clamp(4.4rem, 24vw, 7rem);
+      }
+
+      .job-slip {
+        padding-right: 18px;
+      }
+
+      .continuous-sheet {
+        padding: 34px 30px;
+      }
+
+      .scope-stamp {
+        align-self: flex-start;
+      }
+
+      .evidence-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .evidence-block,
+      .evidence-block + .evidence-block {
+        padding: 24px 0;
+        border-left: 0;
+      }
+
+      .evidence-block + .evidence-block {
+        border-top: 1px solid var(--ink);
+      }
+
+      .site-foot {
+        align-items: flex-start;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="utility-bar" aria-hidden="true">
+    <p>Work order OSF-01</p>
+    <p>Observed facts only / no scope score</p>
+  </div>
+
+  <main>
+    <section class="hero" aria-labelledby="page-title">
+      <div class="intro">
+        <div>
+          <p class="eyebrow">Transcript job desk</p>
+          <h1 id="page-title">One Small Fix</h1>
+          <p class="lede">You asked for one change. The agent went somewhere. Feed in the transcript and get a plain account of the trip.</p>
+        </div>
+
+        <aside class="job-slip" aria-label="What the receipt does not claim">
+          <p class="slip-title">Important limitation</p>
+          <p class="slip-copy">It counts what happened. It does not pretend to know what should have happened.</p>
+        </aside>
+      </div>
+
+      <div class="loader">
+        <p class="eyebrow">Load one job</p>
+        <h2>Choose a Claude Code transcript.</h2>
+        <p class="loader-copy">The newest transcript is usually the one you want. Make a scope receipt or rescue every visible human and assistant text turn as Markdown. Both outputs stay editable.</p>
+
+        <label class="dropzone" id="dropzone" for="transcript">
+          <span class="dropzone-inner">
+            <strong>Drop a .jsonl file here</strong>
+            <span>or choose one from your computer</span>
+            <input id="transcript" type="file" accept=".jsonl,application/json,text/plain">
+          </span>
+        </label>
+
+        <p class="privacy-note">The transcript stays in this browser. Nothing is uploaded or saved.</p>
+        <details>
+          <summary>Where are Claude Code transcripts?</summary>
+          <p>On macOS and Linux, look under <code>~/.claude/projects/</code>. In the macOS file picker, press Command + Shift + G to enter that path. Pick a project folder, then a <code>.jsonl</code> file.</p>
+        </details>
+      </div>
+    </section>
+
+    <section class="receipt-section" id="receipt" hidden aria-labelledby="receipt-heading">
+      <article class="continuous-sheet">
+        <header class="receipt-head">
+          <div>
+            <p class="receipt-kicker">Transcript read / work order returned</p>
+            <h2 class="receipt-heading" id="receipt-heading" tabindex="-1">Scope receipt</h2>
+          </div>
+          <div class="scope-stamp" aria-label="No verdict">Facts<br>not vibes</div>
+        </header>
+
+        <div class="metrics" aria-label="Observed activity">
+          <div class="metric">
+            <span class="metric-label">Elapsed</span>
+            <strong class="metric-value" id="metric-duration">0s</strong>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Tool calls</span>
+            <strong class="metric-value" id="metric-tools">0</strong>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Direct write calls</span>
+            <strong class="metric-value" id="metric-writes">0</strong>
+          </div>
+          <div class="metric">
+            <span class="metric-label">Test commands</span>
+            <strong class="metric-value" id="metric-tests">0</strong>
+          </div>
+        </div>
+
+        <div class="evidence-grid">
+          <section class="evidence-block" aria-labelledby="writes-heading">
+            <h3 id="writes-heading">Direct file write calls observed</h3>
+            <ol id="write-list"></ol>
+          </section>
+          <section class="evidence-block" aria-labelledby="tests-heading">
+            <h3 id="tests-heading">Test commands observed</h3>
+            <ol id="test-list"></ol>
+          </section>
+        </div>
+
+        <div class="review">
+          <div class="output-picker">
+            <label class="field-label" for="output-kind">Choose output</label>
+            <select id="output-kind">
+              <option value="receipt">Scope receipt (.txt)</option>
+              <option value="conversation">Conversation lifeboat (.md)</option>
+            </select>
+          </div>
+
+          <label class="field-label" id="output-label" for="receipt-text">Edit scope receipt before sharing</label>
+          <textarea id="receipt-text" spellcheck="false" aria-describedby="scope-note"></textarea>
+          <p class="scope-note" id="scope-note">The request and final reply are 600-character excerpts. Home-folder names, email addresses, and common token shapes are masked. Direct write calls include Edit, Write, and NotebookEdit calls. Shell commands can change other files. Review everything yourself.</p>
+
+          <label class="check-row" for="privacy-check">
+            <input id="privacy-check" type="checkbox">
+            <span id="privacy-check-text">I checked the scope receipt for private paths, secrets, names, and details I do not want to share.</span>
+          </label>
+
+          <div class="actions">
+            <button class="action" id="copy-button" type="button" disabled>Copy checked receipt</button>
+            <button class="action secondary" id="save-button" type="button" disabled>Save checked .txt</button>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-foot">
+    <p id="status" aria-live="polite" aria-atomic="true">Waiting for a transcript.</p>
+    <p>Maintained by <a href="/">Nikita Vorontsov</a>. Built with AI.</p>
+  </footer>
+
+  <script type="module" src="./main.mjs?v=one-small-fix-20260825-01"></script>
+</body>
+</html>

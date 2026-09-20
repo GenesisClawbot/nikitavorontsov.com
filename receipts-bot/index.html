@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en" data-build="receipts-bot-20260825-01">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Put generated launch copy beside its source. Security and privacy wording needs a matching source excerpt before copy unlocks.">
+  <title>Receipts, Bot: source-check generated launch copy</title>
+  <link rel="icon" href="data:,">
+  <style>
+    @font-face {
+      font-family: "Bricolage";
+      src: url("/play/fonts/bricolage-grotesque-latin.woff2") format("woff2");
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Public Sans";
+      src: url("/play/fonts/public-sans-latin.woff2") format("woff2");
+      font-display: swap;
+    }
+
+    @font-face {
+      font-family: "Spline Mono";
+      src: url("/play/fonts/spline-sans-mono-latin.woff2") format("woff2");
+      font-display: swap;
+    }
+
+    :root {
+      --desk: #173b32;
+      --desk-dark: #0d2922;
+      --paper: #f4f1e7;
+      --paper-bright: #fffdf5;
+      --ink: #17221e;
+      --muted: #56635d;
+      --rule: #b8b6aa;
+      --red: #bd2d27;
+      --red-dark: #7f1d1a;
+      --blue-pencil: #215e72;
+      --tape: #dfd7ae;
+      --focus: #f6c94c;
+      --shadow: rgba(4, 17, 13, 0.34);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      min-width: 320px;
+      background: var(--desk-dark);
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--desk);
+      font-family: "Public Sans", system-ui, sans-serif;
+      line-height: 1.55;
+    }
+
+    button,
+    textarea {
+      font: inherit;
+    }
+
+    button,
+    a,
+    textarea {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 4px;
+    }
+
+    a {
+      color: inherit;
+    }
+
+    .shell {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 56px;
+    }
+
+    .topline {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: center;
+      color: #e7f0eb;
+      font-family: "Spline Mono", monospace;
+      font-size: 0.76rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .topline a {
+      text-underline-offset: 4px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(220px, 0.55fr);
+      gap: clamp(28px, 7vw, 96px);
+      align-items: end;
+      min-height: 420px;
+      padding: 72px 0 52px;
+      color: #f8f5eb;
+    }
+
+    .eyebrow,
+    .section-label,
+    .margin-note,
+    .stamp-small {
+      margin: 0;
+      font-family: "Spline Mono", monospace;
+      font-size: 0.74rem;
+      font-weight: 700;
+      letter-spacing: 0.11em;
+      text-transform: uppercase;
+    }
+
+    .eyebrow {
+      color: #bdd4c9;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      overflow-wrap: anywhere;
+    }
+
+    h1 {
+      max-width: 760px;
+      margin: 12px 0 18px;
+      font-family: "Bricolage", sans-serif;
+      font-size: clamp(4rem, 10vw, 8.2rem);
+      font-weight: 700;
+      letter-spacing: -0.075em;
+      line-height: 0.78;
+    }
+
+    h1 span {
+      display: block;
+      margin-left: 0.5em;
+      color: #ff7b6f;
+      font-family: "Spline Mono", monospace;
+      font-size: 0.58em;
+      letter-spacing: -0.06em;
+      transform: rotate(-3deg);
+      transform-origin: left center;
+    }
+
+    .deck {
+      max-width: 610px;
+      margin: 0;
+      color: #dce8e2;
+      font-size: clamp(1.05rem, 2vw, 1.35rem);
+    }
+
+    .proof-stamp {
+      position: relative;
+      justify-self: end;
+      width: min(100%, 260px);
+      padding: 28px 20px 24px;
+      border: 5px double #ff7b6f;
+      color: #ffaaa1;
+      text-align: center;
+      transform: rotate(6deg);
+    }
+
+    .proof-stamp::after {
+      content: "";
+      position: absolute;
+      inset: 7px;
+      border: 1px solid currentColor;
+      pointer-events: none;
+    }
+
+    .proof-stamp strong {
+      display: block;
+      font-family: "Bricolage", sans-serif;
+      font-size: clamp(1.65rem, 4vw, 2.5rem);
+      line-height: 0.95;
+      text-transform: uppercase;
+    }
+
+    .stamp-small {
+      display: block;
+      margin-top: 12px;
+    }
+
+    main {
+      display: grid;
+      gap: 28px;
+    }
+
+    .paper {
+      position: relative;
+      background: var(--paper);
+      box-shadow: 0 24px 70px var(--shadow);
+    }
+
+    .input-paper {
+      padding: clamp(24px, 5vw, 56px);
+      border-top: 12px solid var(--paper-bright);
+    }
+
+    .input-paper::before,
+    .input-paper::after {
+      content: "";
+      position: absolute;
+      top: -22px;
+      width: 94px;
+      height: 36px;
+      background: var(--tape);
+      opacity: 0.78;
+    }
+
+    .input-paper::before {
+      left: 8%;
+      transform: rotate(-3deg);
+    }
+
+    .input-paper::after {
+      right: 8%;
+      transform: rotate(3deg);
+    }
+
+    .paper-head {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: start;
+      margin-bottom: 34px;
+      padding-bottom: 22px;
+      border-bottom: 2px solid var(--ink);
+    }
+
+    .paper-head h2,
+    .proof-head h2,
+    .boundary h2 {
+      margin: 4px 0 0;
+      font-family: "Bricolage", sans-serif;
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      letter-spacing: -0.045em;
+      line-height: 1;
+    }
+
+    .desk-code {
+      margin: 4px 0 0;
+      color: var(--muted);
+      font-family: "Spline Mono", monospace;
+      font-size: 0.78rem;
+      text-align: right;
+    }
+
+    .copy-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .field {
+      min-width: 0;
+    }
+
+    .field label,
+    .claim-slip label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 800;
+    }
+
+    .field-hint {
+      min-height: 3.2em;
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    textarea {
+      width: 100%;
+      resize: vertical;
+      border: 2px solid var(--ink);
+      border-radius: 0;
+      color: var(--ink);
+      background: var(--paper-bright);
+      box-shadow: 5px 5px 0 #d0cec2;
+    }
+
+    .field textarea {
+      min-height: 240px;
+      padding: 16px;
+    }
+
+    textarea:focus-visible {
+      outline-color: var(--blue-pencil);
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      margin-top: 26px;
+    }
+
+    button {
+      min-height: 48px;
+      padding: 12px 18px;
+      border: 2px solid var(--ink);
+      border-radius: 0;
+      color: var(--paper-bright);
+      background: var(--ink);
+      box-shadow: 4px 4px 0 var(--red);
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    button:hover:not(:disabled) {
+      transform: translate(-1px, -1px);
+      box-shadow: 6px 6px 0 var(--red);
+    }
+
+    button:active:not(:disabled) {
+      transform: translate(3px, 3px);
+      box-shadow: 1px 1px 0 var(--red);
+    }
+
+    button.secondary {
+      color: var(--ink);
+      background: transparent;
+      box-shadow: none;
+    }
+
+    button:disabled {
+      color: #6f756f;
+      background: #d2d2c9;
+      box-shadow: none;
+      cursor: not-allowed;
+    }
+
+    #status {
+      min-height: 1.6em;
+      margin: 18px 0 0;
+      color: var(--blue-pencil);
+      font-weight: 800;
+    }
+
+    .privacy-note {
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    #proof {
+      scroll-margin-top: 24px;
+      padding: clamp(24px, 5vw, 56px);
+      background: var(--paper-bright);
+      transform: rotate(-0.35deg);
+    }
+
+    #proof[hidden] {
+      display: none;
+    }
+
+    .proof-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 28px;
+    }
+
+    .red-note {
+      max-width: 240px;
+      margin: 0;
+      color: var(--red);
+      font-family: "Spline Mono", monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      transform: rotate(2deg);
+    }
+
+    .claim-list {
+      display: grid;
+      gap: 18px;
+    }
+
+    .claim-slip {
+      position: relative;
+      display: grid;
+      grid-template-columns: 110px minmax(0, 1fr);
+      gap: 10px 22px;
+      padding: 22px;
+      border: 1px solid var(--rule);
+      border-left: 8px solid var(--red);
+      background: #f8f6ed;
+    }
+
+    .claim-slip[data-state="matched"] {
+      border-left-color: var(--blue-pencil);
+    }
+
+    .margin-note {
+      grid-row: 1 / span 5;
+      color: var(--red);
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+
+    .claim-text {
+      margin: 0;
+      color: var(--ink);
+      font-family: "Bricolage", sans-serif;
+      font-size: clamp(1.2rem, 3vw, 1.7rem);
+      font-weight: 650;
+      line-height: 1.2;
+    }
+
+    .term-marks {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .term-marks span {
+      padding: 3px 8px;
+      color: var(--red-dark);
+      border: 1px solid currentColor;
+      font-family: "Spline Mono", monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      transform: rotate(-1deg);
+    }
+
+    .quote-input {
+      min-height: 88px;
+      padding: 12px;
+      border-color: var(--blue-pencil);
+      box-shadow: 4px 4px 0 #b8c9cc;
+    }
+
+    .claim-status {
+      min-height: 1.4em;
+      margin: 0;
+      color: var(--red-dark);
+      font-size: 0.85rem;
+      font-weight: 800;
+    }
+
+    .claim-slip[data-state="matched"] .claim-status {
+      color: var(--blue-pencil);
+    }
+
+    .clear-note {
+      margin: 0;
+      padding: 28px;
+      border: 2px dashed var(--blue-pencil);
+      color: var(--blue-pencil);
+      font-family: "Spline Mono", monospace;
+      font-weight: 700;
+    }
+
+    .copy-dock {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: center;
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 2px solid var(--ink);
+    }
+
+    #gate-status {
+      margin: 0;
+      font-weight: 800;
+    }
+
+    .boundary {
+      display: grid;
+      grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+      gap: clamp(28px, 7vw, 86px);
+      padding: clamp(32px, 6vw, 68px);
+      color: #edf4f0;
+      border: 1px solid #5c7a6e;
+    }
+
+    .boundary-copy p {
+      margin: 0 0 14px;
+      color: #d5e4dd;
+    }
+
+    .boundary-copy strong {
+      color: #ffaaa1;
+    }
+
+    details {
+      margin-top: 22px;
+      border-top: 1px solid #5c7a6e;
+      padding-top: 16px;
+    }
+
+    summary {
+      cursor: pointer;
+      font-weight: 800;
+    }
+
+    #risk-terms {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin: 16px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #risk-terms li {
+      padding: 3px 8px;
+      border: 1px solid #78988b;
+      font-family: "Spline Mono", monospace;
+      font-size: 0.72rem;
+    }
+
+    footer {
+      padding: 30px 0 0;
+      color: #bdd4c9;
+      font-size: 0.85rem;
+    }
+
+    footer p {
+      margin: 0;
+    }
+
+    @media (max-width: 760px) {
+      .shell {
+        width: min(100% - 20px, 1120px);
+        padding-top: 18px;
+      }
+
+      .topline span {
+        display: none;
+      }
+
+      .hero,
+      .copy-grid,
+      .boundary {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero {
+        min-height: 0;
+        padding: 56px 8px 44px;
+      }
+
+      h1 {
+        font-size: clamp(3.7rem, 23vw, 6rem);
+      }
+
+      .proof-stamp {
+        justify-self: start;
+        width: 210px;
+      }
+
+      .paper-head,
+      .proof-head,
+      .copy-dock {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .desk-code {
+        text-align: left;
+      }
+
+      .claim-slip {
+        grid-template-columns: 28px minmax(0, 1fr);
+        gap: 10px 12px;
+        padding: 16px 14px;
+      }
+
+      .margin-note {
+        font-size: 0.65rem;
+      }
+
+      .copy-dock button {
+        width: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav class="topline" aria-label="Breadcrumb">
+      <a href="/">nikitavorontsov.com</a>
+      <span>Proof desk / local browser utility</span>
+    </nav>
+
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Preflight for generated launch copy</p>
+        <h1>Receipts,<span>Bot.</span></h1>
+        <p class="deck">Your release bot found a security feature nobody built. Put the draft beside the source. Risky wording needs a matching excerpt before copy unlocks.</p>
+      </div>
+      <div class="proof-stamp" aria-label="No source, no copy">
+        <strong>No source<br>No copy</strong>
+        <span class="stamp-small">Office rule 01</span>
+      </div>
+    </header>
+
+    <main>
+      <section class="paper input-paper" aria-labelledby="input-heading">
+        <div class="paper-head">
+          <div>
+            <p class="section-label">Intake sheet</p>
+            <h2 id="input-heading">Put the bot next to its homework.</h2>
+          </div>
+          <p class="desk-code">RB-LOCAL<br>One draft at a time</p>
+        </div>
+
+        <div class="copy-grid">
+          <div class="field">
+            <label for="draft">Generated announcement draft</label>
+            <p class="field-hint" id="draft-hint">Paste the copy you might publish. You can edit or remove any sentence here.</p>
+            <textarea id="draft" rows="10" aria-describedby="draft-hint" spellcheck="false" placeholder="We shipped version two. It is now secure by default..."></textarea>
+          </div>
+          <div class="field">
+            <label for="source">Source material</label>
+            <p class="field-hint" id="source-hint">Paste the changelog, issue, diff summary, or other text the announcement should describe.</p>
+            <textarea id="source" rows="10" aria-describedby="source-hint" spellcheck="false" placeholder="Release notes: version two changes the worker queue..."></textarea>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button id="check-button" type="button" disabled>Check the copy</button>
+          <button id="example-button" class="secondary" type="button" disabled>Load the bad example</button>
+        </div>
+        <p id="status" aria-live="polite">Loading the proof desk. If this message stays, turn on JavaScript and reload.</p>
+        <p class="privacy-note">Your draft and source stay in this browser. Nothing is uploaded or saved.</p>
+      </section>
+
+      <section class="paper" id="proof" hidden aria-labelledby="proof-heading">
+        <div class="proof-head">
+          <div>
+            <p class="section-label">Red-pen pass</p>
+            <h2 id="proof-heading" tabindex="-1">Make each flag show its work.</h2>
+          </div>
+          <p class="red-note">Edit the draft above to remove a claim. Or paste a matching source excerpt below it.</p>
+        </div>
+
+        <div id="claim-list" class="claim-list"></div>
+
+        <div class="copy-dock">
+          <p id="gate-status" aria-live="polite"></p>
+          <button id="copy-button" type="button" disabled>Copy current draft</button>
+        </div>
+      </section>
+
+      <section class="boundary" aria-labelledby="boundary-heading">
+        <div>
+          <p class="section-label">Small print, written large</p>
+          <h2 id="boundary-heading">A tripwire. Not a lie detector.</h2>
+        </div>
+        <div class="boundary-copy">
+          <p><strong>This is a word-list tripwire, not a truth detector.</strong> It flags sentences that use a narrow list of security and privacy terms.</p>
+          <p>Passing does not prove a claim. It can miss risky wording outside the list. A matching excerpt only proves that the watched terms appear in the source you supplied.</p>
+          <p>The person publishing still owns the review.</p>
+          <details>
+            <summary>Show the watched terms</summary>
+            <ul id="risk-terms"></ul>
+          </details>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Maintained by <a href="/">Nikita Vorontsov</a>. Built with AI. No draft leaves this page.</p>
+    </footer>
+  </div>
+
+  <script type="module" src="./main.mjs?v=receipts-bot-20260825-01"></script>
+</body>
+</html>
