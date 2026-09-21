@@ -27,6 +27,10 @@ test("packaged LOAF points at the personal domain", async () => {
   assert.match(html, /https:\/\/nikitavorontsov\.com\/loaf\//);
   assert.match(html, /property=["']og:image["'][^>]+\/loaf\/og\.png/);
   assert.match(html, /data-domain=["']nikitavorontsov\.com["']/);
+  const cssAsset = html.match(/href=["'](\.\/assets\/[^"']+\.css)/)?.[1];
+  assert.ok(cssAsset, "packaged LOAF should declare a CSS asset");
+  const css = await read(`loaf/${cssAsset.slice(2)}`);
+  assert.match(css, /\.\.\/fonts\/bricolage-latin\.woff2/);
   assert.match(manifest.sourceCommit, /^[a-f0-9]{40}$/);
   assert.equal(manifest.publicPath, "/loaf/");
 });
