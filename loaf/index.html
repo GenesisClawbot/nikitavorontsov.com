@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#f0bdab" />
+    <meta
+      name="description"
+      content="Stack cats. Defy gravity. A tiny, tactile physics game about very sleepy cats and very questionable architecture. One tap to play. How high can you loaf?"
+    />
+    <meta property="og:title" content="LOAF — Stack cats. Defy gravity." />
+    <meta
+      property="og:description"
+      content="Very sleepy cats. Very questionable architecture. Play in your browser, then challenge a friend."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:url"
+      content="https://nikitavorontsov.com/loaf/"
+    />
+    <meta
+      property="og:image"
+      content="https://nikitavorontsov.com/loaf/og.png"
+    />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="LOAF: a precarious stack of six sleepy 3D cats on a mint cushion, beside the words Stack cats. Defy gravity."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="LOAF — Stack cats. Defy gravity." />
+    <meta
+      name="twitter:description"
+      content="How high can you loaf? A free one-button cat-stacking game."
+    />
+    <meta
+      name="twitter:image"
+      content="https://nikitavorontsov.com/loaf/og.png"
+    />
+    <link
+      rel="canonical"
+      href="https://nikitavorontsov.com/loaf/"
+    />
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <script>
+      window.plausible = window.plausible || function () {
+        window.plausible.q = window.plausible.q || [];
+        if (window.plausible.q.length < 50) window.plausible.q.push(arguments);
+      };
+    </script>
+    <script
+      defer
+      data-domain="nikitavorontsov.com"
+      src="https://plausible.io/js/script.js"
+    ></script>
+    <link
+      rel="preload"
+      href="./fonts/bricolage-latin.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <title>LOAF — Stack cats. Defy gravity.</title>
+    <script type="module" crossorigin src="./assets/index-BwB7Kc9e.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CRjv7UOS.css">
+  </head>
+  <body>
+    <main id="app">
+      <div
+        id="stage"
+        role="img"
+        aria-label="A 3D tower of sleepy cats on a mint cushion. Use the Drop the cat button to play."
+      ></div>
+      <div class="grain" aria-hidden="true"></div>
+
+      <header class="masthead">
+        <a class="wordmark" href="./" aria-label="LOAF home"
+          >loaf<span class="logo-dot">.</span></a
+        >
+        <p class="edition">a small game about big ambitions</p>
+        <div class="header-actions">
+          <button class="your-cat-button" id="your-cat-button" hidden>Your cat</button>
+          <button
+            class="icon-button"
+            id="help-button"
+            aria-label="How to play"
+            title="How to play"
+          >
+            ?
+          </button>
+          <button
+            class="icon-button sound-button"
+            id="sound-button"
+            aria-label="Mute sound"
+            aria-pressed="false"
+            title="Mute sound"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.6"
+              aria-hidden="true"
+            >
+              <path d="M11 5 6 9H3v6h3l5 4V5Z" />
+              <path
+                class="sound-waves"
+                d="M15 8c2 2 2 6 0 8m3-11c4 4 4 10 0 14"
+              />
+              <path class="sound-off" d="m15 9 6 6m0-6-6 6" />
+            </svg>
+          </button>
+        </div>
+      </header>
+      <p class="mobile-premise">Stack cats. Defy gravity.</p>
+
+      <section class="intro" aria-label="About LOAF">
+        <p class="eyebrow">
+          <span class="tiny-star" aria-hidden="true">✳</span> the art of doing
+          absolutely nothing
+        </p>
+        <h1>Stack cats.<br />Defy gravity.</h1>
+        <p class="intro-copy">
+          Very sleepy cats.<br />Very questionable architecture.
+        </p>
+        <div class="intro-note">
+          <svg viewBox="0 0 76 45" aria-hidden="true">
+            <path d="M2 4C15 38 51 38 71 23m-15-1 16 0-5 14" /></svg
+          ><span>one more can't hurt.</span>
+        </div>
+      </section>
+
+      <section class="scoreboard" aria-label="Score">
+        <div class="current-score">
+          <span id="score">0</span
+          ><span class="score-unit" id="score-unit">cats stacked</span>
+        </div>
+        <div class="personal-best">
+          <span class="small-crown" aria-hidden="true">♧</span> personal best
+          <strong id="best-score">0</strong>
+        </div>
+        <p class="challenge-target" id="challenge-target" hidden></p>
+      </section>
+
+      <div
+        id="toast"
+        class="landing-toast"
+        role="status"
+        aria-live="polite"
+      ></div>
+
+      <section class="play-controls" aria-label="Game controls">
+        <p class="next-cat">
+          <span class="status-dot"></span
+          ><span id="cat-name">Warming up the loaf…</span>
+        </p>
+        <button id="drop-button" class="drop-button" disabled>
+          <span class="drop-label">Drop the cat</span>
+          <span class="key-hint" aria-hidden="true">space <span>↵</span></span>
+          <svg
+            class="tap-icon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            aria-hidden="true"
+          >
+            <path d="M12 4v12m-5-5 5 5 5-5M5 20h14" />
+          </svg>
+        </button>
+        <p class="control-hint">
+          Tap anywhere or press <kbd>space</kbd>. Keep them on the cushion.
+        </p>
+      </section>
+
+      <footer class="game-footer">
+        <a class="creator-link" data-analytics="creator_click" href="https://x.com/clawgenesis" target="_blank" rel="noopener noreferrer">A little game by Nikita ↗</a
+        ><button id="new-stack-button" class="text-button">
+          New stack <span aria-hidden="true">↗</span>
+        </button>
+      </footer>
+      <p id="loading-status" class="loading-status" role="status">
+        Making a little room for cats…
+      </p>
+
+      <section id="results" class="results" aria-label="Your result" hidden>
+        <div class="result-scrim"></div>
+        <div
+          class="result-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="result-title"
+          tabindex="-1"
+        >
+          <div class="result-image-wrap">
+            <img
+              id="tower-preview"
+              alt="Your best cat tower from this run"
+            /><span class="result-stamp">structurally<br />questionable</span>
+          </div>
+          <div class="result-content">
+            <p class="eyebrow" id="result-kicker">
+              the loaf has left the building
+            </p>
+            <h2 id="result-title">
+              <span id="result-score">0</span> cats.<br /><span
+                id="result-title-line"
+                >Zero regrets.</span
+              >
+            </h2>
+            <p class="result-description" id="result-description">
+              Gravity had other plans.
+            </p>
+            <p class="result-record" id="result-record" hidden>
+              New personal best. Beautifully unstable.
+            </p>
+            <div class="replay-actions">
+              <button id="retry-button" class="primary-button">
+                One more try <span aria-hidden="true">↻</span>
+              </button>
+              <button id="continue-button" class="secondary-button" aria-describedby="continue-note">
+                Keep building <span aria-hidden="true">↗</span>
+              </button>
+            </div>
+            <p id="continue-note" class="continue-note">Keep what remains in free build. Your best score is saved.</p>
+            <div class="share-actions">
+              <button id="challenge-button" class="secondary-button">
+                Challenge a friend <span aria-hidden="true">↗</span></button
+              ><button
+                id="save-button"
+                class="square-button"
+                aria-label="Save your tower as an image"
+                title="Save tower image"
+              >
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.6"
+                  aria-hidden="true"
+                >
+                  <path d="M12 3v12m-4-4 4 4 4-4M5 15v5h14v-5" />
+                </svg>
+              </button>
+            </div>
+            <div class="result-links">
+              <a
+                id="share-x"
+                href="https://twitter.com/intent/tweet"
+                target="_blank"
+                rel="noopener noreferrer"
+                >Share on X</a
+              ><button id="fresh-button" class="text-button">
+                Try a different stack
+              </button>
+            </div>
+            <p
+              id="share-status"
+              class="share-status"
+              role="status"
+              aria-live="polite"
+            ></p>
+            <div class="support-links">
+              <a href="https://x.com/clawgenesis" target="_blank" rel="noopener noreferrer">Made by Nikita ↗</a>
+              <a data-analytics="tip_click" href="https://buy.stripe.com/5kQ3cvbdG64FcGj0bb6AM0b" target="_blank" rel="noopener noreferrer" title="An optional, one-time tip for the maker of LOAF">Buy the cats a treat ↗</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <dialog id="help-dialog" class="help-dialog">
+        <button
+          id="close-help"
+          class="icon-button dialog-close"
+          aria-label="Close instructions"
+        >
+          ×
+        </button>
+        <p class="eyebrow">a brief guide to loafing</p>
+        <h2>One button.<br />Many cats.</h2>
+        <ol>
+          <li>Wait for the floating cat to line up.</li>
+          <li>Tap, click, or press Space to drop it.</li>
+          <li>Keep every cat on the cushion. A falling cat ends your run.</li>
+        </ol>
+        <p>
+          A centred landing earns a <strong>purrfect</strong>. Every challenge
+          link uses the same cat sequence. Your best score stays on this device.
+        </p>
+        <p>
+          After a fall, <strong>Keep building</strong> lets you carry on with
+          the cats that remain. Free build keeps your original best score safe.
+          The speaker controls the quiet background music and meows.
+        </p>
+        <button id="got-it" class="primary-button">
+          Let's loaf <span aria-hidden="true">↗</span>
+        </button>
+        <div class="support-links">
+          <a href="https://x.com/clawgenesis" target="_blank" rel="noopener noreferrer">Made by Nikita Vorontsov ↗</a>
+          <a data-analytics="tip_click" href="https://buy.stripe.com/5kQ3cvbdG64FcGj0bb6AM0b" target="_blank" rel="noopener noreferrer" title="An optional, one-time tip for the maker of LOAF">Buy the cats a treat ↗</a>
+        </div>
+      </dialog>
+      <noscript
+        ><div class="fallback">
+          LOAF needs JavaScript to wake up its cats. Enable JavaScript, then
+          refresh to play.
+        </div></noscript
+      >
+    </main>
+  </body>
+</html>
