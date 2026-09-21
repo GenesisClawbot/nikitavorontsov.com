@@ -65,8 +65,8 @@
       crossorigin
     />
     <title>LOAF — Stack cats. Defy gravity.</title>
-    <script type="module" crossorigin src="./assets/index-BwB7Kc9e.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-CRjv7UOS.css">
+    <script type="module" crossorigin src="./assets/index-B1TYJKVR.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-CNo1CzIY.css">
   </head>
   <body>
     <main id="app">
@@ -84,6 +84,9 @@
         <p class="edition">a small game about big ambitions</p>
         <div class="header-actions">
           <button class="your-cat-button" id="your-cat-button" hidden>Your cat</button>
+          <button class="friends-button" id="friends-button" aria-haspopup="dialog" aria-controls="friends-dialog">
+            <span class="friends-button-label">Friends</span><span class="friends-button-dot" aria-hidden="true"></span>
+          </button>
           <button
             class="icon-button"
             id="help-button"
@@ -302,6 +305,53 @@
         <div class="support-links">
           <a href="https://x.com/clawgenesis" target="_blank" rel="noopener noreferrer">Made by Nikita Vorontsov ↗</a>
           <a data-analytics="tip_click" href="https://buy.stripe.com/5kQ3cvbdG64FcGj0bb6AM0b" target="_blank" rel="noopener noreferrer" title="An optional, one-time tip for the maker of LOAF">Buy the cats a treat ↗</a>
+        </div>
+      </dialog>
+      <dialog id="friends-dialog" class="friends-dialog" aria-labelledby="friends-title">
+        <div class="friends-sheet">
+          <header class="friends-header">
+            <div>
+              <p class="eyebrow">a cosy corner for rivals</p>
+              <h2 id="friends-title">Friends</h2>
+            </div>
+            <button id="close-friends" class="icon-button dialog-close" aria-label="Close friends">×</button>
+          </header>
+          <p id="friends-status" class="friends-status" role="status" aria-live="polite"></p>
+          <section id="friends-disabled" class="friends-section" hidden>
+            <h3>Anonymous play is ready</h3>
+            <p>LOAF works without an account. Friends can be enabled for this build when its two public Supabase settings are present.</p>
+          </section>
+          <section id="friends-signed-out" class="friends-section" hidden>
+            <h3>Keep your little rival list</h3>
+            <p>Sign in with a magic link when you want to see friends' best scores. Playing stays one tap and anonymous until then.</p>
+            <form id="friends-signin-form" class="friends-form">
+              <label for="friends-email">Email for the magic link</label>
+              <div class="friends-form-row"><input id="friends-email" name="email" type="email" autocomplete="email" required maxlength="320" placeholder="you@example.com" /><button class="primary-button" type="submit">Send link <span aria-hidden="true">↗</span></button></div>
+            </form>
+          </section>
+          <section id="friends-link-sent" class="friends-section" hidden>
+            <h3>Check your inbox</h3>
+            <p>There is a sign-in link on its way. You can close this and keep playing while it arrives.</p>
+          </section>
+          <section id="friends-profile" class="friends-section" hidden>
+            <h3>Choose your loaf name</h3>
+            <p>Friends see this display name and handle beside your best score. Email stays private.</p>
+            <form id="friends-profile-form" class="friends-form">
+              <label for="friends-display-name">Display name</label><input id="friends-display-name" name="displayName" maxlength="40" required placeholder="Nikita" />
+              <label for="friends-handle">Handle</label><input id="friends-handle" name="handle" pattern="[A-Za-z0-9_]{3,24}" maxlength="24" required placeholder="niki" />
+              <button class="primary-button" type="submit">Save name <span aria-hidden="true">↗</span></button>
+            </form>
+          </section>
+          <section id="friends-dashboard" class="friends-section" hidden>
+            <div class="friends-dashboard-heading"><div><h3>Best scores</h3><p>Only you and accepted friends appear here.</p></div><button id="refresh-friends" class="text-button" type="button">Refresh ↻</button></div>
+            <ol id="friend-score-list" class="friend-score-list"><li class="friend-score-empty">No friends yet. Make the first move.</li></ol>
+            <div class="friends-actions">
+              <button id="create-friend-invite" class="secondary-button" type="button">Make an invite <span aria-hidden="true">↗</span></button>
+              <form id="accept-friend-invite-form" class="friends-form"><label for="friend-invite-token">Have an invite token?</label><div class="friends-form-row"><input id="friend-invite-token" name="token" inputmode="text" maxlength="128" placeholder="Paste token" /><button class="secondary-button" type="submit">Accept</button></div></form>
+            </div>
+            <label class="share-toggle"><input id="share-best-toggle" type="checkbox" /><span><strong>Share my best with friends</strong><small>Only a completed scored run is sent. Free build and photos stay private.</small></span></label>
+            <button id="sign-out-friends" class="text-button friends-signout" type="button">Sign out</button>
+          </section>
         </div>
       </dialog>
       <noscript
