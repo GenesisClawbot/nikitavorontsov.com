@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
@@ -59,6 +59,14 @@ let html = await readFile(outputIndex, "utf8");
 html = html.replaceAll("https://loaf-cat-stack.chargen.chatgpt.site", "https://nikitavorontsov.com/loaf");
 html = html.replaceAll('data-domain="loaf-cat-stack.chargen.chatgpt.site"', 'data-domain="nikitavorontsov.com"');
 await writeFile(outputIndex, html);
+
+const outputAssets = resolve(outputDir, "assets");
+for (const asset of await readdir(outputAssets)) {
+  if (!asset.endsWith(".css")) continue;
+  const cssPath = resolve(outputAssets, asset);
+  const css = await readFile(cssPath, "utf8");
+  await writeFile(cssPath, css.replaceAll('url("/fonts/', 'url("../fonts/'));
+}
 
 await writeFile(
   resolve(outputDir, "source.json"),
