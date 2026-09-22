@@ -65,8 +65,8 @@
       crossorigin
     />
     <title>LOAF — Stack cats. Defy gravity.</title>
-    <script type="module" crossorigin src="./assets/index-C-yalJat.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-CNo1CzIY.css">
+    <script type="module" crossorigin src="./assets/index-DG0zgK2O.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-B8efCJGy.css">
   </head>
   <body>
     <main id="app">
@@ -85,7 +85,7 @@
         <div class="header-actions">
           <button class="your-cat-button" id="your-cat-button" hidden>Your cat</button>
           <button class="friends-button" id="friends-button" aria-haspopup="dialog" aria-controls="friends-dialog">
-            <span class="friends-button-label">Friends</span><span class="friends-button-dot" aria-hidden="true"></span>
+            <span class="friends-button-label">Rivals</span><span class="friends-button-dot" aria-hidden="true"></span>
           </button>
           <button
             class="icon-button"
@@ -312,11 +312,16 @@
           <header class="friends-header">
             <div>
               <p class="eyebrow">a cosy corner for rivals</p>
-              <h2 id="friends-title">Friends</h2>
+              <h2 id="friends-title">Rivals</h2>
             </div>
             <button id="close-friends" class="icon-button dialog-close" aria-label="Close friends">×</button>
           </header>
           <p id="friends-status" class="friends-status" role="status" aria-live="polite"></p>
+          <section id="friends-scoreboard" class="friends-section" hidden>
+            <div class="friends-dashboard-heading"><div><h3>Rivals</h3><p>Your best and accepted friends.</p></div><button id="refresh-friends" class="text-button" type="button" hidden>Refresh ↻</button></div>
+            <p id="friends-live-status" class="friends-live-status" role="status" aria-live="polite"></p>
+            <ol id="friend-score-list" class="friend-score-list"><li class="friend-score-empty">Your first loaf is waiting.</li></ol>
+          </section>
           <section id="friends-disabled" class="friends-section" hidden>
             <h3>Anonymous play is ready</h3>
             <p>LOAF works without an account. Friends can be enabled for this build when its two public Supabase settings are present.</p>
@@ -343,13 +348,12 @@
             </form>
           </section>
           <section id="friends-dashboard" class="friends-section" hidden>
-            <div class="friends-dashboard-heading"><div><h3>Best scores</h3><p>Only you and accepted friends appear here.</p></div><button id="refresh-friends" class="text-button" type="button">Refresh ↻</button></div>
-            <ol id="friend-score-list" class="friend-score-list"><li class="friend-score-empty">No friends yet. Make the first move.</li></ol>
+            <div class="friends-dashboard-heading"><div><h3>Play together</h3><p>Invite a friend and your climbs will meet here.</p></div></div>
             <div class="friends-actions">
               <button id="create-friend-invite" class="secondary-button" type="button">Make an invite <span aria-hidden="true">↗</span></button>
               <form id="accept-friend-invite-form" class="friends-form"><label for="friend-invite-token">Have an invite token?</label><div class="friends-form-row"><input id="friend-invite-token" name="token" inputmode="text" maxlength="128" placeholder="Paste token" /><button class="secondary-button" type="submit">Accept</button></div></form>
             </div>
-            <label class="share-toggle"><input id="share-best-toggle" type="checkbox" /><span><strong>Share my best with friends</strong><small>Only a completed scored run is sent. Free build and photos stay private.</small></span></label>
+            <label class="share-toggle"><input id="share-best-toggle" type="checkbox" /><span><strong>Share my best live</strong><small>On by default. Turn it off any time. Free build and photos stay private.</small></span></label>
             <button id="sign-out-friends" class="text-button friends-signout" type="button">Sign out</button>
           </section>
         </div>
