@@ -61,6 +61,11 @@ html = html.replaceAll('data-domain="loaf-cat-stack.chargen.chatgpt.site"', 'dat
 await writeFile(outputIndex, html);
 
 const outputAssets = resolve(outputDir, "assets");
+const javascriptAssets = (await readdir(outputAssets)).filter(asset => asset.endsWith(".js"));
+const javascriptContents = await Promise.all(javascriptAssets.map(asset => readFile(resolve(outputAssets, asset), "utf8")));
+if (!javascriptContents.some(content => content.includes("supabase.co"))) {
+  throw new Error("LOAF build is missing Cat Circle configuration; rebuild with VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY before publishing");
+}
 for (const asset of await readdir(outputAssets)) {
   if (!asset.endsWith(".css")) continue;
   const cssPath = resolve(outputAssets, asset);
