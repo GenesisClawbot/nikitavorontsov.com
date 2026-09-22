@@ -65,8 +65,8 @@
       crossorigin
     />
     <title>LOAF — Stack cats. Defy gravity.</title>
-    <script type="module" crossorigin src="./assets/index-BcHsSTOi.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-B8efCJGy.css">
+    <script type="module" crossorigin src="./assets/index-Cs5zmKN8.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-BcGpo2NT.css">
   </head>
   <body>
     <main id="app">
@@ -339,15 +339,19 @@
             <p>There is a sign-in link on its way. You can close this and keep playing while it arrives.</p>
           </section>
           <section id="friends-profile" class="friends-section" hidden>
-            <h3>Choose your loaf name</h3>
-            <p>Your cat people see this display name and handle beside your best score. Email stays private.</p>
+            <h3 id="friends-profile-title">Choose your loaf name</h3>
+            <p id="friends-profile-copy">Your cat people see this display name and username beside your best score. Email stays private.</p>
             <form id="friends-profile-form" class="friends-form">
               <label for="friends-display-name">Display name</label><input id="friends-display-name" name="displayName" maxlength="40" required placeholder="Nikita" />
-              <label for="friends-handle">Handle</label><input id="friends-handle" name="handle" pattern="[A-Za-z0-9_]{3,24}" maxlength="24" required placeholder="niki" />
-              <button class="primary-button" type="submit">Save name <span aria-hidden="true">↗</span></button>
+              <label for="friends-handle">Username</label><input id="friends-handle" name="handle" pattern="[A-Za-z0-9_]{3,24}" maxlength="24" required placeholder="niki" />
+              <div class="friends-form-actions"><button class="primary-button" type="submit">Save identity <span aria-hidden="true">↗</span></button><button id="cancel-friends-profile" class="text-button" type="button" hidden>Cancel</button></div>
             </form>
           </section>
           <section id="friends-dashboard" class="friends-section" hidden>
+            <div id="friends-identity" class="friends-identity" hidden>
+              <div><p class="eyebrow">your cat identity</p><strong id="friends-identity-name">Your loaf name</strong><span id="friends-identity-handle">Choose a username</span></div>
+              <button id="edit-friends-profile" class="text-button" type="button">Edit identity</button>
+            </div>
             <div class="friends-dashboard-heading"><div><h3>Grow the circle</h3><p>Invite a cat person and your climbs will meet here.</p></div></div>
             <div class="friends-actions">
               <button id="create-friend-invite" class="secondary-button" type="button">Invite a cat person <span aria-hidden="true">↗</span></button>
