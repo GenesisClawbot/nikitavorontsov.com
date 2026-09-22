@@ -65,8 +65,8 @@
       crossorigin
     />
     <title>LOAF — Stack cats. Defy gravity.</title>
-    <script type="module" crossorigin src="./assets/index-CKjAwwMt.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-BcGpo2NT.css">
+    <script type="module" crossorigin src="./assets/index-0WbKvsv-.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-COu3TuAu.css">
   </head>
   <body>
     <main id="app">
@@ -318,7 +318,8 @@
           </header>
           <p id="friends-status" class="friends-status" role="status" aria-live="polite"></p>
           <section id="friends-scoreboard" class="friends-section" hidden>
-            <div class="friends-dashboard-heading"><div><h3>Cat Circle</h3><p>Your best and your cat people.</p></div><button id="refresh-friends" class="text-button" type="button" hidden>Refresh ↻</button></div>
+            <div class="friends-dashboard-heading"><div><h3 id="circle-heading">All circles</h3><p id="circle-description">Your best and the cat people you are allowed to see.</p></div><button id="refresh-friends" class="text-button" type="button" hidden>Refresh ↻</button></div>
+            <div class="circle-switcher"><label for="circle-select">Viewing</label><select id="circle-select" aria-label="Choose a cat circle" disabled><option value="">All circles</option></select><span id="circle-member-count" class="circle-member-count">No circles yet</span></div>
             <p id="friends-live-status" class="friends-live-status" role="status" aria-live="polite"></p>
             <ol id="friend-score-list" class="friend-score-list"><li class="friend-score-empty">Your first loaf is waiting.</li></ol>
           </section>
@@ -352,10 +353,19 @@
               <div><p class="eyebrow">your cat identity</p><strong id="friends-identity-name">Your loaf name</strong><span id="friends-identity-handle">Choose a username</span></div>
               <button id="edit-friends-profile" class="text-button" type="button">Edit identity</button>
             </div>
-            <div class="friends-dashboard-heading"><div><h3>Grow the circle</h3><p>Invite a cat person and your climbs will meet here.</p></div></div>
+            <div class="circle-tools">
+              <div class="friends-dashboard-heading"><div><h3>Make a circle</h3><p>Keep Home, Work, or your favourite cat people together.</p></div></div>
+              <button id="create-circle-button" class="secondary-button" type="button">New circle <span aria-hidden="true">↗</span></button>
+              <form id="create-circle-form" class="friends-form" hidden>
+                <label for="circle-name">Circle name</label>
+                <div class="friends-form-row"><input id="circle-name" name="circleName" maxlength="32" required placeholder="Home cats" /><button class="primary-button" type="submit">Create</button></div>
+              </form>
+              <div class="circle-action-row"><button id="create-circle-invite" class="secondary-button" type="button" disabled>Invite to this circle <span aria-hidden="true">↗</span></button><button id="leave-circle" class="text-button" type="button" hidden>Leave</button></div>
+            </div>
+            <div class="friends-dashboard-heading"><div><h3>Older friend links</h3><p>Existing one-to-one links still work. New invites above belong to a named circle.</p></div></div>
             <div class="friends-actions">
               <button id="create-friend-invite" class="secondary-button" type="button">Invite a cat person <span aria-hidden="true">↗</span></button>
-              <form id="accept-friend-invite-form" class="friends-form"><label for="friend-invite-token">Already have a circle invite?</label><div class="friends-form-row"><input id="friend-invite-token" name="token" inputmode="text" maxlength="128" placeholder="Paste token" /><button class="secondary-button" type="submit">Join</button></div></form>
+              <form id="accept-friend-invite-form" class="friends-form"><label for="friend-invite-token">Older friend invite token</label><div class="friends-form-row"><input id="friend-invite-token" name="token" inputmode="text" maxlength="128" placeholder="Paste token" /><button class="secondary-button" type="submit">Join</button></div></form>
             </div>
             <label class="share-toggle"><input id="share-best-toggle" type="checkbox" /><span><strong>Share my best live</strong><small>On by default. Turn it off any time. Free build and photos stay private.</small></span></label>
             <button id="sign-out-friends" class="text-button friends-signout" type="button">Sign out</button>
