@@ -1,0 +1,61 @@
+{
+  "created": "2026-09-23",
+  "provider": "WaveSpeed CLI 0.2.3",
+  "budget_gbp": 25,
+  "observed_balance_usd": {
+    "initial_before_concepts": 91.53,
+    "after_concepts": 91.14,
+    "after_implementation_assets": 90.79
+  },
+  "observed_account_balance_change_usd": 0.74,
+  "caveat": "Account balance difference, not an itemised invoice; includes earlier concepts. Other concurrent account use cannot be excluded.",
+  "jobs": [
+    {
+      "asset": "dragon",
+      "model": "openai/gpt-image-2.5-sunburst/text-to-image",
+      "prompt": "Create one spectacular ultra-wide fantasy editorial artwork, NOT a website, NO text, NO typography, no frames or labels. A magnificent teal and deep petrol blue dragon with intricate natural-scale textures, warm gold eye, long elegant swept horns, and rust-gold fine details fills the RIGHT two-thirds of the frame. Its head in 3/4 side profile looks left towards us, calm, intelligent and beautifully alive, not aggressive. The eye is near 73% across and 37% down. Very close heroic composition with its neck sweeping down and out the bottom right; a breathtaking small old ivory castle on a rocky coastline visible behind it near the lower left. Pale butter cream sky #eeecd9 with delicate clouds occupies left 38% of the frame and open upper left, appropriate for dark text to be overlaid later. Exquisite fine-art fantasy realism with tactile painterly detail, as if an extraordinarily skilled artist painted over a cinematic photograph, real believable light scattering through scaled horns, crisp micro-details and mysterious depth. Palette teal #2f666c, cream #efead6, muted indigo #263fae, small orange #de542e accents. Dramatic golden afternoon light from left. Sophisticated worldbuilding illustration for an AI creator and engineer portfolio. Full-bleed composition. Make this visually astonishing and intensely tactile rather than a generic videogame render. Wide 16:9 cinematic scene.",
+      "outputs": [
+        "https://d2h7xmz5gqybh9.cloudfront.net/output/62dd49f6-68f6-440f-8c4a-0212a5f1e050.png"
+      ],
+      "note": "Portfolio illustration; not product screenshot evidence"
+    },
+    {
+      "asset": "dragon-sketch",
+      "model": "openai/gpt-image-2.5-sunburst/edit",
+      "prompt": "Edit ONLY the rendering medium of the supplied artwork. Preserve every object's position, shape, framing, crop, perspective and proportions EXACTLY. This must be pixel-aligned to the reference for a before/after image slider: the dragon's eye, every horn, jaw, castle towers, horizon and shore must be in precisely the same places. Turn the whole artwork into an exquisite unfinished artist's graphite and muted blue pencil drawing on warm ivory #f2f0e4 paper. Beautiful fine linework and crosshatching, a few loose construction strokes near the dragon's horns. The leftmost sky is mostly blank ivory. No colour washes, no photos, no hands, no pencils, no notebook border, no text, no captions. The SAME image, SAME camera, SAME geometry, stripped back to its beautiful pencil construction. Full 16:9 edge-to-edge canvas.",
+      "outputs": [
+        "https://d2h7xmz5gqybh9.cloudfront.net/output/503cd301-6ba7-4c13-9973-89dbe7fe2ff7.png"
+      ],
+      "note": "Portfolio illustration; not product screenshot evidence"
+    },
+    {
+      "asset": "loaf",
+      "model": "openai/gpt-image-2.5-sunburst/edit",
+      "prompt": "Use the supplied LOAF game cover as the strict identity reference for the cats: retain their sleepy eyes, rounded squat loaf-shaped bodies, ginger, tabby, calico, cream and black coats, and charming fine fur/clay finish. Create a new cinematic 16:9 full-bleed scene with absolutely NO text, labels, letters, website, UI or panels. A precarious sculptural tower of SEVEN of those sleepy cat loaves occupies the right half at x=70%, stacked on a beautiful low round pale mint corduroy cushion, on a warm pale mint floor in an infinite pale mint #dfe5c9 photographic studio. Each cat is a different coat. Bottom cat is black and white. The top ginger cat tips a little to the left as if the stack might wobble. Topmost cat is at y=16% and cushion at y=86%, keep the complete tower within canvas. Left 40% is beautiful uncluttered softly lit mint background for copy overlay. Natural afternoon sunlight from upper left casts long charming shadows right; a small loose ginger cat sleeping on the floor at bottom left x=33% y=82%. High-end stop-motion craft meets macro product photography, sculptural, soft, tangible, funny in an understated way. Warm cream and coral orange tiny highlights. NO CGI gloss, no neon, no extra faces, no collage, no text. Full bleed 16:9.",
+      "outputs": [
+        "https://d2h7xmz5gqybh9.cloudfront.net/output/5fc7734d-542b-4dd9-95d0-990e959c08f3.png"
+      ],
+      "note": "Portfolio illustration; not product screenshot evidence"
+    },
+    {
+      "asset": "portrait",
+      "model": "wavespeed-ai/image-background-remover",
+      "prompt": null,
+      "outputs": [
+        "https://d2h7xmz5gqybh9.cloudfront.net/output/e7ff1f67-a057-457b-81be-288834775748-u1_7325ec92-6ba1-42dd-a748-5e59cb34c5f4.png"
+      ],
+      "note": "Background removal; original supplied by the existing repository"
+    },
+    {
+      "asset": "portrait-bria",
+      "model": "bria/remove-background",
+      "prompt": null,
+      "outputs": [
+        "https://d2h7xmz5gqybh9.cloudfront.net/predictions/bf6cfec4d8b74fc1933490a954601670/1.png"
+      ],
+      "note": "Background removal; original supplied by the existing repository"
+    }
+  ],
+  "exports": "scripts/prepare-home-assets.mjs",
+  "portrait_source": "portfolio-preview/portrait.png"
+}

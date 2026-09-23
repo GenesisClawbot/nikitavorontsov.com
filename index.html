@@ -3,119 +3,479 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#f6eee5" />
+    <meta name="theme-color" content="#f2f0e4" />
     <meta
       name="description"
-      content="Nikita Vorontsov builds small tools, games and systems with AI."
+      content="Nikita Vorontsov. Engineer, maker and curious human. Building products, exploring frontier AI and turning what if into what is."
     />
     <link rel="canonical" href="https://nikitavorontsov.com/" />
+    <link rel="icon" href="./assets/home/favicon.png" type="image/png" />
+    <link
+      rel="preload"
+      href="./assets/home/fonts/anton.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="./assets/home/fonts/dm-sans-regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <link rel="stylesheet" href="./assets/site.css" />
-    <meta property="og:title" content="Nikita Vorontsov | small things with AI" />
+    <meta property="og:title" content="Nikita Vorontsov | Engineer & maker" />
     <meta
       property="og:description"
-      content="Playable ideas, useful utilities and honest notes about what worked."
+      content="Serious engineering. Playful possibilities. Explore CharGen, LOAF and hands-on experiments with frontier AI."
     />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://nikitavorontsov.com/" />
-    <meta property="og:image" content="https://nikitavorontsov.com/loaf/og.png" />
+    <meta
+      property="og:image"
+      content="https://nikitavorontsov.com/assets/home/og.webp"
+    />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
-    <title>Nikita Vorontsov | small things with AI</title>
+    <title>Nikita Vorontsov | Engineer & maker</title>
+    <script type="module" src="./assets/home-built/home.js"></script>
   </head>
   <body>
-    <main class="site-shell">
-      <header class="site-nav">
-        <a class="site-mark" href="./" aria-label="Nikita Vorontsov home">
-          <span class="mark-dot" aria-hidden="true"></span>
-          <span>Nikita Vorontsov</span>
-        </a>
-        <nav aria-label="Primary navigation">
-          <a href="#work-title">Work</a>
-          <a href="#archive-title">Archive</a>
-        </nav>
-      </header>
+    <a class="skip-link" href="#selected-work">Skip to projects</a>
+    <main id="top">
+      <section class="opening" aria-labelledby="name">
+        <header class="site-header">
+          <a class="wordmark" href="#top" aria-label="Nikita Vorontsov home"
+            >NV<span>.</span></a
+          >
+          <nav aria-label="Primary navigation">
+            <a href="#work">Work</a>
+            <a href="#experiments">Experiments</a>
+            <a href="#about">About</a>
+            <a class="contact-link" href="mailto:nikitavorontsov@hotmail.com"
+              >Let’s talk
+              <img
+                class="icon"
+                src="./assets/home/icons/arrow-up-right.svg"
+                alt=""
+            /></a>
+          </nav>
+        </header>
+        <div class="masthead">
+          <div class="name-block">
+            <h1 id="name" aria-label="Nikita Vorontsov">
+              <span class="first-name">NIKITA</span
+              ><span class="last-name"
+                >VORONTSOV<span class="name-stop">.</span></span
+              >
+            </h1>
+            <p class="name-caption">Tech lead & product builder. London.</p>
+          </div>
+          <figure
+            class="hero-portrait"
+            aria-label="Illustrated portrait of Nikita"
+          >
+            <img
+              src="./assets/home/portrait.webp"
+              alt="Illustrated portrait of Nikita Vorontsov"
+              width="900"
+              height="900"
+              fetchpriority="high"
+            />
+          </figure>
+          <div class="intro-copy">
+            <h2>
+              Serious craft.<br />Playful<br /><span>possibilities.</span>
+            </h2>
+            <p>
+              I build products, explore frontier AI, and turn the interesting
+              bits into things you can use.
+            </p>
+            <a
+              class="text-link"
+              href="./assets/home/Nikita-Vorontsov-CV.pdf"
+              download
+              >Download CV (PDF)
+              <img class="icon" src="./assets/home/icons/arrow-down.svg" alt=""
+            /></a>
+          </div>
+        </div>
+        <div
+          class="project-overview"
+          id="selected-work"
+          aria-label="Selected projects at a glance"
+        >
+          <a
+            class="project-tile tile-chargen"
+            href="https://char-gen.com/"
+            aria-label="Visit CharGen, AI creation and campaign management for tabletop RPGs"
+            ><div class="tile-surface">
+              <img
+                class="tile-art"
+                src="./assets/home/dragon-card.webp"
+                alt="A richly painted teal dragon overlooking a coastal world"
+                width="840"
+                height="600"
+                fetchpriority="high"
+              />
+              <div class="tile-label">
+                <h3>CharGen</h3>
+                <p>
+                  AI creation &amp; campaign management<br />for tabletop RPGs.
+                </p>
+              </div>
+              <span class="tile-action"
+                >Explore the platform
+                <img
+                  class="icon"
+                  src="./assets/home/icons/arrow-up-right.svg"
+                  alt=""
+              /></span></div
+          ></a>
+          <a
+            class="project-tile tile-loaf"
+            href="./loaf/"
+            aria-label="Play LOAF, the cat stacking game"
+            ><div class="tile-surface">
+              <img
+                class="tile-art"
+                src="./assets/home/loaf-card.webp"
+                alt="Sleepy cats balanced in a precarious tower"
+                width="1400"
+                height="600"
+                fetchpriority="high"
+              />
+              <div class="tile-label">
+                <h3>LOAF</h3>
+                <p>Stack cats.<br />Defy gravity.</p>
+              </div>
+              <span class="tile-action"
+                >Play a round
+                <img
+                  class="icon"
+                  src="./assets/home/icons/arrow-up-right.svg"
+                  alt=""
+              /></span></div
+          ></a>
+        </div>
+        <div class="opening-foot">
+          <a href="#work" class="scenic-link"
+            >Or take the scenic route
+            <img class="icon" src="./assets/home/icons/arrow-down.svg" alt=""
+          /></a>
+          <button
+            class="motion-toggle"
+            type="button"
+            aria-pressed="true"
+            hidden
+          >
+            <img class="icon" src="./assets/home/icons/pause.svg" alt="" /><span
+              >Motion on</span
+            >
+          </button>
+        </div>
+      </section>
 
-      <section class="hero" aria-labelledby="hero-title">
-        <div class="hero-copy">
-          <p class="eyebrow"><span aria-hidden="true">✳</span> tools, games and experiments</p>
-          <h1 id="hero-title">I build small tools, games and systems with AI.</h1>
-          <p class="hero-lede">
-            Playable ideas, useful utilities and honest notes about what worked.
+      <section
+        class="journey"
+        id="work"
+        aria-label="A journey through selected work"
+      >
+        <div class="journey-sticky">
+          <div class="world-canvas" aria-hidden="true"></div>
+          <div class="journey-toolbar">
+            <nav class="chapter-nav" aria-label="Jump to a project scene">
+              <a href="#scene-chargen" data-chapter="0"><span>CharGen</span></a>
+              <a href="#scene-loaf" data-chapter="1"><span>LOAF</span></a>
+            </nav>
+            <div class="journey-tools">
+              <button
+                class="motion-toggle"
+                type="button"
+                aria-pressed="true"
+                hidden
+              >
+                <img
+                  class="icon"
+                  src="./assets/home/icons/pause.svg"
+                  alt=""
+                /><span>Motion on</span></button
+              ><a class="skip-tour" href="#about"
+                >Skip the tour
+                <img
+                  class="icon"
+                  src="./assets/home/icons/arrow-down.svg"
+                  alt=""
+              /></a>
+            </div>
+          </div>
+          <article
+            class="scene scene-chargen"
+            id="scene-chargen"
+            aria-labelledby="chargen-title"
+          >
+            <img
+              class="scene-art"
+              src="./assets/home/dragon.webp"
+              alt="A teal dragon with a golden eye beside an imagined coastal city"
+              width="1920"
+              height="1080"
+              loading="lazy"
+            />
+            <img
+              class="scene-art sketch-art"
+              src="./assets/home/dragon-sketch.webp"
+              alt=""
+              width="1920"
+              height="1080"
+              loading="lazy"
+              aria-hidden="true"
+            />
+            <div class="scene-copy">
+              <p class="project-name">CharGen</p>
+              <h2 id="chargen-title">Your whole<br /><span>campaign.</span></h2>
+              <p>
+                AI creation and campaign management for tabletop RPGs. Art,
+                video, audio and worldbuilding, alongside session recaps,
+                connected campaign records and an assistant grounded in your
+                campaign history.
+              </p>
+              <a class="button" href="https://char-gen.com/"
+                >Step into CharGen
+                <img
+                  class="icon"
+                  src="./assets/home/icons/arrow-up-right.svg"
+                  alt=""
+              /></a>
+            </div>
+            <div class="scene-bottom">
+              <div class="art-control" hidden>
+                <label for="art-reveal">Sketch to colour</label
+                ><input
+                  id="art-reveal"
+                  type="range"
+                  min="0"
+                  max="100"
+                  value="100"
+                  aria-label="Reveal the finished dragon artwork"
+                />
+              </div>
+              <span class="art-caption"
+                >Portfolio artwork created with Sunburst.</span
+              >
+            </div>
+          </article>
+          <article
+            class="scene scene-loaf"
+            id="scene-loaf"
+            aria-labelledby="loaf-title"
+          >
+            <img
+              class="scene-art"
+              src="./assets/home/loaf.webp"
+              alt="Soft sleepy cats balanced on a mint cushion"
+              width="1920"
+              height="1080"
+              loading="lazy"
+            />
+            <div class="scene-copy">
+              <p class="project-name">LOAF</p>
+              <h2 id="loaf-title">Highly<br /><span>unstable.</span></h2>
+              <p>
+                One button. A tower of sleepy cats.<br />A small experiment in
+                making something<br />you’ll want to play one more time.
+              </p>
+              <a class="button" href="./loaf/"
+                >Go on, drop a cat
+                <img
+                  class="icon"
+                  src="./assets/home/icons/arrow-up-right.svg"
+                  alt=""
+              /></a>
+            </div>
+          </article>
+          <div class="journey-progress" aria-hidden="true"><span></span></div>
+        </div>
+      </section>
+
+      <section
+        class="about section-wrap"
+        id="about"
+        aria-labelledby="about-title"
+      >
+        <div class="about-identity">
+          <img
+            src="./assets/home/portrait-small.webp"
+            alt="Nikita Vorontsov"
+            width="240"
+            height="240"
+            loading="lazy"
+          />
+          <h2 id="about-title">Hi, I’m <br />Nikita<span>.</span></h2>
+        </div>
+        <div class="about-copy">
+          <p class="about-lede">
+            I like the point where<br />engineering meets<br /><em
+              >“could we?”</em
+            >
           </p>
-          <div class="hero-actions">
-            <a class="button button-primary" href="./loaf/">Play LOAF <span aria-hidden="true">↗</span></a>
-            <a class="text-link" href="#work-title">See selected work <span aria-hidden="true">↓</span></a>
+          <div class="about-columns">
+            <p>
+              I’m a tech lead and software engineer in London, working across
+              distributed systems, developer platforms and agentic AI. I lead
+              teams and stay close to the architecture and code.
+            </p>
+            <p>
+              Outside that, I build. Creative tools, tiny games, useful
+              experiments. I’m interested in what frontier models can do when
+              you give them real problems, thoughtful direction and a way to
+              check the result.
+            </p>
+          </div>
+          <div class="profile-links">
+            <a
+              class="text-link"
+              href="./assets/home/Nikita-Vorontsov-CV.pdf"
+              download
+              >Download CV (PDF)
+              <img class="icon" src="./assets/home/icons/arrow-down.svg" alt=""
+            /></a>
+            <a
+              class="text-link"
+              href="https://www.linkedin.com/in/nikita-vorontsov-079a39115/"
+              >LinkedIn
+              <img
+                class="icon"
+                src="./assets/home/icons/arrow-up-right.svg"
+                alt=""
+            /></a>
           </div>
         </div>
-        <div class="hero-card" aria-label="LOAF preview">
-          <img src="./loaf/og.png" alt="A precarious tower of sleepy cats on a mint cushion" />
-          <div class="hero-card-caption">
-            <span>Featured experiment</span>
-            <strong>LOAF / stack cats, defy gravity</strong>
+      </section>
+
+      <section
+        class="experiments section-wrap"
+        id="experiments"
+        aria-labelledby="archive-title"
+      >
+        <div class="archive-intro">
+          <div>
+            <h2 id="archive-title">More experiments</h2>
           </div>
         </div>
+        <div class="small-projects">
+          <a href="./lab/runbook/"
+            ><span>Runbook</span
+            ><span>One small app brief, tried with six AI models.</span
+            ><img
+              class="icon"
+              src="./assets/home/icons/arrow-up-right.svg"
+              alt=""
+          /></a>
+          <a href="./lab/runbook/guidance/"
+            ><span>Beyond the first prompt</span
+            ><span>A follow-up experiment with design guidance.</span
+            ><img
+              class="icon"
+              src="./assets/home/icons/arrow-up-right.svg"
+              alt=""
+          /></a>
+          <a href="https://github.com/GenesisClawbot/dev-tab-labels"
+            ><span>Localhost tab labels</span
+            ><span>A browser helper for too many projects.</span
+            ><img
+              class="icon"
+              src="./assets/home/icons/arrow-up-right.svg"
+              alt=""
+          /></a>
+          <a
+            href="https://github.com/GenesisClawbot/nikitavorontsov.com/tree/main/experiments/date-only"
+            ><span>A date is not a timestamp</span
+            ><span>A reproducible timezone experiment.</span
+            ><img
+              class="icon"
+              src="./assets/home/icons/arrow-up-right.svg"
+              alt=""
+          /></a>
+          <a href="/one-bug-please/"
+            ><span>One Bug, Please</span
+            ><span>A small game about shipping software.</span
+            ><img
+              class="icon"
+              src="./assets/home/icons/arrow-up-right.svg"
+              alt=""
+          /></a>
+        </div>
+        <details class="archive">
+          <summary>
+            Open the little-tool drawer
+            <span class="archive-count">8 experiments</span
+            ><img class="icon" src="./assets/home/icons/plus.svg" alt="" />
+          </summary>
+          <div class="archive-list">
+            <div>
+              <a href="/pr-warrant/">PR Warrant</a>
+              <!-- prettier-ignore -->
+              <p>Pin one public GitHub pull request to its exact commit range, then end the review with one closed material-defect verdict.</p>
+            </div>
+            <div>
+              <a href="/one-small-fix/">One Small Fix</a>
+              <!-- prettier-ignore -->
+              <p>Print a scope receipt or launch a Conversation Lifeboat with One Small Fix. Keep the result in editable Markdown.</p>
+            </div>
+            <div>
+              <a href="/reconnect-tax/">Reconnect Tax Receipt</a>
+              <p>A terminal log counter for the cost of reconnecting.</p>
+            </div>
+            <div>
+              <a href="/context-baggage/">Context Baggage Claim</a>
+              <p>Find the weight and repetition in instruction files.</p>
+            </div>
+            <div>
+              <a href="/regex-customs/">Regex Customs</a>
+              <p>Explore the surprises in Unicode comparison.</p>
+            </div>
+            <div>
+              <a href="/receipts-bot/">Receipts, Bot</a>
+              <p>Source-backed launch copy with something to point to.</p>
+            </div>
+            <div>
+              <a href="/funeral/">Subscription Autopsy</a>
+              <!-- prettier-ignore -->
+              <p>Examine a subscription and get its cost or work time per useful session.</p>
+            </div>
+            <div>
+              <a href="/play/">Token Herd</a>
+              <p>Play Token Herd while your agent runs.</p>
+            </div>
+          </div>
+        </details>
       </section>
 
-      <section class="section-block" aria-labelledby="work-title">
-        <div class="section-heading">
-          <p class="section-kicker">01 / the things I keep coming back to</p>
-          <h2 id="work-title">Selected work</h2>
+      <footer class="footer section-wrap" id="contact">
+        <a class="big-contact" href="mailto:nikitavorontsov@hotmail.com"
+          >What’s your<br /><span>what if?</span
+          ><img src="./assets/home/icons/arrow-up-right.svg" alt="Email Nikita"
+        /></a>
+        <div class="footer-bottom">
+          <span>© 2026 Nikita Vorontsov</span>
+          <nav aria-label="Social links">
+            <a href="https://www.linkedin.com/in/nikita-vorontsov-079a39115/"
+              >LinkedIn</a
+            ><a href="https://github.com/GenesisClawbot">GitHub</a
+            ><a href="https://x.com/clawgenesis">X</a
+            ><a href="https://threads.com/@nvorontsov93">Threads</a>
+          </nav>
+          <a href="#top"
+            >Back to the top
+            <img
+              class="icon"
+              src="./assets/home/icons/arrow-up-right.svg"
+              alt=""
+          /></a>
         </div>
-        <div class="project-grid">
-          <a class="project-card project-card-featured" href="./loaf/">
-            <div class="project-card-top"><span class="project-number">01</span><span class="pill">Play now</span></div>
-            <div>
-              <h3>LOAF</h3>
-              <p>A one-button physics game about sleepy cats, questionable architecture and the next perfect drop.</p>
-            </div>
-            <span class="project-arrow" aria-hidden="true">↗</span>
-          </a>
-          <a class="project-card" href="https://github.com/GenesisClawbot/dev-tab-labels" target="_blank" rel="noopener noreferrer">
-            <div class="project-card-top"><span class="project-number">02</span><span class="pill pill-mint">Utility</span></div>
-            <div>
-              <h3>Localhost tab labels</h3>
-              <p>A tiny browser helper that keeps the project name and port visible while an agent is working.</p>
-            </div>
-            <span class="project-arrow" aria-hidden="true">↗</span>
-          </a>
-          <a class="project-card" href="https://github.com/GenesisClawbot/nikitavorontsov.com/tree/main/experiments/date-only" target="_blank" rel="noopener noreferrer">
-            <div class="project-card-top"><span class="project-number">03</span><span class="pill pill-cream">Field notes</span></div>
-            <div>
-              <h3>Date-only experiment</h3>
-              <p>A documented test of whether a small constraint can make a noisy workflow easier to reason about.</p>
-            </div>
-            <span class="project-arrow" aria-hidden="true">↗</span>
-          </a>
-        </div>
-      </section>
-
-      <section class="section-block archive-block" aria-labelledby="archive-title">
-        <div class="section-heading archive-heading">
-          <p class="section-kicker">02 / still useful, still a little odd</p>
-          <h2 id="archive-title">More experiments</h2>
-          <p>Older tools and working notes remain available. They are small on purpose.</p>
-        </div>
-        <div id="archive-list" class="archive-list">
-          <div class="archive-row"><a href="/pr-warrant/">PR Warrant</a><small>Pin one public GitHub pull request to its exact commit range, then end the review with one closed material-defect verdict.</small><b aria-hidden="true">↗</b></div>
-          <div class="archive-row"><a href="/one-small-fix/"><span class="sr-only">Print a scope receipt or launch a Conversation Lifeboat with One Small Fix. editable Markdown.</span>One Small Fix</a><small>conversation rescue</small><b aria-hidden="true">↗</b></div>
-          <div class="archive-row"><a href="/reconnect-tax/">Reconnect Tax Receipt</a><small>terminal log counter</small><b aria-hidden="true">↗</b></div>
-          <div class="archive-row"><a href="/context-baggage/">Context Baggage Claim</a><small>instruction-file weight</small><b aria-hidden="true">↗</b></div>
-          <div class="archive-row"><a href="/regex-customs/">Regex Customs</a><small>unicode comparison</small><b aria-hidden="true">↗</b></div>
-          <div class="archive-row"><a href="/receipts-bot/">Receipts, Bot</a><small>source-backed launch copy</small><b aria-hidden="true">↗</b></div>
-          <div class="archive-row"><a href="/funeral/">Subscription Autopsy</a><small>get its cost or work time per useful session.</small><b aria-hidden="true">↗</b></div>
-          <div class="archive-row"><a href="/play/">Play Token Herd while your agent runs.</a><small>60-second browser game</small><b aria-hidden="true">↗</b></div>
-        </div>
-      </section>
-
-      <footer class="site-footer">
-        <p>Made with curiosity, small stakes and too many browser tabs.</p>
-        <nav aria-label="Social links">
-          <a href="https://github.com/GenesisClawbot" target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href="https://x.com/clawgenesis" target="_blank" rel="noopener noreferrer">X</a>
-          <a href="https://www.threads.com/@nvorontsov93" target="_blank" rel="noopener noreferrer">Threads</a>
-          <a href="mailto:clawgenesis@gmail.com">Email</a>
-        </nav>
       </footer>
     </main>
   </body>

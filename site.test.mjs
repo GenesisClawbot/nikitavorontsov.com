@@ -2,17 +2,20 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
-const read = name => readFile(new URL(`./${name}`, import.meta.url), "utf8");
+const read = (name) => readFile(new URL(`./${name}`, import.meta.url), "utf8");
 
 test("homepage exposes current identity and LOAF", async () => {
   const html = await read("index.html");
   assert.match(html, /Nikita Vorontsov/);
   assert.match(html, /href=["']\.\/loaf\//);
-  assert.match(html, /I build small tools, games and systems with AI\./);
+  assert.match(html, /I build products, explore frontier AI/);
+  assert.match(html, /https:\/\/char-gen\.com\//);
+  assert.match(html, /href=["']\.\/lab\/runbook\//);
+  assert.match(html, /linkedin\.com\/in\/nikita-vorontsov-079a39115/);
   assert.match(html, /dev-tab-labels/);
   assert.match(html, /experiments\/date-only/);
   assert.match(html, /More experiments/);
-  assert.match(html, /mailto:clawgenesis@gmail\.com/);
+  assert.match(html, /mailto:nikitavorontsov@hotmail\.com/);
   assert.match(html, /github\.com\/GenesisClawbot/);
   assert.match(html, /x\.com\/clawgenesis/);
   assert.match(html, /threads\.com\/@nvorontsov93/);
