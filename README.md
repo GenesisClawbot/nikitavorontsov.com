@@ -2,6 +2,34 @@
 
 Static GitHub Pages site for Nikita Vorontsov. The root page is a small portfolio and the deployable LOAF build lives at `/loaf/`.
 
+## Homepage development
+
+```sh
+npm ci
+npm run dev -- --port 5188
+npm run build
+npm test
+npm run check:links
+```
+
+The homepage remains semantic static HTML. Vite bundles the optional GSAP,
+Motion and Three.js enhancements from `src/` into `assets/home-built/`.
+Commit that generated directory with homepage changes: GitHub Pages serves the
+repository root and does not run Vite. The build only empties its own output
+directory, preserving LOAF and all existing experiment routes.
+
+`assets/site.css` contains the homepage design; `src/home.mjs` coordinates the
+two-chapter scroll sequence and motion preferences. WebGL is loaded near the tour
+on larger screens. Mobile, reduced-motion and failed-WebGL paths keep ordinary
+images and real links. Fonts, icons, artwork and compiled scripts are local.
+
+See [reference provenance](docs/reference-provenance.md) for exact React Bits
+sources, adaptations and Motion usage, and [design QA](design-qa.md) for validation.
+
+Generated image originals can be exported using:
+`node scripts/prepare-home-assets.mjs /path/to/originals`.
+Source prompts and output URLs are documented in `docs/homepage-assets.json`.
+
 ## Local release
 
 Build LOAF from its canonical source checkout, then package that `dist/` output into this repository:
