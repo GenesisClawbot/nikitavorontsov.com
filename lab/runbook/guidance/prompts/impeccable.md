@@ -1,0 +1,5 @@
+Revise this Runbook dashboard using an Impeccable-style shape and critique pass. The team's main task is to scan three recent experiment runs, notice which needs attention, filter by status, and inspect the selected result. Keep its working product behavior and exact synthetic content.
+
+First use the shape idea: decide the order and emphasis of list, status, checks, and selected-run details around that task. Then critique the current page for hierarchy, clarity, and generic or unnecessary UI, and implement the most valuable changes. Keep every visual element purposeful. Avoid default SaaS decoration, nested cards, faint text, tiny targets, and gratuitous motion. Use the source and tests to check the result. This is a pragmatic application of Impeccable guidance, not a claim that its full CLI or 61 detector rules were run.
+
+Read src/App.jsx, src/styles.css, and tests/App.test.jsx before editing. Preserve the existing import path unless you deliberately update it. Run tests and build. In your final note, name the two or three changes that came from the critique.

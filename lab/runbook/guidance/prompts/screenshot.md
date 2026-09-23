@@ -1,0 +1,3 @@
+The attached PNG is the current Runbook dashboard at desktop width. Review the screenshot for the main ways it makes scanning, filtering, or inspecting a short experiment run harder than necessary. Make one focused revision to the existing React page based on that visual critique. The source and tests define the functional requirements: retain the exact synthetic content, all status and preview states, selection, keyboard use, and mobile usefulness.
+
+Read src/App.jsx, src/styles.css, and tests/App.test.jsx before editing. Run tests and build. In the final note, give the critique and the change it led to. Do not add other design rules or remote assets.
