@@ -8,7 +8,7 @@ test("homepage exposes current identity and LOAF", async () => {
   const html = await read("index.html");
   assert.match(html, /Nikita Vorontsov/);
   assert.match(html, /href=["']\.\/loaf\//);
-  assert.match(html, /Engineering lead and product builder in London/);
+  assert.match(html, /I build products, explore frontier AI/);
   assert.match(html, /https:\/\/char-gen\.com\//);
   assert.match(html, /href=["']\.\/lab\/runbook\//);
   assert.match(html, /linkedin\.com\/in\/nikita-vorontsov-079a39115/);
