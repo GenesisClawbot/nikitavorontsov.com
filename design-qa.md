@@ -1,57 +1,52 @@
-# Editorial homepage QA
+# Playful portfolio restoration and portrait QA
 
-Local verification: 23 September 2026. Compiled preview: http://127.0.0.1:5189/.
-This supersedes the earlier three-column portrait opening.
+Verified 23 September 2026 using the compiled local preview at http://127.0.0.1:5189/.
 
-## Composition
+## Scope
 
-The opening now uses a restrained DM Sans introduction and one substantial real CharGen product preview. The floating cutout, generic slogan, condensed blue/orange title, skewed project cards and pointer tilt were removed. The portrait appears only in About. LOAF remains directly accessible as a smaller opening-footer link, while the custom artwork tour remains available below.
+The user clarified that their criticism concerned the abruptly cut portrait, not the colours or playful identity. The intervening editorial redesign has been reversed. Relative to approved commit 13ebb9f, implementation changes are limited to the hero portrait markup, frame CSS and portraitDepth() in the existing Motion controller, plus the generated bundle and social preview.
 
-The title and copy stay stationary from first render. The only opening motion is a user-triggered 240ms crossfade between Writing and Review screenshots. Both images render during the transition; only the selected panel is exposed to assistive technology. Tab focus has an inset pale outline that is visible inside the clipped image container.
+Original blue/orange Anton type, introductory copy, illustrated CharGen and LOAF panels, About copy, contact treatment and Three.js tour are restored. The supplied CV, Hotmail contact, accurate CharGen description and small Runbook placement remain intact. Dropping text and split-character entrances remain absent.
 
-## Responsive evidence
+## Portrait correction
 
-Codex in-app browser, CSS pixels. Every row passed zero horizontal overflow, no intersection between the introduction and product preview or between the name and introductory copy, and no name overflow outside the introduction. The image aspect ratio stays 1.822 (1720/944).
+The portrait sits in a curved blue window, with an orange backing and raised front rim. Its image extends beyond the lower mask edge; the hard torso cut is concealed. Existing grid tracks remain separate, and the figure has explicit width so the absolutely positioned layers retain a visible size on tablet and phone.
 
-| Viewport | Opening height | Result |
-| --- | ---: | --- |
-| 320 × 700 | 1057 | Pass |
-| 390 × 844 | 1018 | Pass |
-| 660 × 780 | 1060 | Pass |
-| 768 × 1024 | 1060 | Pass |
-| 900 × 900 | 1135 | Pass |
-| 901 × 900 | 900 | Pass |
-| 1024 × 768 | 768 | Pass |
-| 1280 × 720 | 740 | Pass |
-| 1440 × 900 | 900 | Pass |
-| 1920 × 1080 | 1080 | Pass |
-| 1280 × 500 | 740 | Pass |
+On a fine pointer, Motion springs rotate the frame and shift the image within it. Coordinates are clamped and transforms remain small. Pointer leave/cancel returns the layers to rest. Motion off destroys spring values and listeners and removes inline transforms; the static frame remains. Touch and reduced-motion settings use that same static composition.
 
-The opening fits a normal tall desktop viewport. Narrow and short windows scroll rather than compressing content. Actual screenshots were inspected at 390, 660 and 1440px widths; the mobile tour, About, experiments and footer, and both desktop tour chapters were also inspected. The task outputs include editorial-desktop.png, editorial-mobile.png, editorial-tablet.png and editorial-geometry.json.
+## Browser validation
 
-## Interaction checks
+All twelve sizes passed: no horizontal overflow, no name/portrait or portrait/introduction intersections, surname within its column, a non-zero portrait width, clipped image overflow, and the photo's straight bottom edge below the visible window.
 
-- Clicking Writing / Review preserves the preview dimensions. ArrowLeft and ArrowRight wrap; Home and End select the first and last view. Tab enters the selected panel, with the other panel hidden and inert.
-- Crossfade DOM inspection confirmed both panels rendered simultaneously, the incoming image above the outgoing image, and the outgoing image hidden after completion.
-- Motion off removes the WebGL canvas and cinematic layout, clears hidden/inert tour scenes, and switches product previews immediately. Motion on restores the tour.
-- Desktop Three.js rendering and both chapter links work. The sketch slider's Home / End values are 0 / 100 after navigation settles. The manually chosen value remains stable.
-- Mobile and short windows use ordinary scroll sections. About navigation, download links, experiment rows and contact layout remain readable.
-- The name and body copy have no entrance animation or character splitting. Runbook is not featured in the opening or tour.
-- Website mail links retain nikitavorontsov@hotmail.com. Both CV links retain their native download attribute.
-- The unchanged supplied PDF has SHA-256 df6624859d40cb751950929ec04efee67c2a6c7d29288947082f067b5e708275. Independent review verified byte identity.
-- No errors or warnings appeared in the compiled preview's browser console.
+| Viewport | Opening height | Portrait width |
+| --- | ---: | ---: |
+| 320 × 667 | 968 | 104 |
+| 390 × 844 | 958 | 104 |
+| 660 × 800 | 912 | 229 |
+| 760 × 700 | 953 | 268 |
+| 768 × 1024 | 1024 | 258 |
+| 1000 × 800 | 984 | 300 |
+| 1001 × 800 | 800 | 238 |
+| 1024 × 768 | 768 | 243 |
+| 1280 × 720 | 720 | 304 |
+| 1440 × 900 | 900 | 342 |
+| 1920 × 1080 | 1080 | 456 |
+| 1024 × 500 | 648 | 243 |
 
-## Build and review
+Actual screenshots were inspected at desktop 1440px, tablet 660px and mobile 390px. The opening still fits one normal desktop viewport; small and short windows scroll naturally. Evidence is saved in the task outputs as playful-portrait-desktop.png, playful-portrait-tablet.png, playful-portrait-mobile.png and playful-portrait-geometry.json.
 
-- Production build passes. Initial enhancement: 56.12kB gzip; deferred Three.js bundle: 141.91kB gzip.
-- 242 existing site tests pass and 57 homepage local references resolve.
-- Independent scoped code review found two issues: a fade-in instead of a crossfade, and a clipped tabpanel focus outline. Both were corrected and verified in the browser. The reviewer confirmed crossfade cancellation and rapid selection handling.
-- No new production dependency was added. Two small first-party product screenshots replace the illustrative project cards in the opening. Asset provenance and current library use are documented without claiming removed React Bits adaptations remain active.
+Pointer input was exercised in the browser: the frame produced a 3D rotation matrix and the photo a separate translation. Motion off cleared both and both project-tile transforms. The desktop tour renders a WebGL canvas and chapter navigation reaches CharGen and LOAF; scene copy remains stationary rather than dropping into place.
+
+## Source, tests and review
+
+- src/home.mjs, src/world.mjs, vite.config.mjs and package.json are byte-identical to approved commit 13ebb9f. Existing focus transfer, resize/toggle scene preservation, asynchronous renderer disposal, context-loss fallback and hash navigation are preserved.
+- The CV matches the original PDF byte-for-byte, SHA-256 df6624859d40cb751950929ec04efee67c2a6c7d29288947082f067b5e708275.
+- Independent scoped review found no high-confidence introduced lifecycle, Motion-off, pointer-range or source-preservation issue.
+- Production build, all 242 site tests and 57 local-reference checks pass. Initial enhancement bundle: 64.18kB gzip; deferred Three.js bundle: 141.91kB gzip.
+- No new production dependencies or generated images were needed. Reference provenance identifies the active React Bits adaptation, Motion usage and original portrait work.
 
 ## Limits
 
-These results cover the local compiled build, not a physical-device or cross-browser certification. OS-level reduced-motion emulation, forced GPU-context loss and a browser-wide JavaScript-disable run were not available; those static fallbacks were reviewed in code. Motion off and mobile/short-window modes were exercised.
+This is browser and source verification, not a physical-device or cross-browser certification. OS-level reduced-motion emulation and forced GPU-context loss were unavailable; their existing paths were reviewed. Motion off was exercised directly.
 
-The unchanged legacy release-check.mjs contains a whitespace-sensitive LOAF canonical assertion that already fails on the baseline's multiline tag. The actual canonical and routes were verified separately during the previous release. This unrelated checker remains unchanged.
-
-Publication and exact public-file verification are recorded separately in the task's delivery notes.
+The unrelated legacy release-check.mjs has a whitespace-sensitive LOAF canonical assertion already failing on the baseline's multiline tag; it remains unchanged. Public deployment and exact resource verification are recorded separately in the task's release notes.
