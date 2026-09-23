@@ -23,8 +23,11 @@ two-chapter scroll sequence and motion preferences. WebGL is loaded near the tou
 on larger screens. Mobile, reduced-motion and failed-WebGL paths keep ordinary
 images and real links. Fonts, icons, artwork and compiled scripts are local.
 
-See [reference provenance](docs/reference-provenance.md) for exact React Bits
-sources, adaptations and Motion usage, and [design QA](design-qa.md) for validation.
+`src/project-preview.mjs` controls the manual Writing / Review product views.
+The opening uses actual public CharGen screenshots; the generated artwork stays
+in the scroll tour. See [reference provenance](docs/reference-provenance.md) for
+active Motion usage, removed experiments and image sources, and
+[design QA](design-qa.md) for validation.
 
 Generated image originals can be exported using:
 `node scripts/prepare-home-assets.mjs /path/to/originals`.

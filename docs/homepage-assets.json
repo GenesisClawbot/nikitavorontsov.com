@@ -57,5 +57,31 @@
     }
   ],
   "exports": "scripts/prepare-home-assets.mjs",
-  "portrait_source": "portfolio-preview/portrait.png"
+  "portrait_source": "portfolio-preview/portrait.png",
+  "public_product_screenshots": [
+    {
+      "asset": "assets/home/chargen-studio.webp",
+      "retrieved": "2026-09-23",
+      "source_page": "https://char-gen.com/campaign-studio",
+      "source_url": "https://char-gen.com/landing/campaign-studio/studio-writing.webp",
+      "dimensions": [
+        1720,
+        944
+      ],
+      "transformation": "Unchanged public first-party WebP",
+      "sha256": "4c325a2c76398f54bd38795e0d3304c78351455207fb856192468415ee26d069"
+    },
+    {
+      "asset": "assets/home/chargen-review.webp",
+      "retrieved": "2026-09-23",
+      "source_page": "https://char-gen.com/campaign-studio",
+      "source_url": "https://char-gen.com/landing/campaign-studio/studio-review.webp",
+      "dimensions": [
+        1720,
+        944
+      ],
+      "transformation": "Unchanged public first-party WebP",
+      "sha256": "8128bcfb050d0762c8d973bdb510a84d99884a6dac65f861b18c0bc63ae3cccf"
+    }
+  ]
 }

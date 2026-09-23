@@ -1,6 +1,6 @@
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { createReferenceMotion } from "./reference-motion.mjs";
+import { createProjectPreview } from "./project-preview.mjs";
 
 gsap.registerPlugin(ScrollTrigger);
 const journey = document.querySelector(".journey");
@@ -27,7 +27,7 @@ let world;
 let worldLoading = false;
 let worldVersion = 0;
 let observedChapter = -1;
-const referenceMotion = createReferenceMotion();
+const projectPreview = createProjectPreview();
 let manualPaint = null;
 let preloadObserver;
 const state = { from: 0, to: 0, mix: 0, paint: 1, progress: 0 };
@@ -157,7 +157,7 @@ function setupMotion() {
   chapters.forEach((link) => link.removeAttribute("aria-current"));
   observedChapter = -1;
   updateButtons();
-  referenceMotion.setEnabled(motionEnabled);
+  projectPreview.setEnabled(motionEnabled);
   if (motionEnabled && desktop.matches) {
     journey.classList.add("cinematic");
     timeline = ScrollTrigger.create({
@@ -245,7 +245,7 @@ window.addEventListener(
   "pagehide",
   () => {
     worldVersion++;
-    referenceMotion.dispose();
+    projectPreview.dispose();
     window.removeEventListener("hashchange", resolveChapterHash);
     preloadObserver?.disconnect();
     timeline?.kill();
