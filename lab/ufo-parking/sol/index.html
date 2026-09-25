@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#090e22">
+  <title>UFO Valet — Night Shift</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="game" aria-label="UFO Valet one-button parking game">
+    <canvas id="gameCanvas" aria-label="3D rooftop landing zone"></canvas>
+    <div class="screen-grain" aria-hidden="true"></div>
+    <div class="vignette" aria-hidden="true"></div>
+    <div id="flash" aria-hidden="true"></div>
+
+    <header class="topbar">
+      <div class="brand"><span class="brand-icon" aria-hidden="true">✦</span><span>UFO<span class="brand-light">/</span>VALET<small>NIGHT SHIFT · SECTOR 07</small></span></div>
+      <div class="jobs" aria-label="Parking bays completed"><div class="hud-caption">PARKING CONTRACT</div><div id="jobDots" class="job-dots"></div></div>
+      <div id="timerBox" class="timer-box"><span class="hud-caption">TIME LEFT</span><span id="timer">0:52</span></div>
+    </header>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <div class="bottom-ui">
+      <div class="control-hint"><span class="hint-index">01 / FLIGHT MANUAL</span><strong>HOLD</strong> to brake + descend<br><strong>RELEASE</strong> to glide + climb</div>
+      <div class="button-wrap">
+        <button id="holdBtn" class="hold-button" type="button" aria-label="Hold to brake and descend">
+          <span class="button-icon" aria-hidden="true">↓</span>
+          <span class="button-text">HOLD TO LAND</span>
+        </button>
+        <div class="button-subtitle">SPACE · CLICK · TOUCH</div>
+      </div>
+      <div id="guidance" class="guidance" aria-live="off">
+        <div class="guidance-top"><span>LANDING COMPUTER</span><span id="rangeText">STANDBY</span></div>
+        <div id="guideText" class="guide-text">AWAITING PILOT</div>
+        <div class="meter"><div id="meterFill" class="meter-fill"></div><span class="meter-center"></span></div>
+        <div id="guideDetail" class="guide-detail">Line up with the glowing bay</div>
+      </div>
+    </div>
+
+    <div id="overlay" class="overlay">
+      <div class="intro-card">
+        <div class="card-top"><span class="live-dot"></span><span>INCOMING CONTRACT</span><span class="card-top-right">VOL. 01 / NIGHT</span></div>
+        <div class="card-art" aria-hidden="true"><div class="art-stars">✧ &nbsp; · &nbsp; ✦ &nbsp; · &nbsp; ✧</div><div class="art-ufo"><div class="art-dome"></div><div class="art-saucer"></div><div class="art-beam"></div></div><div class="art-pad"></div></div>
+        <div id="overlayEyebrow" class="eyebrow">ONE BUTTON · SIX LANDINGS · ONE NIGHT</div>
+        <h1 id="overlayTitle">THE NIGHT<br><em>SHIFT.</em></h1>
+        <p id="overlayDescription">Park your little UFO in six rooftop bays before the clock runs out. <b>Hold</b> to slow down and descend. <b>Release</b> to fly on and climb. Time your approach!</p>
+        <button id="startBtn" type="button" class="start-button"><span id="startLabel">START SHIFT</span><span aria-hidden="true">↗</span></button>
+        <div class="card-footer"><span>SPACE / ENTER TO START</span><span>★ ★ ★ ★ ★ ★</span></div>
+      </div>
+    </div>
+  </main>
+  <script src="three.global.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

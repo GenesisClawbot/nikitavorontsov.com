@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Three coding models made the same tiny UFO parking game. Play each version and read the actual OpenRouter run notes.">
+  <link rel="canonical" href="https://nikitavorontsov.com/lab/ufo-parking/">
+  <meta name="theme-color" content="#f3efe7">
+  <title>Three models, one UFO parking game · Nikita Vorontsov</title>
+  <style>
+    :root{color:#202923;background:#f3efe7;font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}*{box-sizing:border-box}body{margin:0}a{color:inherit;text-underline-offset:4px}a:focus-visible{outline:3px solid #b95c36;outline-offset:4px}main{max-width:1280px;margin:auto;padding:24px clamp(20px,5vw,72px) 88px}.top{display:flex;justify-content:space-between;gap:20px;border-bottom:1px solid #c8c5b9;padding-bottom:18px;font-size:.9rem}.top a{text-decoration:none}.top strong{font-weight:700}.top nav{display:flex;gap:20px}.intro{max-width:920px;padding:72px 0 54px}.kicker{margin:0 0 16px;color:#8e4b2f;font-size:.74rem;font-weight:750;letter-spacing:.14em;text-transform:uppercase}.intro h1{font:500 clamp(3rem,8vw,7.2rem)/.92 Georgia,"Times New Roman",serif;letter-spacing:-.07em;margin:0 0 28px}.intro p{color:#4c5a50;font-size:clamp(1.1rem,2vw,1.35rem);max-width:60ch;margin:0}.intro p+p{margin-top:17px;font-size:1rem;max-width:68ch}.games-head{border-top:1px solid #aaa99c;padding-top:14px;display:flex;justify-content:space-between;gap:20px;align-items:baseline;margin-bottom:22px}.games-head h2{font-size:1.05rem;margin:0}.games-head p{color:#687269;font-size:.84rem;margin:0}.games{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.game{display:flex;flex-direction:column;min-height:350px;padding:23px;background:#fff;border:1px solid #d2d0c7;text-decoration:none;transition:transform .2s,border-color .2s}.game:hover{transform:translateY(-4px);border-color:#55755d}.game .num{color:#8e4b2f;font-size:.73rem;font-weight:750;letter-spacing:.1em}.game h3{font:500 clamp(1.65rem,3vw,2.4rem)/1.05 Georgia,serif;letter-spacing:-.04em;margin:50px 0 12px}.game p{color:#58655b;margin:0 0 28px}.game .play{margin-top:auto;color:#8e4b2f;font-size:.82rem;font-weight:750;letter-spacing:.1em;text-transform:uppercase}.notes{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(280px,.95fr);gap:clamp(28px,7vw,100px);border-top:1px solid #aaa99c;margin-top:72px;padding-top:42px}.notes h2{font:500 clamp(2.1rem,4vw,3.4rem)/1.05 Georgia,serif;letter-spacing:-.05em;margin:0 0 18px}.notes p{color:#4f5e54;max-width:66ch}.notes code{font-size:.9em}.table{border-top:1px solid #bbb9ae}.row{display:grid;grid-template-columns:1fr auto;gap:20px;border-bottom:1px solid #d0cdc2;padding:13px 0}.row dt{font-weight:700}.row dd{margin:0;text-align:right;color:#5b675e}.fine{font-size:.86rem;color:#69756b}.footer{border-top:1px solid #aaa99c;margin-top:66px;padding-top:19px;color:#68736a;font-size:.87rem}@media(max-width:820px){.intro{padding-top:48px}.games,.notes{grid-template-columns:1fr}.game h3{margin-top:34px}.games-head{align-items:flex-start;flex-direction:column;gap:4px}}
+  </style>
+</head>
+<body>
+<main>
+  <header class="top"><a href="/" aria-label="Nikita Vorontsov home"><strong>Nikita Vorontsov</strong></a><nav aria-label="Page links"><a href="#games">Games</a><a href="#notes">Notes</a><a href="https://github.com/GenesisClawbot/nikitavorontsov.com">Source ↗</a></nav></header>
+  <section class="intro" aria-labelledby="title">
+    <p class="kicker">A disposable model test · 25 September 2026</p>
+    <h1 id="title">Three models.<br>One UFO.</h1>
+    <p>I gave Claude Opus 5.5, GPT-6 Sol and GPT-6 Luna the same loose brief: make a small one-button UFO parking game in Three.js.</p>
+    <p>They could write files, inspect their own work, run checks and revise it. Here are the games first. The receipts and the slightly messier story are underneath.</p>
+  </section>
+
+  <section id="games" aria-labelledby="games-title">
+    <div class="games-head"><h2 id="games-title">Play the three versions</h2><p>Keyboard and touch · 45–52 second rounds</p></div>
+    <div class="games">
+      <a class="game" href="./opus/"><span class="num">01 / CLAUDE OPUS 5.5</span><h3>Saucer Parking</h3><p>A neon night-shift game with generated music and two spoken clips. This is the one I keep coming back to.</p><span class="play">Play Opus ↗</span></a>
+      <a class="game" href="./sol/"><span class="num">02 / GPT-6 SOL</span><h3>UFO Valet</h3><p>A clean, hand-built night lot with a slightly more structured parking loop and a local landing simulation.</p><span class="play">Play Sol ↗</span></a>
+      <a class="game" href="./luna/"><span class="num">03 / GPT-6 LUNA</span><h3>Soft Landing</h3><p>A softer sci-fi take with a compact interface, code-generated sound and a very readable one-button loop.</p><span class="play">Play Luna ↗</span></a>
+    </div>
+  </section>
+
+  <section class="notes" id="notes" aria-labelledby="notes-title">
+    <div>
+      <p class="kicker">What I actually did</p>
+      <h2 id="notes-title">The boring bits are useful.</h2>
+      <p>Each run started with the same bundled Three.js file, the same short brief, the same thirteen tools, xhigh reasoning and a 128,000-token output ceiling. The model could use a writable project folder. The shell ran in a network-disabled Node container. A separate package installer was available if a model chose to use it.</p>
+      <p>Media tools were optional. None of the three asked for image, SFX, video or Blender output. Opus made one music loop and two voice clips. Its two extra voice requests were rejected by the per-run call limit. Sol and Luna made their visuals and sounds in code.</p>
+      <p class="fine">The checks cover file references, JavaScript syntax, Three.js loading and keyboard/pointer handlers. They do not prove WebGL rendering, accessibility or game feel. This is one run per model, so I am not calling a winner from it.</p>
+    </div>
+    <div>
+      <dl class="table">
+        <div class="row"><dt>Opus 5.5</dt><dd>6 replies · $4.117928</dd></div>
+        <div class="row"><dt>GPT-6 Sol</dt><dd>15 replies · $0.521715</dd></div>
+        <div class="row"><dt>GPT-6 Luna</dt><dd>8 replies · $0.025479</dd></div>
+        <div class="row"><dt>WaveSpeed</dt><dd>$0.009 estimated</dd></div>
+        <div class="row"><dt>Fresh total</dt><dd>$4.665121 OpenRouter</dd></div>
+      </dl>
+      <p class="fine">Opus stopped at the harness reserve after writing its game. The independent shared check passed after the checker accepted its `window.THREE` alias. Sol and Luna called the check themselves and finished.</p>
+      <p><a href="https://github.com/GenesisClawbot/nikitavorontsov.com/tree/main/lab/ufo-parking">Open the hosted files ↗</a></p>
+    </div>
+  </section>
+  <footer class="footer">A small experiment from Nikita's engineering journal. <a href="/">Back to the portfolio</a> · <a href="mailto:nikitavorontsov@hotmail.com">Contact</a></footer>
+</main>
+</body>
+</html>
