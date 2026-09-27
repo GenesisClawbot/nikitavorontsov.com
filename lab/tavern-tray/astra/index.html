@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#172e30">
+  <meta name="description" content="Three enchanted drinks. One crowded fantasy tavern. A one-button game about keeping it together.">
+  <title>Mind the Pints — The Crooked Wyvern</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="game" aria-label="Mind the Pints, a one-button tavern game">
+    <canvas id="scene" aria-label="A crowded, magical tavern. Hold Space or the screen to steady three drinks; release to hurry."></canvas>
+    <div class="vignette" aria-hidden="true"></div>
+    <div id="impact" aria-hidden="true"></div>
+
+    <header class="masthead">
+      <div class="brand">
+        <svg class="crest" viewBox="0 0 44 48" aria-hidden="true"><path d="M4 4h36v22c0 10-18 18-18 18S4 36 4 26Z" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="m11 29 7-15 7 3 6-6-2 11 5 6-11-3-7 9m6-18-1-8 8 6M12 34h21" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="25" cy="17" r="1.2" fill="currentColor"/></svg>
+        <div><span class="pub-name">THE CROOKED WYVERN</span><span class="brand-sub">A MOST DELICATE DELIVERY</span></div>
+      </div>
+      <div class="route hud-only" aria-label="Delivery progress">
+        <div class="route-label"><span>THE BAR</span><span>TABLE 13 <b>✦</b></span></div>
+        <div class="route-track"><div id="route-fill"></div><i id="route-dot"></i></div>
+      </div>
+      <div class="header-right">
+        <div id="clock" class="clock hud-only"><span>LAST CALL</span><strong id="time">0:45</strong></div>
+        <button id="sound" class="sound" type="button" data-no-play aria-label="Mute sound" title="Sound on / off">
+          <svg id="sound-on" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4Z" fill="currentColor"/><path d="M16 8c3 2 3 6 0 8m3-11c5 4 5 10 0 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          <svg id="sound-off" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9h4l5-4v14l-5-4H4Z" fill="currentColor"/><path d="m17 9 5 6m0-6-5 6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section id="intro" class="intro">
+      <div class="intro-copy">
+        <p class="eyebrow"><span>✦</span> ONE BUTTON. THREE NERVOUS DRINKS.</p>
+        <h1>Mind the<br><em>pints.</em><span class="title-dot">✦</span></h1>
+        <p class="intro-text">Three enchanted drinks.<br>One very crowded tavern.<br><span>Get them to Table 13 before last call.</span></p>
+        <div class="how-to"><span class="keycap">SPACE</span><span><b>Hold</b> to steady. <b>Release</b> to hurry.<small>On a phone? Just hold the screen.</small></span></div>
+        <button id="start" class="gold-button" type="button">ON MY WAY <span>↗</span></button>
+        <p class="start-note">45 SECONDS &nbsp;·&nbsp; NOT A DROP TO WASTE</p>
+      </div>
+      <div class="intro-aside" aria-hidden="true"><span class="aside-star">✧</span> They are taking this<br><em>very personally.</em><svg viewBox="0 0 100 80"><path d="M10 5Q95 5 67 66m-9-14 9 16 16-9" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+      <div class="house-footer">EST. 1386 <span>GOOD ALE. QUESTIONABLE FLOORPLAN.</span></div>
+    </section>
+
+    <div id="play-ui" aria-live="off">
+      <div id="combo" class="combo"><span id="combo-number">2</span> CLEAN PASSES</div>
+      <div id="toast" class="toast"><span id="toast-icon">✦</span><span id="toast-text"></span></div>
+      <div id="warning" class="warning"><span class="warning-mark">!</span><span id="warning-text">ELBOWS AHEAD</span></div>
+      <div class="carry-control" id="carry-control">
+        <div class="control-meter"><i></i><i></i><i></i></div>
+        <span class="control-state" id="control-state">HUSTLING</span>
+        <span class="control-divider"></span>
+        <span class="control-instruction"><span class="desktop-word">HOLD <kbd>SPACE</kbd></span><span class="touch-word">HOLD SCREEN</span> TO STEADY</span>
+      </div>
+      <p id="first-tip" class="first-tip">Easy through the crowd. Quick on the clear floor.</p>
+    </div>
+
+    <section id="result" class="result" hidden aria-label="Round result">
+      <div class="receipt">
+        <div class="receipt-top"><span>THE CROOKED WYVERN</span><span>№ 013</span></div>
+        <div id="result-stars" class="result-stars">✦ ✦ ✦</div>
+        <p id="result-kicker" class="eyebrow">DELIVERY COMPLETE</p>
+        <h2 id="result-title">A liquid<br>legend.</h2>
+        <p id="result-description" class="result-description">Three drinks. Still on speaking terms.</p>
+        <div class="served-row" id="served-row">
+          <div><svg viewBox="0 0 32 38" aria-hidden="true"><path class="glass-fill amber" id="fill-icon-0" d="M7 10h16v23H7Z"/><path d="M6 5h18v29H6Zm18 5h6v15h-6" fill="none" stroke="currentColor" stroke-width="2"/></svg><span id="amount-0">100%</span><small>SUN ALE</small></div>
+          <div><svg viewBox="0 0 32 38" aria-hidden="true"><path class="glass-fill mint" id="fill-icon-1" d="M7 10h16v23H7Z"/><path d="M6 5h18v29H6Zm18 5h6v15h-6" fill="none" stroke="currentColor" stroke-width="2"/></svg><span id="amount-1">100%</span><small>HEX FIZZ</small></div>
+          <div><svg viewBox="0 0 32 38" aria-hidden="true"><path class="glass-fill berry" id="fill-icon-2" d="M7 10h16v23H7Z"/><path d="M6 5h18v29H6Zm18 5h6v15h-6" fill="none" stroke="currentColor" stroke-width="2"/></svg><span id="amount-2">100%</span><small>BERRY BITE</small></div>
+        </div>
+        <div class="bill-line"><span>HOUSE TIP</span><i></i><strong id="score">2,400</strong><span class="coin">✧</span></div>
+        <div class="bill-line best-line"><span id="best-label">BEST SHIFT</span><i></i><strong id="best">2,400</strong></div>
+        <button id="again" class="gold-button" type="button">ANOTHER ROUND <span>↻</span></button>
+        <p class="replay-note">SPACE OR TAP &nbsp;·&nbsp; A NEW CROWD EVERY ROUND</p>
+      </div>
+    </section>
+    <div id="loading"><span class="loading-mark">✦</span><span>WARMING THE HEARTH…</span></div>
+    <div id="error" hidden><h2>The tavern needs a little magic.</h2><p>Please enable WebGL in a modern browser, then reload.</p></div>
+  </main>
+  <script src="three.global.js"></script>
+  <script src="core.js"></script>
+  <script src="tavern.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

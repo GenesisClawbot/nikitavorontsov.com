@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#2b170e">
+<title>Tipsy Tray — a one-button tavern dash</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="app">
+  <canvas id="scene"></canvas>
+  <div id="grade"></div>
+  <div id="flash"></div>
+  <div id="pops"></div>
+
+  <!-- in-game HUD -->
+  <div id="hud" class="hidden">
+    <div id="drinks">
+      <div class="dm" data-id="wine" title="Moonberry Wine">
+        <svg viewBox="0 0 40 52" aria-hidden="true">
+          <defs><clipPath id="cWine"><path d="M7 5 H33 L27.5 25 Q20 30.5 12.5 25 Z"/></clipPath></defs>
+          <g clip-path="url(#cWine)"><rect class="fill" x="0" y="5" width="40" height="25" fill="#e0408a"/></g>
+          <path class="ink" d="M7 5 H33 L27.5 25 Q20 30.5 12.5 25 Z M20 28.5 V44 M12 46.5 H28"/>
+          <path class="shine" d="M11 8 L14 21"/>
+        </svg>
+        <div class="pct">100%</div>
+      </div>
+      <div class="dm" data-id="ale" title="Frothy Ale">
+        <svg viewBox="0 0 44 52" aria-hidden="true">
+          <defs><clipPath id="cAle"><rect x="7" y="7" width="23" height="39" rx="3"/></clipPath></defs>
+          <g clip-path="url(#cAle)"><rect class="fill" x="0" y="7" width="44" height="39" fill="#f2a531"/></g>
+          <rect class="ink" x="7" y="7" width="23" height="39" rx="3"/>
+          <path class="ink" d="M30 14 H35.5 Q39.5 14 39.5 18 V31 Q39.5 35 35.5 35 H30"/>
+          <path class="shine" d="M11 11 V38"/>
+        </svg>
+        <div class="pct">100%</div>
+      </div>
+      <div class="dm" data-id="fizz" title="Pixie Fizz">
+        <svg viewBox="0 0 40 52" aria-hidden="true">
+          <defs><clipPath id="cFizz"><path d="M16 5 H24 V15 L35.5 43.5 Q37 47.5 32.5 47.5 H7.5 Q3 47.5 4.5 43.5 L16 15 Z"/></clipPath></defs>
+          <g clip-path="url(#cFizz)"><rect class="fill" x="0" y="5" width="40" height="43" fill="#34dcc8"/></g>
+          <path class="ink" d="M16 5 H24 V15 L35.5 43.5 Q37 47.5 32.5 47.5 H7.5 Q3 47.5 4.5 43.5 L16 15 Z M14.5 5 H25.5"/>
+          <path class="shine" d="M13 26 L9 38"/>
+        </svg>
+        <div class="pct">100%</div>
+      </div>
+    </div>
+
+    <div id="timer">
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <circle class="bg" cx="32" cy="32" r="28"/>
+        <circle id="timerRing" class="fg" cx="32" cy="32" r="28"/>
+      </svg>
+      <div id="timerNum">60</div>
+      <div class="lbl">thirst</div>
+    </div>
+
+    <div id="tips"><span class="coin"></span><span id="tipsNum">0</span></div>
+
+    <div id="progress">
+      <span class="p-lbl">bar</span>
+      <div class="track"><div id="progFill"></div><div id="progGhost"></div><div id="progMe"></div></div>
+      <span class="p-lbl">table</span>
+    </div>
+    <div id="hint"></div>
+  </div>
+
+  <!-- title -->
+  <section id="title" class="screen">
+    <div class="tcard">
+      <div class="emblem"><img src="assets/emblem.webp" alt="" draggable="false"></div>
+      <div class="kicker">The Sloshed Griffin presents</div>
+      <h1 id="logo">Tipsy Tray</h1>
+      <p class="tag">Three drinks. One rowdy tavern. Not a drop to spare.</p>
+      <ul class="howto">
+        <li><b data-verb>hold SPACE</b> to walk</li>
+        <li><b>let go</b> to stop</li>
+        <li>ease in, ease out &mdash; <i>sloshing spills</i></li>
+      </ul>
+      <div class="cta"><span class="key">SPACE</span><span>or touch &amp; hold to start</span></div>
+      <div id="titleBest"></div>
+    </div>
+  </section>
+
+  <!-- results -->
+  <section id="result" class="screen hidden">
+    <div class="receipt">
+      <div class="rtop">The Sloshed Griffin</div>
+      <div id="rHead" class="rhead">Order delivered!</div>
+      <div class="rsub">Table by the fire &middot; 3 drinks</div>
+      <div id="rLines" class="lines"></div>
+      <div class="rtotal"><span>Tips</span><span><span id="rTotal">0</span> <span class="mini-coin"></span></span></div>
+      <div id="rStamp" class="stamp"></div>
+      <div id="rBest" class="rbest"></div>
+      <div id="rNext" class="rnext"></div>
+    </div>
+    <div class="again"><span class="key">SPACE</span><span>or tap to serve again</span></div>
+  </section>
+
+  <div id="corner">
+    <button id="restartBtn" type="button" title="Restart (R)" aria-label="Restart">
+      <svg viewBox="0 0 24 24"><path d="M19 12a7 7 0 1 1-2.05-4.95" /><path d="M19 4v4.5h-4.5" /></svg>
+    </button>
+    <button id="muteBtn" type="button" title="Sound (M)" aria-label="Toggle sound">
+      <svg viewBox="0 0 24 24"><path class="spk" d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" /><path class="wave" d="M15.5 9a4 4 0 0 1 0 6M18 6.5a7.5 7.5 0 0 1 0 11" /><path class="cross" d="M15.5 9.5l5 5M20.5 9.5l-5 5" /></svg>
+    </button>
+  </div>
+
+  <div id="loading"><div class="ld-mug"></div><div>Wiping the tables&hellip;</div></div>
+  <div id="nogl">This game needs WebGL. Try a recent Chrome, Firefox, Edge or Safari.</div>
+</div>
+
+<script src="three.global.js"></script>
+<script src="js/core.js"></script>
+<script src="js/audio-data.js"></script>
+<script src="js/sim.js"></script>
+<script src="js/path.js"></script>
+<script src="js/gfx.js"></script>
+<script src="js/characters.js"></script>
+<script src="js/drinks.js"></script>
+<script src="js/hazards.js"></script>
+<script src="js/world.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

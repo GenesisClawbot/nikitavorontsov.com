@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#211524">
+  <meta name="description" content="Three drinks. One very crowded fantasy tavern. Hold to brace the tray; let go to recover.">
+  <title>Three for the Road — The Tipsy Griffin</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main id="app" aria-label="Three for the Road, a one-button tavern tray-balancing game">
+    <div id="world" aria-hidden="true"></div>
+    <div class="screen-shading" aria-hidden="true"></div>
+    <div id="flash" aria-hidden="true"></div>
+
+    <div id="hud" class="hud hidden" aria-live="off">
+      <div class="hud-time">
+        <span class="hud-eyebrow">✦ &nbsp;THE TIPSY GRIFFIN</span>
+        <div class="timer-line"><span id="clock">0:44</span><span class="timer-label">UNTIL<br>LAST CALL</span></div>
+      </div>
+      <div class="hud-route" aria-label="Journey progress">
+        <div class="route-ends"><span>THE BAR</span><span>TABLE THREE ✦</span></div>
+        <div class="route-track"><span id="route-fill"></span><span id="route-marker">◆</span></div>
+      </div>
+      <div class="hud-drinks" aria-label="Three drink levels">
+        <span class="drink-label">YOUR PRECIOUS CARGO</span>
+        <div class="mini-drinks">
+          <div class="mini-cup amber"><span class="mini-liquid" id="mini-0"></span></div>
+          <div class="mini-cup berry"><span class="mini-liquid" id="mini-1"></span></div>
+          <div class="mini-cup mint"><span class="mini-liquid" id="mini-2"></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="threat" class="threat hidden" aria-live="polite">
+      <span id="threat-arrow" class="threat-arrow">←</span>
+      <div class="threat-copy">
+        <span class="threat-kicker">HEADS UP!</span>
+        <strong id="threat-name">COMING THROUGH</strong>
+        <div class="threat-track"><span id="threat-fill"></span></div>
+      </div>
+    </div>
+
+    <div id="callout" class="callout" aria-live="polite">
+      <strong id="callout-main">PERFECT CATCH!</strong>
+      <span id="callout-sub">THE CROWD APPROVES</span>
+    </div>
+
+    <div id="bottom-hud" class="bottom-hud hidden">
+      <div class="grip-head"><span class="grip-icon">✥</span><span>YOUR GRIP</span><span id="grip-status">RELEASE TO RECHARGE</span></div>
+      <div class="grip-bar"><div id="grip-fill"></div><div class="grip-ticks"></div></div>
+    </div>
+    <div id="play-hint" class="play-hint hidden">HOLD TO BRACE <span>✦</span> RELEASE TO REST</div>
+    <div id="combo" class="combo hidden"><span>FLAWLESS STREAK</span><strong id="combo-number">×2</strong></div>
+
+    <section id="intro" class="overlay intro" aria-label="Game instructions">
+      <div class="overlay-content">
+        <div class="tavern-stamp"><span class="stamp-star">✦</span> THE TIPSY GRIFFIN <span class="stamp-star">✦</span></div>
+        <p class="overline">A VERY IMPORTANT DELIVERY</p>
+        <h1>Three <em>for</em><br>the Road<span class="title-spark">✳</span></h1>
+        <p class="lead">Three enchanted drinks. One crowded tavern.<br>Forty-four seconds of extremely questionable balance.</p>
+        <div class="how-to">
+          <div><span class="how-symbol">↓</span><p><strong>HOLD SPACE / THE SCREEN</strong><br>Brace the tray when the crowd barrels in.</p></div>
+          <div><span class="how-symbol">↑</span><p><strong>LET GO BETWEEN BUMPS</strong><br>Rest your arms. Save your grip for the good bits.</p></div>
+        </div>
+        <div class="start-cta"><span class="cta-diamond">◆</span><span>PRESS SPACE OR TOUCH TO BEGIN</span><span class="cta-arrow">↗</span></div>
+        <p class="fine-print">TIME IT JUST RIGHT FOR A PERFECT CATCH &nbsp;✦&nbsp; ONE BUTTON, THREE DRINKS, NO EXCUSES</p>
+      </div>
+      <div class="intro-corner">EST. AN UNREASONABLY LATE HOUR <span>✶</span> 01 / 03</div>
+    </section>
+
+    <section id="ending" class="overlay ending hidden" aria-label="Round result" aria-live="polite">
+      <div class="overlay-content">
+        <div class="tavern-stamp"><span class="stamp-star">✦</span> THE TIPSY GRIFFIN <span class="stamp-star">✦</span></div>
+        <p class="overline" id="end-kicker">THE ORDER IS IN</p>
+        <h2 id="end-title">A LEGEND IS POURED.</h2>
+        <div class="result-line"><strong id="result-number">87<span>%</span></strong><div class="result-caption">OF YOUR THREE<br>DRINKS DELIVERED</div></div>
+        <div class="result-rule"></div>
+        <p id="end-description" class="end-description">The crowd raises a cheer. And so do the drinks.</p>
+        <div class="end-stats"><span id="end-catches">0 perfect catches</span><span class="end-stat-separator">✦</span><span id="end-best">BEST 0%</span></div>
+        <div class="start-cta again"><span class="cta-diamond">◆</span><span>SPACE OR TOUCH FOR ANOTHER ROUND</span><span class="cta-arrow">↗</span></div>
+        <p class="fine-print">SAME TAVERN. NEW TROUBLE. &nbsp;✦&nbsp; YOU KNOW YOU CAN DO BETTER.</p>
+      </div>
+      <div class="intro-corner">THANK YOU FOR NOT DROPPING THE TRAY <span>✶</span> TABLE 03</div>
+    </section>
+    <div id="fallback" class="fallback" hidden>This tavern needs WebGL to open. Please try a browser with 3D graphics enabled.</div>
+  </main>
+  <script src="./three.global.js"></script>
+  <script src="./game.js"></script>
+</body>
+</html>

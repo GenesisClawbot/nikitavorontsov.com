@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#20161a">
+  <title>Hold Your Ale — The Gilded Goose</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <main id="game-shell" aria-label="Hold Your Ale game">
+    <canvas id="game-canvas" aria-label="A busy fantasy tavern, seen over a tray of three drinks"></canvas>
+    <div class="vignette" aria-hidden="true"></div>
+    <div id="ui-layer">
+      <header id="hud" class="hidden" aria-label="Delivery progress">
+        <div class="brand-lockup">
+          <span class="brand-seal" aria-hidden="true"><i>✦</i></span>
+          <span class="brand-copy"><b>THE GILDED GOOSE</b><small>ONE LAST DELIVERY</small></span>
+        </div>
+        <div class="route-hud">
+          <div class="route-caption"><span>THE NARROW WAY</span><span id="route-count">0 / 8 THUMPS</span></div>
+          <div class="route-track"><i id="route-fill"></i><div id="route-pips" aria-hidden="true"></div></div>
+        </div>
+        <div class="right-hud">
+          <div class="tip-readout"><span>TIP JAR</span><b id="tip-count">0 <small>cp</small></b></div>
+          <div id="drink-readout" class="drink-readout" aria-label="Three drinks remaining">
+            <span class="mini-pour"><i></i></span><span class="mini-pour"><i></i></span><span class="mini-pour"><i></i></span>
+          </div>
+          <button id="sound-toggle" class="sound-toggle" type="button" aria-label="Mute sound" title="Mute sound">♫</button>
+        </div>
+      </header>
+
+      <section id="event-cue" class="event-cue" aria-live="polite" aria-atomic="true">
+        <div class="cue-rule"><i></i><span id="cue-kicker">IN THE AISLE</span><i></i></div>
+        <h2 id="cue-title">A little trouble…</h2>
+        <p id="cue-copy">Keep your elbows in.</p>
+      </section>
+
+      <div id="grip-hud" class="grip-hud hidden" aria-label="Arm fatigue">
+        <div class="grip-topline"><span class="grip-icon" aria-hidden="true">✳</span><span>FOREARM TENSION</span><b id="grip-word">RESTED</b></div>
+        <div class="grip-track"><i id="grip-fill"></i></div>
+      </div>
+      <div id="brace-prompt" class="brace-prompt hidden" aria-hidden="true">
+        <span class="space-key">SPACE</span>
+        <span class="prompt-copy"><b>HOLD TO BRACE</b><small>LET GO TO REST</small></span>
+        <span class="touch-copy"><b>HOLD SCREEN TO BRACE</b><small>RELEASE BETWEEN JOLTS</small></span>
+      </div>
+
+      <section id="title-screen" class="screen-card-wrap" aria-label="Start game">
+        <div class="menu-card title-card">
+          <div class="card-crest"><span>✦</span> THE GILDED GOOSE <span>✦</span></div>
+          <div class="shift-stamp">THE 11:59 DELIVERY</div>
+          <h1>HOLD YOUR<br><em>ALE</em></h1>
+          <p class="deck">Eight jolts. Three precious drinks.<br>No second pair of hands.</p>
+          <div class="how-to">
+            <div class="how-mark" aria-hidden="true"><span>↕</span><i>✦</i></div>
+            <div><b>Wait for the <strong>THUMP.</strong></b><small>Hold on the bump. Release between jolts to rest your arms.</small></div>
+          </div>
+          <button id="start-button" class="primary-button" type="button">
+            <span>TAKE THE TRAY</span><span class="button-end"><i>SPACE</i><b>↗</b></span>
+          </button>
+          <p class="card-foot">PRESS SPACE OR TAP ANYWHERE TO START</p>
+        </div>
+      </section>
+
+      <section id="result-screen" class="screen-card-wrap hidden" aria-live="polite" aria-label="Shift result">
+        <div class="menu-card result-card">
+          <div id="result-kicker" class="card-crest"><span>✦</span> SHIFT COMPLETE <span>✦</span></div>
+          <div id="result-medal" class="result-medal">A+</div>
+          <h2 id="result-title">A PERFECT POUR.</h2>
+          <p id="result-copy" class="deck">The Goosekeeper is trying not to cry.</p>
+          <div class="result-pours" aria-label="Amount left in each drink">
+            <div class="result-pour"><i><b id="result-fill-0"></b></i><span>AMBER</span></div>
+            <div class="result-pour"><i><b id="result-fill-1"></b></i><span>RUBY</span></div>
+            <div class="result-pour"><i><b id="result-fill-2"></b></i><span>FIZZ</span></div>
+          </div>
+          <div class="result-tip"><span>YOUR TIP</span><b id="result-tip">0 <small>copper</small></b><i id="best-line">BEST SHIFT —</i></div>
+          <button id="again-button" class="primary-button" type="button">
+            <span>RUN IT BACK</span><span class="button-end"><i>SPACE</i><b>↗</b></span>
+          </button>
+          <p class="card-foot">A GOOD SERVER NEVER SAYS “ONE MORE GO”.</p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="./three.global.js"></script>
+  <script src="./game.js"></script>
+</body>
+</html>
