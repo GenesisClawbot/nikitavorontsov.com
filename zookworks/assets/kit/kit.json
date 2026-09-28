@@ -1,0 +1,575 @@
+{
+  "version": 1,
+  "generator": "tools/blender/build_kit.py",
+  "units": "metres",
+  "up": "+Y",
+  "materialSlots": [
+    "shell",
+    "shell2",
+    "accent",
+    "mech",
+    "rubber",
+    "glass",
+    "emissive",
+    "livery"
+  ],
+  "triangleTotal": 26416,
+  "verified": true,
+  "stretchRemap": "Vertices on the stretch axis keep their offset from the nearest end inside the rigid zones (scaled by the thickness factor s); the band is remapped linearly to fill the target length L. Limb-like parts (band y 0.2..0.8): y<0.2 -> y*s; y>0.8 -> L-(1-y)*s; else linear between; x,z *= s. Cores (band x -0.2..0.2): x<-0.2 -> -L/2+(x+0.5)*e; x>0.2 -> L/2-(0.5-x)*e; else linear between; y *= sy, z *= sz; the preview uses e = min(sy, sz). The runtime owns the final choice of s/e.",
+  "uvConvention": "Livery faces: u runs left->right and v bottom->top as seen by a viewer facing the panel from outside (uAxis/vAxis give the object-space directions).",
+  "objects": [
+    {
+      "name": "limb",
+      "triangles": 2804,
+      "bbox": {
+        "min": [
+          -0.13,
+          -0.13,
+          -0.092
+        ],
+        "max": [
+          0.13,
+          1.0,
+          0.092
+        ]
+      },
+      "materials": [
+        "shell",
+        "mech"
+      ],
+      "frame": "Along +Y from joint (y=0) to tip (y=1); cross-section radius 0.1; actuator housing axis +Z at y=0.",
+      "stretch": {
+        "axis": "y",
+        "rigidStart": [
+          -0.13,
+          0.2
+        ],
+        "band": [
+          0.2,
+          0.8
+        ],
+        "rigidEnd": [
+          0.8,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "piston",
+      "triangles": 1936,
+      "bbox": {
+        "min": [
+          -0.1,
+          0.0,
+          -0.1
+        ],
+        "max": [
+          0.1,
+          1.0,
+          0.1
+        ]
+      },
+      "materials": [
+        "mech",
+        "emissive",
+        "rubber",
+        "shell"
+      ],
+      "frame": "Along +Y; sleeve rigid in y<0.2, rod through the band, rubber bumper at y=1.",
+      "stretch": {
+        "axis": "y",
+        "rigidStart": [
+          0.0,
+          0.2
+        ],
+        "band": [
+          0.2,
+          0.8
+        ],
+        "rigidEnd": [
+          0.8,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "horn",
+      "triangles": 450,
+      "bbox": {
+        "min": [
+          -0.0972,
+          0.0,
+          -0.078
+        ],
+        "max": [
+          0.0972,
+          1.0,
+          0.078
+        ]
+      },
+      "materials": [
+        "accent",
+        "mech"
+      ],
+      "frame": "Along +Y; linear taper through the band, point at y=1.",
+      "stretch": {
+        "axis": "y",
+        "rigidStart": [
+          0.0,
+          0.2
+        ],
+        "band": [
+          0.2,
+          0.8
+        ],
+        "rigidEnd": [
+          0.8,
+          1.0
+        ],
+        "taper": "linear"
+      }
+    },
+    {
+      "name": "fin",
+      "triangles": 688,
+      "bbox": {
+        "min": [
+          -0.3,
+          0.0,
+          -0.048
+        ],
+        "max": [
+          0.3,
+          1.0,
+          0.048
+        ]
+      },
+      "materials": [
+        "shell2",
+        "mech"
+      ],
+      "frame": "Along +Y; blade width x +-0.3, thickness z ~+-0.015 (ribs to +-0.021).",
+      "stretch": {
+        "axis": "y",
+        "rigidStart": [
+          0.0,
+          0.2
+        ],
+        "band": [
+          0.2,
+          0.8
+        ],
+        "rigidEnd": [
+          0.8,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "joint",
+      "triangles": 2904,
+      "bbox": {
+        "min": [
+          -1.0,
+          -1.0,
+          -0.35
+        ],
+        "max": [
+          1.0,
+          1.0,
+          0.35
+        ]
+      },
+      "materials": [
+        "mech",
+        "accent",
+        "emissive"
+      ],
+      "frame": "Rotary actuator disc; axis +Z, radius 1, z in [-0.35,0.35]; scale uniformly."
+    },
+    {
+      "name": "wheel",
+      "triangles": 2904,
+      "bbox": {
+        "min": [
+          -0.9973,
+          -0.175,
+          -0.9999
+        ],
+        "max": [
+          0.9981,
+          0.175,
+          0.9982
+        ]
+      },
+      "materials": [
+        "rubber",
+        "mech",
+        "accent",
+        "shell"
+      ],
+      "frame": "Axle +Y, radius 1, width 0.35 (y in [-0.175,0.175])."
+    },
+    {
+      "name": "foot",
+      "triangles": 1172,
+      "bbox": {
+        "min": [
+          -0.5,
+          0.0,
+          -0.5
+        ],
+        "max": [
+          0.5,
+          1.0,
+          0.5
+        ]
+      },
+      "materials": [
+        "rubber",
+        "shell",
+        "accent",
+        "mech"
+      ],
+      "frame": "Mount at y=0, sole at y=1 (+Y points to the ground), toe +x; footprint x,z in [-0.5,0.5]. Designed for an in-game aspect near 1 : 0.3 : 0.8 (length : thickness : width)."
+    },
+    {
+      "name": "core_pod",
+      "triangles": 2046,
+      "bbox": {
+        "min": [
+          -0.5,
+          -0.25,
+          -0.25
+        ],
+        "max": [
+          0.5,
+          0.2504,
+          0.25
+        ]
+      },
+      "materials": [
+        "mech",
+        "shell",
+        "accent",
+        "shell2",
+        "livery"
+      ],
+      "frame": "Along +X, x in [-0.5,0.5], y,z in [-0.25,0.25].",
+      "stretch": {
+        "axis": "x",
+        "rigidStart": [
+          -0.5,
+          -0.2
+        ],
+        "band": [
+          -0.2,
+          0.2
+        ],
+        "rigidEnd": [
+          0.2,
+          0.5
+        ]
+      },
+      "livery": [
+        {
+          "face": "side+z",
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "uAxis": [
+            1,
+            0,
+            0
+          ],
+          "vAxis": [
+            0,
+            1,
+            0
+          ],
+          "rectX": [
+            -0.365,
+            -0.217
+          ],
+          "rectY": [
+            -0.1,
+            0.1
+          ],
+          "aspect": 0.74
+        },
+        {
+          "face": "side-z",
+          "normal": [
+            0,
+            0,
+            -1
+          ],
+          "uAxis": [
+            -1,
+            0,
+            0
+          ],
+          "vAxis": [
+            0,
+            1,
+            0
+          ],
+          "rectX": [
+            -0.365,
+            -0.217
+          ],
+          "rectY": [
+            -0.1,
+            0.1
+          ],
+          "aspect": 0.74
+        }
+      ]
+    },
+    {
+      "name": "core_chassis",
+      "triangles": 2704,
+      "bbox": {
+        "min": [
+          -0.5,
+          -0.25,
+          -0.25
+        ],
+        "max": [
+          0.5,
+          0.2504,
+          0.25
+        ]
+      },
+      "materials": [
+        "mech",
+        "shell",
+        "accent",
+        "glass",
+        "emissive",
+        "shell2",
+        "livery"
+      ],
+      "frame": "Along +X, x in [-0.5,0.5], y,z in [-0.25,0.25]. Sensor mount face at x=+0.5.",
+      "stretch": {
+        "axis": "x",
+        "rigidStart": [
+          -0.5,
+          -0.2
+        ],
+        "band": [
+          -0.2,
+          0.2
+        ],
+        "rigidEnd": [
+          0.2,
+          0.5
+        ]
+      },
+      "livery": [
+        {
+          "face": "side+z",
+          "normal": [
+            0,
+            0,
+            1
+          ],
+          "uAxis": [
+            1,
+            0,
+            0
+          ],
+          "vAxis": [
+            0,
+            1,
+            0
+          ],
+          "rectX": [
+            0.232,
+            0.452
+          ],
+          "rectY": [
+            -0.048,
+            0.158
+          ],
+          "aspect": 1.068
+        },
+        {
+          "face": "side-z",
+          "normal": [
+            0,
+            0,
+            -1
+          ],
+          "uAxis": [
+            -1,
+            0,
+            0
+          ],
+          "vAxis": [
+            0,
+            1,
+            0
+          ],
+          "rectX": [
+            0.232,
+            0.452
+          ],
+          "rectY": [
+            -0.048,
+            0.158
+          ],
+          "aspect": 1.068
+        }
+      ]
+    },
+    {
+      "name": "core_orb",
+      "triangles": 2756,
+      "bbox": {
+        "min": [
+          -0.4977,
+          -0.4977,
+          -0.4415
+        ],
+        "max": [
+          0.4977,
+          0.4977,
+          0.4415
+        ]
+      },
+      "materials": [
+        "mech",
+        "shell2",
+        "shell",
+        "accent",
+        "emissive"
+      ],
+      "frame": "Sphere radius 0.5, hubs on +-Z; scale uniformly."
+    },
+    {
+      "name": "sensor_twin",
+      "triangles": 2874,
+      "bbox": {
+        "min": [
+          0.0,
+          -0.09,
+          -0.15
+        ],
+        "max": [
+          0.158,
+          0.0915,
+          0.15
+        ]
+      },
+      "materials": [
+        "shell",
+        "mech",
+        "glass",
+        "emissive"
+      ],
+      "frame": "Faces +X, mount plane x=0, z in [-0.15,0.15], y in [-0.09,0.09]; scale uniformly."
+    },
+    {
+      "name": "sensor_visor",
+      "triangles": 830,
+      "bbox": {
+        "min": [
+          0.0,
+          -0.09,
+          -0.158
+        ],
+        "max": [
+          0.1605,
+          0.09,
+          0.158
+        ]
+      },
+      "materials": [
+        "shell",
+        "mech",
+        "emissive",
+        "glass"
+      ],
+      "frame": "Faces +X, mount plane x=0, z in [-0.15,0.15], y in [-0.09,0.09]; scale uniformly."
+    },
+    {
+      "name": "sensor_cyclops",
+      "triangles": 1960,
+      "bbox": {
+        "min": [
+          0.0,
+          -0.09,
+          -0.15
+        ],
+        "max": [
+          0.164,
+          0.09,
+          0.15
+        ]
+      },
+      "materials": [
+        "shell",
+        "mech",
+        "accent",
+        "glass",
+        "emissive"
+      ],
+      "frame": "Faces +X, mount plane x=0, z in [-0.15,0.15], y in [-0.09,0.09]; scale uniformly."
+    },
+    {
+      "name": "sensor_led",
+      "triangles": 388,
+      "bbox": {
+        "min": [
+          0.0,
+          -0.09,
+          -0.15
+        ],
+        "max": [
+          0.155,
+          0.0915,
+          0.15
+        ]
+      },
+      "materials": [
+        "shell",
+        "mech",
+        "livery",
+        "emissive"
+      ],
+      "frame": "Faces +X, mount plane x=0, z in [-0.15,0.15], y in [-0.09,0.09]; scale uniformly.",
+      "livery": [
+        {
+          "face": "screen",
+          "normal": [
+            1,
+            0,
+            0
+          ],
+          "uAxis": [
+            0,
+            0,
+            -1
+          ],
+          "vAxis": [
+            0,
+            1,
+            0
+          ],
+          "rectZ": [
+            -0.124,
+            0.124
+          ],
+          "rectY": [
+            -0.068,
+            0.068
+          ],
+          "aspect": 1.8235
+        }
+      ]
+    }
+  ]
+}

@@ -46,3 +46,15 @@ node --test site.test.mjs
 ```
 
 The packager copies only LOAF's built `dist/` tree, rewrites public metadata for `https://nikitavorontsov.com/loaf/`, and records the exact source commit in `loaf/source.json`.
+
+ZOOKWORKS ships the same way from its own checkout. Its build already targets `/zookworks/`, so the packager only copies `dist/` and records the source commit; it refuses a checkout with uncommitted changes.
+
+```sh
+cd /path/to/zookworks
+npm test
+npm run build
+
+cd /path/to/nikita-site
+node scripts/publish-zookworks.mjs --source-dir /path/to/zookworks
+node --test site.test.mjs
+```

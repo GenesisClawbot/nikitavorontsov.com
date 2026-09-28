@@ -37,3 +37,15 @@ test("packaged LOAF points at the personal domain", async () => {
   assert.match(manifest.sourceCommit, /^[a-f0-9]{40}$/);
   assert.equal(manifest.publicPath, "/loaf/");
 });
+
+test("packaged ZOOKWORKS points at the personal domain", async () => {
+  const html = await read("zookworks/index.html");
+  const manifest = JSON.parse(await read("zookworks/source.json"));
+  assert.match(html, /rel=["']canonical["'][^>]+https:\/\/nikitavorontsov\.com\/zookworks\//);
+  assert.match(html, /property=["']og:image["'][^>]+\/zookworks\/og\.jpg/);
+  assert.match(html, /data-domain=["']nikitavorontsov\.com["']/);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com/);
+  assert.match(await read("zookworks/THIRD_PARTY_NOTICES.txt"), /three/);
+  assert.match(manifest.sourceCommit, /^[a-f0-9]{40}$/);
+  assert.equal(manifest.publicPath, "/zookworks/");
+});

@@ -1,0 +1,15 @@
+{
+  "name": "ZOOKWORKS",
+  "short_name": "ZOOKWORKS",
+  "description": "Build a robot creature, teach it to walk, and send it into physics events.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#ece9e2",
+  "theme_color": "#ece9e2",
+  "icons": [
+    { "src": "./icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "./icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
