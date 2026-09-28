@@ -4229,47 +4229,49 @@ var Cd = !vd.matches && Sd !== "off", wd, Td, Ed = !1, Dd = 0, Od = -1, kd = fd(
 	mix: 0,
 	paint: 1,
 	progress: 0
-};
-function Nd() {
+}, Nd = md.length, Pd = 2 / Nd, Fd = .13 * Pd, Id = Array.from({ length: Nd - 1 }, (e, t) => (t + 1) / Nd + .02 * Pd);
+pd.style.setProperty("--chapters", String(Nd));
+var Ld = md.map((e, t) => t === 0 ? .24 * Pd : (Id[t - 1] + Fd + (t === Nd - 1 ? 1 : Id[t] - Fd)) / 2);
+function Rd() {
 	document.body.dataset.motion = Cd ? "on" : "off", gd.forEach((e) => {
 		e.hidden = !1, e.setAttribute("aria-pressed", String(Cd)), e.querySelector("span").textContent = Cd ? "Motion on" : "Motion off", e.querySelector("img").src = `/assets/home/icons/${Cd ? "pause" : "play"}.svg`;
 	});
 }
-function Pd(e) {
+function zd(e) {
 	Md.paint = e, document.querySelector(".sketch-art").style.clipPath = `inset(0 ${e * 100}% 0 0)`, _d.value = String(Math.round(e * 100)), Td?.setState(Md);
 }
-function Fd(e) {
-	let t = e < .52 ? 0 : 1;
-	t !== Od && (t !== 0 && (Ad = null), md.find((e, n) => n !== t && e.contains(document.activeElement)) && hd[t].focus({ preventScroll: !0 }), Od = t, pd.dataset.chapter = String(t), md.forEach((e, n) => {
+function Bd(e) {
+	let t = Id.filter((t) => e >= t).length;
+	t !== Od && (t !== 0 && (Ad = null), md.find((e, n) => n !== t && e.contains(document.activeElement)) && hd[t]?.focus({ preventScroll: !0 }), Od = t, pd.dataset.chapter = String(t), md.forEach((e, n) => {
 		e.inert = n !== t, e.setAttribute("aria-hidden", String(n !== t));
 	}), hd.forEach((e, n) => {
 		n === t ? e.setAttribute("aria-current", "true") : e.removeAttribute("aria-current");
-	}));
-	let n = [1 - xd(.43, .5, e), xd(.54, .61, e)];
-	md.forEach((e, t) => {
-		hi.set(e, { autoAlpha: n[t] });
-	}), hi.set(".journey-progress span", { scaleX: e }), Object.assign(Md, e < .39 ? {
-		from: 0,
-		to: 0,
-		mix: 0
-	} : e < .65 ? {
-		from: 0,
-		to: 1,
-		mix: xd(.39, .65, e)
+	})), md.forEach((t, n) => {
+		let r = n === 0 ? 1 : xd(Id[n - 1] + .02 * Pd, Id[n - 1] + .09 * Pd, e), i = n === Nd - 1 ? 1 : 1 - xd(Id[n] - .09 * Pd, Id[n] - .02 * Pd, e);
+		hi.set(t, { autoAlpha: r * i });
+	}), hi.set(".journey-progress span", { scaleX: e });
+	let n = Id.findIndex((t) => e >= t - Fd && e < t + Fd);
+	Object.assign(Md, n >= 0 ? {
+		from: n,
+		to: n + 1,
+		mix: xd(Id[n] - Fd, Id[n] + Fd, e)
 	} : {
-		from: 1,
-		to: 1,
+		from: t,
+		to: t,
 		mix: 0
-	}), Md.progress = e, Pd(Ad ?? xd(.015, .29, e));
+	}), Md.progress = e, zd(Ad ?? xd(.015 * Pd, .29 * Pd, e));
 }
-async function Id() {
+async function Vd() {
 	if (Td || Ed || !wd) return;
 	let e = Dd;
 	Ed = !0;
 	try {
-		let { createWorld: t } = await import("./world-CxDZEKlJ.js");
+		let { createWorld: t } = await import("./world-CUKwrt26.js");
 		if (e !== Dd || !wd) return;
-		let n = await t(document.querySelector(".world-canvas"), () => {
+		let n = await t(document.querySelector(".world-canvas"), {
+			scenes: md.map((e) => e.querySelector(".scene-art:not(.sketch-art)").src),
+			sketch: document.querySelector(".sketch-art").src
+		}, () => {
 			pd.classList.remove("webgl-ready"), pd.dataset.renderer = "static";
 		});
 		if (e !== Dd || !wd) {
@@ -4283,44 +4285,45 @@ async function Id() {
 		e === Dd && (Ed = !1);
 	}
 }
-function Ld() {
+function Hd() {
 	let e = !!wd, t = e && wd.isActive, n = e ? -1 : md.findIndex((e) => {
 		let t = e.getBoundingClientRect();
 		return t.top <= innerHeight / 2 && t.bottom > innerHeight / 2;
 	}), r = Math.max(0, Od);
 	if (Dd++, Ed = !1, wd?.kill(), wd = null, jd?.disconnect(), Td?.dispose(), Td = null, pd.classList.remove("cinematic", "webgl-ready"), pd.removeAttribute("data-chapter"), pd.dataset.renderer = "static", hi.set(md, { clearProps: "opacity,visibility" }), md.forEach((e) => {
 		e.inert = !1, e.removeAttribute("aria-hidden");
-	}), hd.forEach((e) => e.removeAttribute("aria-current")), Od = -1, Nd(), kd.setEnabled(Cd), Cd && yd.matches) {
+	}), hd.forEach((e) => e.removeAttribute("aria-current")), Od = -1, Rd(), kd.setEnabled(Cd), Cd && yd.matches) {
 		if (pd.classList.add("cinematic"), wd = Q.create({
 			trigger: pd,
 			start: "top top",
 			end: "bottom bottom",
-			onUpdate: (e) => Fd(e.progress),
+			onUpdate: (e) => Bd(e.progress),
 			onToggle: (e) => {
-				Td?.setActive(e.isActive), e.isActive && Id();
+				Td?.setActive(e.isActive), e.isActive && Vd();
 			}
 		}), n >= 0) {
-			let e = [.24, .82][n];
+			let e = Ld[n];
 			window.scrollTo({
 				top: wd.start + (wd.end - wd.start) * e,
 				behavior: "instant"
-			}), Fd(e);
-		} else Fd(wd.progress);
+			}), Bd(e);
+		} else Bd(wd.progress);
 		jd = new IntersectionObserver((e) => {
-			e.some((e) => e.isIntersecting) && (Id(), jd.disconnect());
+			e.some((e) => e.isIntersecting) && (Vd(), jd.disconnect());
 		}, { rootMargin: "600px 0px" }), jd.observe(pd);
-	} else Pd(Ad ?? 1), t && md[r].scrollIntoView({
+	} else zd(Ad ?? 1), t && md[r].scrollIntoView({
 		behavior: "instant",
 		block: "start"
 	});
 	Q.refresh();
 }
 _d.closest(".art-control").hidden = !1, _d.addEventListener("input", () => {
-	Ad = Number(_d.value) / 100, Pd(Ad);
+	Ad = Number(_d.value) / 100, zd(Ad);
 }), hd.forEach((e) => e.addEventListener("click", (t) => {
-	if (!wd) return;
+	let n = Number(e.dataset.chapter);
+	if (!wd || !(n in Ld)) return;
 	t.preventDefault();
-	let n = Number(e.dataset.chapter), r = wd.start + (wd.end - wd.start) * [.24, .82][n];
+	let r = wd.start + (wd.end - wd.start) * Ld[n];
 	history.replaceState(null, "", e.getAttribute("href")), window.scrollTo({
 		top: r,
 		behavior: "smooth"
@@ -4330,22 +4333,22 @@ _d.closest(".art-control").hidden = !1, _d.addEventListener("input", () => {
 	try {
 		localStorage.setItem("nv-motion", Cd ? "on" : "off");
 	} catch {}
-	Ld();
+	Hd();
 })), vd.addEventListener("change", () => {
-	vd.matches && (Cd = !1), Ld();
-}), yd.addEventListener("change", Ld), Ld();
-var Rd = () => Td?.setActive(!document.hidden && !!wd?.isActive);
-document.addEventListener("visibilitychange", Rd), window.addEventListener("pagehide", () => {
-	Dd++, kd.dispose(), window.removeEventListener("hashchange", zd), jd?.disconnect(), wd?.kill(), Td?.dispose(), Td = null, document.removeEventListener("visibilitychange", Rd);
+	vd.matches && (Cd = !1), Hd();
+}), yd.addEventListener("change", Hd), Hd();
+var Ud = () => Td?.setActive(!document.hidden && !!wd?.isActive);
+document.addEventListener("visibilitychange", Ud), window.addEventListener("pagehide", () => {
+	Dd++, kd.dispose(), window.removeEventListener("hashchange", Wd), jd?.disconnect(), wd?.kill(), Td?.dispose(), Td = null, document.removeEventListener("visibilitychange", Ud);
 }, { once: !0 }), window.addEventListener("pageshow", (e) => {
 	e.persisted && location.reload();
 });
-function zd() {
+function Wd() {
 	let e = hd.findIndex((e) => e.hash === location.hash);
 	wd && e >= 0 && (Q.refresh(), window.scrollTo({
-		top: wd.start + (wd.end - wd.start) * [.24, .82][e],
+		top: wd.start + (wd.end - wd.start) * Ld[e],
 		behavior: "instant"
 	}));
 }
-document.fonts.ready.then(zd), window.addEventListener("hashchange", zd);
+document.fonts.ready.then(Wd), window.addEventListener("hashchange", Wd);
 //#endregion

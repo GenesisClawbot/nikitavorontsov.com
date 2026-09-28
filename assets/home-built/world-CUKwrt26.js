@@ -10940,76 +10940,72 @@ var bs = class {
 		t.drawingBufferColorSpace = K._getDrawingBufferColorSpace(e), t.unpackColorSpace = K._getUnpackColorSpace();
 	}
 }, xs = "\n  varying vec2 vUv;\n  void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }\n", Ss = "\n  precision highp float;\n  varying vec2 vUv;\n  uniform sampler2D uFrom;\n  uniform sampler2D uTo;\n  uniform sampler2D uSketch;\n  uniform float uMix;\n  uniform float uPaint;\n  uniform float uIsDragon;\n  uniform float uProgress;\n  uniform float uTime;\n  uniform vec2 uResolution;\n  uniform vec2 uPointer;\n  float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }\n  float noise(vec2 p) {\n    vec2 i = floor(p); vec2 f = fract(p); f = f*f*(3.-2.*f);\n    return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y);\n  }\n  float fbm(vec2 p) { return noise(p)*.57 + noise(p*2.03)*.28 + noise(p*4.01)*.15; }\n  vec2 cover(vec2 uv) {\n    float screenAspect = uResolution.x/uResolution.y;\n    float imageAspect = 16./9.;\n    vec2 ratio = vec2(min(screenAspect/imageAspect,1.),min(imageAspect/screenAspect,1.));\n    return (uv-.5)*ratio+.5;\n  }\n  void main() {\n    vec2 uv = vUv;\n    float envelope = sin(uMix*3.14159265);\n    float grain = fbm(uv*7. + vec2(uTime*.025, -uTime*.018));\n    vec2 centered = uv-.5;\n    // A shallow spatial camera drift lends the still artwork depth, while the\n    // stronger refractive fold only happens between chapters.\n    vec2 drift = uPointer * .014 * vec2(1., .65);\n    float depth = .4 + .6*smoothstep(0.,1.,uv.x);\n    vec2 bend = vec2(sin(uv.y*6. + uMix*6.28), cos(uv.x*5. - uMix*6.28));\n    bend *= envelope * (.035 + grain*.075);\n    float zoomA = 1.035 + .025*sin(uProgress*6.28);\n    float zoomB = 1.11 - uMix*.075;\n    vec2 uvA = cover(centered/zoomA+.5 + drift*depth + bend);\n    vec2 uvB = cover(centered/zoomB+.5 + drift*depth - bend*.65);\n    vec4 fromColor = texture2D(uFrom, uvA);\n    if (uIsDragon > .5) {\n      vec4 sketch = texture2D(uSketch, uvA);\n      float paintField = uv.x*.76 + uv.y*.09 + fbm(uv*12.)*.15;\n      float paint = smoothstep(paintField-.07, paintField+.07, uPaint*1.2-.1);\n      fromColor = mix(sketch, fromColor, paint);\n    }\n    vec4 toColor = texture2D(uTo, uvB);\n    float field = uv.x*.8 + grain*.2;\n    float reveal = smoothstep(field-.11,field+.11,uMix*1.3-.15);\n    vec4 color = mix(fromColor,toColor,reveal);\n    // A narrow refractive edge passes through real source imagery, not a\n    // decorative overlay. At rest, the source colours are unchanged.\n    float edge = pow(1.-abs(reveal*2.-1.),6.)*envelope;\n    color.rgb += edge*.035;\n    gl_FragColor = color;\n    #include <colorspace_fragment>\n  }\n";
-async function Cs(e, t) {
-	let n = new bs({
+async function Cs(e, t, n) {
+	let r = new bs({
 		alpha: !1,
 		antialias: !1,
 		powerPreference: "low-power"
 	});
-	n.outputColorSpace = O, n.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
-	let r = !1, i = !1, a = 0, o = 0, s = 0, c = new U(), l = new U(), u = [], d, f;
+	r.outputColorSpace = O, r.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+	let i = !1, a = !1, o = 0, s = 0, c = 0, l = new U(), u = new U(), d = [], f, p;
 	try {
-		let p = new kr(), m = await Promise.allSettled([
-			"dragon.webp",
-			"loaf.webp",
-			"dragon-sketch.webp"
-		].map((e) => p.loadAsync(`/assets/home/${e}`)));
-		u = m.filter((e) => e.status === "fulfilled").map((e) => e.value);
-		let h = m.find((e) => e.status === "rejected");
-		if (h) throw h.reason;
-		u.forEach((e) => {
+		let m = new kr(), h = await Promise.allSettled([...t.scenes, t.sketch].map((e) => m.loadAsync(e)));
+		d = h.filter((e) => e.status === "fulfilled").map((e) => e.value);
+		let g = h.find((e) => e.status === "rejected");
+		if (g) throw g.reason;
+		d.forEach((e) => {
 			e.colorSpace = O;
 		});
-		let g = new pt(), _ = new Rr(-1, 1, 1, -1, 0, 2);
-		_.position.z = 1, d = new Gn(2, 2), f = new er({
+		let _ = new pt(), v = new Rr(-1, 1, 1, -1, 0, 2);
+		v.position.z = 1, f = new Gn(2, 2), p = new er({
 			vertexShader: xs,
 			fragmentShader: Ss,
 			depthTest: !1,
 			depthWrite: !1,
 			uniforms: {
-				uFrom: { value: u[0] },
-				uTo: { value: u[0] },
-				uSketch: { value: u[2] },
+				uFrom: { value: d[0] },
+				uTo: { value: d[0] },
+				uSketch: { value: d[d.length - 1] },
 				uMix: { value: 0 },
 				uPaint: { value: 1 },
 				uIsDragon: { value: 1 },
 				uProgress: { value: 0 },
 				uTime: { value: 0 },
-				uPointer: { value: c },
+				uPointer: { value: l },
 				uResolution: { value: new U(1, 1) }
 			}
-		}), g.add(new Mn(d, f)), e.append(n.domElement), n.domElement.setAttribute("aria-hidden", "true");
-		let v = !1, y = () => {
-			r || v || n.render(g, _);
-		}, b = () => {
-			let { width: t, height: r } = e.parentElement.getBoundingClientRect();
-			n.setSize(t, r, !1), f.uniforms.uResolution.value.set(t, r), y();
-		}, x = new ResizeObserver(b);
-		x.observe(e.parentElement);
-		let S = (t) => {
+		}), _.add(new Mn(f, p)), e.append(r.domElement), r.domElement.setAttribute("aria-hidden", "true");
+		let y = !1, b = () => {
+			i || y || r.render(_, v);
+		}, x = () => {
+			let { width: t, height: n } = e.parentElement.getBoundingClientRect();
+			r.setSize(t, n, !1), p.uniforms.uResolution.value.set(t, n), b();
+		}, S = new ResizeObserver(x);
+		S.observe(e.parentElement);
+		let C = (t) => {
 			if (t.pointerType === "touch") return;
 			let n = e.parentElement.getBoundingClientRect();
-			l.set((t.clientX - n.left) / n.width - .5, .5 - (t.clientY - n.top) / n.height);
-		}, C = () => l.set(0, 0);
-		e.parentElement.addEventListener("pointermove", S, { passive: !0 }), e.parentElement.addEventListener("pointerleave", C);
-		let w = (e) => {
-			a = 0, !(!i || r || v) && (s += Math.min((e - o) / 1e3, .05), o = e, c.lerp(l, .065), f.uniforms.uTime.value = s, y(), a = requestAnimationFrame(w));
-		}, T = (e) => {
-			e.preventDefault(), v = !0, i = !1, cancelAnimationFrame(a), t();
+			u.set((t.clientX - n.left) / n.width - .5, .5 - (t.clientY - n.top) / n.height);
+		}, w = () => u.set(0, 0);
+		e.parentElement.addEventListener("pointermove", C, { passive: !0 }), e.parentElement.addEventListener("pointerleave", w);
+		let T = (e) => {
+			o = 0, !(!a || i || y) && (c += Math.min((e - s) / 1e3, .05), s = e, l.lerp(u, .065), p.uniforms.uTime.value = c, b(), o = requestAnimationFrame(T));
+		}, E = (e) => {
+			e.preventDefault(), y = !0, a = !1, cancelAnimationFrame(o), n();
 		};
-		return n.domElement.addEventListener("webglcontextlost", T), b(), {
-			setState({ from: e, to: t, mix: n, paint: a, progress: o }) {
-				r || v || (f.uniforms.uFrom.value = u[e], f.uniforms.uTo.value = u[t], f.uniforms.uMix.value = n, f.uniforms.uPaint.value = a, f.uniforms.uIsDragon.value = +(e === 0), f.uniforms.uProgress.value = o, i || y());
+		return r.domElement.addEventListener("webglcontextlost", E), x(), {
+			setState({ from: e, to: t, mix: n, paint: r, progress: o }) {
+				i || y || (p.uniforms.uFrom.value = d[e], p.uniforms.uTo.value = d[t], p.uniforms.uMix.value = n, p.uniforms.uPaint.value = r, p.uniforms.uIsDragon.value = +(e === 0), p.uniforms.uProgress.value = o, a || b());
 			},
 			setActive(e) {
-				i = e && !r && !v && !document.hidden, i && !a ? (o = performance.now(), a = requestAnimationFrame(w)) : i || (cancelAnimationFrame(a), a = 0);
+				a = e && !i && !y && !document.hidden, a && !o ? (s = performance.now(), o = requestAnimationFrame(T)) : a || (cancelAnimationFrame(o), o = 0);
 			},
 			dispose() {
-				r || (r = !0, i = !1, cancelAnimationFrame(a), x.disconnect(), e.parentElement.removeEventListener("pointermove", S), e.parentElement.removeEventListener("pointerleave", C), n.domElement.removeEventListener("webglcontextlost", T), d.dispose(), f.dispose(), u.forEach((e) => e.dispose()), n.dispose(), n.forceContextLoss(), n.domElement.remove());
+				i || (i = !0, a = !1, cancelAnimationFrame(o), S.disconnect(), e.parentElement.removeEventListener("pointermove", C), e.parentElement.removeEventListener("pointerleave", w), r.domElement.removeEventListener("webglcontextlost", E), f.dispose(), p.dispose(), d.forEach((e) => e.dispose()), r.dispose(), r.forceContextLoss(), r.domElement.remove());
 			}
 		};
 	} catch (e) {
-		throw d?.dispose(), f?.dispose(), u.forEach((e) => e.dispose()), n.dispose(), n.forceContextLoss(), n.domElement.remove(), e;
+		throw f?.dispose(), p?.dispose(), d.forEach((e) => e.dispose()), r.dispose(), r.forceContextLoss(), r.domElement.remove(), e;
 	}
 }
 //#endregion

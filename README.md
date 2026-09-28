@@ -19,7 +19,7 @@ repository root and does not run Vite. The build only empties its own output
 directory, preserving LOAF and all existing experiment routes.
 
 `assets/site.css` contains the homepage design; `src/home.mjs` coordinates the
-two-chapter scroll sequence and motion preferences. `src/reference-motion.mjs`
+scroll tour (one chapter per `.scene`, currently CharGen, LOAF and ZOOKWORKS) and motion preferences. `src/reference-motion.mjs`
 adds the project-tile springs and the portrait frame's pointer-driven depth. WebGL is loaded near the tour
 on larger screens. Mobile, reduced-motion and failed-WebGL paths keep ordinary
 images and real links. Fonts, icons, artwork and compiled scripts are local.
