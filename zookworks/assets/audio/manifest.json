@@ -17,10 +17,10 @@
       ],
       "gain": 0.9,
       "loop": true,
-      "loopStart": 13.935,
-      "loopEnd": 98.4189,
-      "bpm": 125.0,
-      "take": "art/audio-raw/music/takes/event-3.mp3"
+      "loopStart": 4.1054,
+      "loopEnd": 62.2897,
+      "bpm": 131.99,
+      "take": "art/audio-raw/music/takes/event-bb2.mp3"
     },
     "lab": {
       "src": [
@@ -29,10 +29,10 @@
       ],
       "gain": 0.85,
       "loop": true,
-      "loopStart": 9.0278,
-      "loopEnd": 94.3592,
+      "loopStart": 12.6875,
+      "loopEnd": 76.6914,
       "bpm": 90.0,
-      "take": "art/audio-raw/music/takes/lab-1.mp3"
+      "take": "art/audio-raw/music/takes/lab-bb1.mp3"
     },
     "lose": {
       "src": [
@@ -41,7 +41,7 @@
       ],
       "gain": 1.0,
       "loop": false,
-      "take": "art/audio-raw/stingers/lose-b.mp3"
+      "take": "art/audio-raw/stingers/lose-bb-b.mp3"
     },
     "menu": {
       "src": [
@@ -50,10 +50,10 @@
       ],
       "gain": 1.0,
       "loop": true,
-      "loopStart": 10.1307,
-      "loopEnd": 71.2196,
-      "bpm": 110.0,
-      "take": "art/audio-raw/music/takes/menu-2.mp3"
+      "loopStart": 10.25,
+      "loopEnd": 77.448,
+      "bpm": 100.0,
+      "take": "art/audio-raw/music/takes/menu-bb2.mp3"
     },
     "results": {
       "src": [
@@ -62,7 +62,7 @@
       ],
       "gain": 1.0,
       "loop": false,
-      "take": "art/audio-raw/stingers/results-b.mp3"
+      "take": "art/audio-raw/stingers/results-bb-b.mp3"
     },
     "versus": {
       "src": [
@@ -71,10 +71,10 @@
       ],
       "gain": 0.95,
       "loop": true,
-      "loopStart": 12.774,
-      "loopEnd": 74.2187,
-      "bpm": 125.01,
-      "take": "art/audio-raw/music/takes/versus-1.mp3"
+      "loopStart": 13.9033,
+      "loopEnd": 98.8448,
+      "bpm": 129.96,
+      "take": "art/audio-raw/music/takes/versus-bbi1.mp3"
     },
     "win": {
       "src": [
@@ -83,7 +83,7 @@
       ],
       "gain": 1.0,
       "loop": false,
-      "take": "art/audio-raw/stingers/win-a.mp3"
+      "take": "art/audio-raw/stingers/win-bb-b.mp3"
     }
   },
   "sfx": {
