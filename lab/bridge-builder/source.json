@@ -55,13 +55,119 @@
       "browser_checks": "All timber failed at bay 3. Centre iron passed for 11 bolts. Iron at bays 1/5 failed for 12; moving it to bays 2/4 passed for 12. Retry, keyboard editing/undo and full clear/refund checked. No console errors captured. 390px layout has no horizontal overflow.",
       "simulation": "Fixed-bay material capacity, adjacent bonuses and overload fatigue; no free geometry or validated structural analysis.",
       "fun_verdict": "No new verdict from Nikita yet."
+    },
+    "opus55": {
+      "model": "anthropic/claude-opus-5.5",
+      "generation_status": "complete",
+      "cost_usd": 10.6716018,
+      "listed_media_receipts_usd": 0.148,
+      "media_account_debit_verified": false,
+      "files_sha256": {
+        "README.md": "87df843ad4fe26675d6f07e924bc3ba814341704a7ad07f7e6db5d046fb98cbf",
+        "THREE-LICENSE.txt": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+        "assets/generate_music-1.mp3": "85a107b65de409d33a659320c5ca9eac6d8ebb99e5ba6992441539b0c2deb6b8",
+        "assets/generate_sfx-1.mp3": "32a5016f0fd362af17444e15cee68fdd9d17ea56cfc28c174effc92d2d803a67",
+        "assets/generate_sfx-2.mp3": "3950611b60f3fac60c0bb51317b5ffefc423a6d00f6faff582b7dff0bcde4cca",
+        "assets/generate_sfx-3.mp3": "3ef1d675eede0af743c329806181b34aa8c32bd95ecc4c8efb92ac876f0318dc",
+        "assets/generate_sfx-4.mp3": "a5df212a7d7f0c3629487ed404430182232d0fcac1411676b05c2cd3181f293f",
+        "assets/generate_sfx-5.mp3": "bb4bba47b0ee067d1c69536fd3f7ddc1386456d47d6cf2f6d679ed340163f564",
+        "assets/generate_sfx-6.mp3": "4fefe0cda53b67eef1dd1df7462a7c6df23b98173f892059758bab2dd6bdb0a0",
+        "assets/generate_sfx-7.mp3": "cd8d17c9735e82cc554fd10bc8e553500b44635ec2c96d60bb5919505db53e1d",
+        "assets/generate_voice-1.mp3": "aa062693dba018f9b07e7c3ee5a91b5edd08f16e89bfcbd572cf93af4a998d9c",
+        "assets/generate_voice-2.mp3": "78f00bbdee256435f016cc671e0ba563ecddd95edc45908229a51f95d0323d5b",
+        "assets/generate_voice-3.mp3": "e4f4eab1a72b5062188a59a4f8793df8a3380c06b651f0bc808087ba38d93c49",
+        "assets/generate_voice-4.mp3": "439d36a8cac9a16eb5c83f4a1ad5f6a982a0632a2679c7a03d49fb71f9c13aae",
+        "assets/generate_voice-5.mp3": "605bc33721aa1919f198761f387357b23dd4612e098ce58c3b719a606e020b53",
+        "assets/generate_voice-6.mp3": "68794e7abcf955ffd36c661830219861dd5f371ab3c950e4a32a30b38f3f589d",
+        "game.js": "dfb976da4834ee320c263f49797d5aedb00daace0d61fa31d9fa820ed69546aa",
+        "index.html": "32b13be1a3a1e9ba198715b3116861273f1a57f91d8cd96f9aa04041f9b5333f",
+        "physics.js": "bf210ddbf40488353733da06e6d42f1e9310b1eae4fbe5d7f40cbf7fd3c6d496",
+        "style.css": "ecf3813c401d3a109a1a51621f2d62c9758af990f0a6d94924bf5f236d74b718",
+        "tests/physics.test.js": "4a2b785b051db8eed7127e0ab0053831b48ffdf2fd524e05029ebca8ccf4cab3",
+        "tests/players.js": "f2fec95afd01b5dabf33ce5c64e3c5c59da8b7e80347027d399a0b87d383d0f1",
+        "tests/smoke.js": "3092b63389743777c422eb5ac96fbb3a0dfa98c0523e4f99e54e9128c831fc8e",
+        "tests/sweep.js": "4dbe542291e2ad3a0f888a1f77ae78247afb018aeeb554849fec525124243803",
+        "tests/tune.js": "3ca068d0d96412a6c46392195a66b42d86950517767cc052d43f6ecb57030a06",
+        "three.global.js": "d7e303b2d349436a8cfdcec421bd03f56f5b43ec30681689d5c5fad6dd1a60d0"
+      },
+      "browser_checks": [
+        {
+          "level": 1,
+          "load_kg": 210,
+          "design": "three 2m road planks, no supports",
+          "cost": 60,
+          "result": "failure",
+          "snapped": 2,
+          "screenshot": "./assets/opus-plank-failure.png"
+        },
+        {
+          "level": 1,
+          "load_kg": 210,
+          "design": "same road; wood struts from (8,2) to (10,0) and (14,2) to (12,0)",
+          "cost": 94,
+          "result": "success",
+          "snapped": 0,
+          "screenshot": "./assets/opus-struts-success.png"
+        },
+        {
+          "level": 1,
+          "load_kg": 210,
+          "design": "same road; above-deck wood chain (8,0)-(10,-1)-(12,-1)-(14,0), two verticals",
+          "cost": 112,
+          "result": "failure",
+          "snapped": 4,
+          "screenshot": "./assets/opus-arch-failure.png",
+          "note": "Agent-built alternative, not the model-tested 114-gold lower arch"
+        },
+        {
+          "level": 2,
+          "load_kg": 560,
+          "design": "four 2m road planks; wood supports (7,2)-(9,0), (15,2)-(13,0), (11,3)-(11,0)",
+          "cost": 132,
+          "result": "failure",
+          "snapped": 6,
+          "screenshot": "./assets/opus-anvils-wood-failure.png"
+        },
+        {
+          "level": 2,
+          "load_kg": 560,
+          "design": "same road and support positions; three supports changed to iron",
+          "cost": 220,
+          "result": "success",
+          "snapped": 0,
+          "screenshot": "./assets/opus-anvils-iron-success.png"
+        },
+        {
+          "level": 3,
+          "load_kg": 420,
+          "design": "five 2m road planks; two ropes (5,-4)-(10,0), (17,-4)-(12,0)",
+          "cost": 140,
+          "result": "failure",
+          "snapped": 2,
+          "screenshot": "./assets/opus-rope-two-failure.png"
+        },
+        {
+          "level": 3,
+          "load_kg": 420,
+          "design": "same road and ropes; add ropes (5,-4)-(8,0), (17,-4)-(14,0)",
+          "cost": 170,
+          "result": "success",
+          "snapped": 0,
+          "screenshot": "./assets/opus-rope-success.png"
+        }
+      ],
+      "simulation": "Player-drawn integer-grid beams, length/cost limits, mass, rope tension, stress breakage and joint bending; toy simulation, not engineering validation.",
+      "phone_width": "390px viewport, 840px document scroll width; tiny controls. Desktop recommended.",
+      "fun_verdict": "No new verdict from Nikita yet."
     }
   },
   "limitations": [
     "One generated game per model; no general model ranking.",
-    "Toy capacity-based puzzles, not validated structural simulations.",
-    "Real phone hardware and audio were not tested.",
-    "GPT-6 Sol mouse/touch construction was not tested."
+    "Sol and Astra use capacity rules; Opus uses a toy structural simulation. None is validated engineering.",
+    "Real phone hardware and audio quality were not tested. Opus has tiny controls and horizontal overflow at 390px.",
+    "GPT-6 Sol mouse/touch construction was not tested.",
+    "Opus performed nonvisual rendering and programmatic tests during generation, but had no browser visual feedback.",
+    "Opus paused before a request because of a conservative context guard; the runner bound was corrected and the same conversation resumed without game or prompt changes."
   ],
   "nikita_feedback": {
     "date": "2026-09-30",
@@ -71,5 +177,6 @@
     ],
     "judgement": "Both games were boring: replacing the same decks and adding braces left little engineering or challenge.",
     "source": "Direct feedback from Nikita; separate from functional test results."
-  }
+  },
+  "total_openrouter_charge_usd": 18.0569203
 }

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grubnik's Bridge of Questionable Integrity</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="stage">
+  <canvas id="game" width="1280" height="720"></canvas>
+
+  <div id="topbar" class="bar">
+    <div id="lvlBox">
+      <div id="lvlName">Grubnik's Bridge</div>
+      <div id="cargoName">&nbsp;</div>
+    </div>
+    <div id="budgetBox">
+      <div id="budgetLabel">Gold</div>
+      <div id="budgetBar"><div id="budgetFill"></div></div>
+    </div>
+    <div id="timerBox">Cart leaves in <b id="timerVal">1:00</b></div>
+    <button id="btnSound" class="small" type="button" title="Toggle sound (M)">Sound: on</button>
+  </div>
+
+  <div id="buildbar" class="bar hidden">
+    <div id="mats"></div>
+    <div id="tools">
+      <button id="btnDemolish" type="button" title="Smash beams (X). Right-click also smashes.">Smash <kbd>X</kbd></button>
+      <button id="btnUndo" type="button" title="Undo (Z)">Undo <kbd>Z</kbd></button>
+      <button id="btnClear" type="button" title="Remove everything">Clear</button>
+      <button id="btnNapkin" type="button" title="Show cousin Snazzgit's napkin sketch (H)">Napkin <kbd>H</kbd></button>
+    </div>
+    <button id="btnGo" type="button" title="Send the cart! (Space)">GO! <kbd>Space</kbd></button>
+  </div>
+
+  <div id="testbar" class="bar hidden">
+    <div id="testInfo">Test run in progress...</div>
+    <div id="stressBox">Worst beam: <b id="stressVal">0%</b></div>
+    <button id="btnStop" type="button" title="Back to building (R)">Fix the bridge <kbd>R</kbd></button>
+  </div>
+
+  <div id="bubble" class="hidden"><span id="bubbleText"></span></div>
+
+  <div id="overlay" class="hidden">
+    <div id="panel"></div>
+  </div>
+</div>
+<script src="physics.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
