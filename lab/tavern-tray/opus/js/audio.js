@@ -293,6 +293,12 @@
     var t = A.ctx.currentTime;
     noise(t, 0.02 + Math.random() * 0.03, vol * (0.3 + Math.random() * 0.4), 'highpass', 1800 + Math.random() * 2000, 0.8);
   };
+  A.skid = function (vol) {
+    if (!ok(vol)) return;
+    var t = A.ctx.currentTime;
+    noise(t, 0.28, vol * 0.4, 'bandpass', 1500, 2.2, null, 520);
+    noise(t, 0.2, vol * 0.25, 'highpass', 3000, 0.7);
+  };
   A.glug = function (vol, p) {
     if (!ok(vol)) return;
     var t = A.ctx.currentTime;

@@ -48,9 +48,10 @@
       logo.dataset.split = '1';
     }
     var touch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
-    U.touch = touch;
+    var fine = !!(window.matchMedia && matchMedia('(pointer:fine)').matches);
+    U.touch = touch && !fine;
     var verb = document.querySelectorAll('[data-verb]');
-    for (var v = 0; v < verb.length; v++) verb[v].textContent = touch && !matchMedia('(pointer:fine)').matches ? 'touch & hold' : 'hold SPACE';
+    for (var v = 0; v < verb.length; v++) verb[v].textContent = U.touch ? 'touch & hold' : 'hold SPACE';
     U.showBest();
   };
 
@@ -77,6 +78,14 @@
     U.title.classList.toggle('hidden', which !== 'title');
     U.result.classList.toggle('hidden', which !== 'result');
     U.hud.classList.toggle('hidden', which !== 'hud' && which !== 'result-hud');
+  };
+
+  // the "serve again" prompt appears once a restart is accepted
+  U.armAgain = function () {
+    var el = document.querySelector('#result .again');
+    if (!el) return;
+    el.classList.remove('ready');
+    later(function () { el.classList.add('ready'); }, 900);
   };
 
   U.showHint = function (text, dur) {

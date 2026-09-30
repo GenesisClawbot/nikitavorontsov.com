@@ -60,8 +60,10 @@
     } else {
       this.timer -= dt;
       p.pose = 'stand';
-      var fy = Math.atan2(this.dx * this.face, this.dz * this.face);
-      p.yaw = TT.angleDamp(p.yaw, fy, 6, dt || 1);
+      // face the table while chatting, then turn back toward the aisle just before setting off (a readable cue)
+      var about = this.timer < 0.5 ? -1 : 1;
+      var fy = Math.atan2(this.dx * this.face * about, this.dz * this.face * about);
+      p.yaw = TT.angleDamp(p.yaw, fy, about < 0 ? 9 : 6, dt || 1);
       if (this.timer <= 0) this.state = 'walk';
     }
     p.x = this.cx + this.dx * this.u;
@@ -547,10 +549,10 @@
     list.push(new DanceRing(ctx, { s: 38.8, radius: 2.6, count: 5, omega: 0.78, bandSide: -1, hint: 'Dwarf jig! Slip through a gap — the middle is safe.' }));
     list.push(new Crosser(ctx, { s: 46.6, speed: 1.35, pause: [0.4, 1.1], halfWidth: 2.8, kind: 'human', mug: true }));
     list.push(new BarrelChute(ctx, { s: 53.8, side: 1, pattern: [1.2, 1.2, 3.0], hint: 'Barrels from the cellar! Watch the rhythm.' }));
-    list.push(new OgreSlam(ctx, { s: 68.2, side: -1, offset: 2.5, radius: 3.3, period: 3.4, hint: 'Arm-wrestling! Stay out of the ring when the table SLAMS.' }));
-    list.push(new Crosser(ctx, { s: 74.6, speed: 1.75, pause: [0.3, 0.9], halfWidth: 2.8, kind: 'elf', hat: true }));
-    list.push(new CatChase(ctx, { s: 79.6, mouseSpeed: 3.6, catSpeed: 5.0, catDelay: 0.42, wait: [1.6, 3.0], halfWidth: 3.6, hint: 'The mouse runs first. The cat is right behind it!' }));
-    list.push(new DragonTail(ctx, { s: 88.6, side: -1, offset: 3.2, period: 3.8, hint: 'A sleeping dragon. Mind the tail when it snores!' }));
+    list.push(new OgreSlam(ctx, { s: 67.6, side: -1, offset: 2.5, radius: 3.3, period: 3.4, hint: 'Arm-wrestling! Stay out of the ring when the table SLAMS.' }));
+    list.push(new Crosser(ctx, { s: 73.6, speed: 1.75, pause: [0.3, 0.9], halfWidth: 2.8, kind: 'elf', hat: true }));
+    list.push(new CatChase(ctx, { s: 78.4, mouseSpeed: 3.6, catSpeed: 5.0, catDelay: 0.42, wait: [1.6, 3.0], halfWidth: 3.6, hint: 'The mouse runs first. The cat is right behind it!' }));
+    list.push(new DragonTail(ctx, { s: 89.4, side: -1, offset: 3.2, period: 3.8, hint: 'A sleeping dragon. Mind the tail when it snores!' }));
     return list;
   };
 })();

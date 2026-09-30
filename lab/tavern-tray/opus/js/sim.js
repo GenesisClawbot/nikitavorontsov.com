@@ -20,8 +20,8 @@
     STUN: 0.75,
     INVULN: 1.35,
     BUMP_DV: 2.5,       // tray velocity jolt (m/s) from a collision
-    FOAM_GAIN: 0.0075,  // fizz foam growth per unit of slosh speed
-    FOAM_DECAY: 0.85,   // foam settling rate (1/s)
+    FOAM_GAIN: 0.022,   // fizz foam growth per unit of slosh speed
+    FOAM_DECAY: 0.7,    // foam settling rate (1/s)
     SLAM_DV: 1.3        // tray jolt from the ogre's table slam at point blank
   };
 

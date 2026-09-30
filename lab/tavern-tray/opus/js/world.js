@@ -94,7 +94,7 @@
       }
       // windows + sconces + banners
       var k = 0;
-      for (var wz = HALL.z1 - 6; wz > HALL.z0 + 3; wz -= 8, k++) {
+      for (var wz = HALL.z1 - 4; wz > HALL.z0 + 3; wz -= 8, k++) {
         var win = new THREE.Mesh(new THREE.PlaneGeometry(1.5, 2.4), windowMat());
         win.position.set(x + sgn * 0.03, 5.0, wz);
         win.rotation.y = idx === 0 ? Math.PI / 2 : -Math.PI / 2;

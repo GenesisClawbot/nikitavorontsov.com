@@ -115,12 +115,14 @@
     F.puddles.mesh.instanceColor.needsUpdate = true;
   };
 
-  F.puff = function (x, y, z, color, count) {
+  F.puff = function (x, y, z, color, count, scale) {
+    scale = scale || 1;
     for (var i = 0; i < count; i++) {
       var p = F.puffs.spawn();
       var a = Math.random() * Math.PI * 2, sp = 0.6 + Math.random() * 1.4;
       p.x = x; p.y = y; p.z = z; p.vx = Math.cos(a) * sp; p.vz = Math.sin(a) * sp; p.vy = 0.3 + Math.random() * 0.8;
-      p.age = 0; p.life = 0.5 + Math.random() * 0.4; p.size = 0.12 + Math.random() * 0.14;
+      p.age = 0; p.life = (0.5 + Math.random() * 0.4) * (0.6 + 0.4 * scale); p.size = (0.12 + Math.random() * 0.14) * scale;
+      p.vx *= scale; p.vz *= scale; p.vy *= scale;
       F.puffs.mesh.setColorAt(p.i, _c.set(color || 0xe8d8c0));
     }
     F.puffs.mesh.instanceColor.needsUpdate = true;

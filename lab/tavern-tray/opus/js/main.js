@@ -28,7 +28,8 @@
       document.getElementById('nogl').style.display = 'flex';
       return;
     }
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    g.dpr = Math.min(window.devicePixelRatio || 1, 2);
+    renderer.setPixelRatio(g.dpr);
     renderer.setSize(window.innerWidth, window.innerHeight, false);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.NeutralToneMapping !== undefined ? THREE.NeutralToneMapping : THREE.ACESFilmicToneMapping;
@@ -192,6 +193,7 @@
   }
 
   function startRound(first) {
+    if (!first) camState.init = false; // hard cut back to the bar on retries
     resetRound();
     g.rounds++;
     g.mode = 'intro'; g.t = 0;
@@ -216,6 +218,13 @@
   // ---------------------------------------------------------------- main frame
   function frame(realDt) {
     g.time += realDt;
+    // adaptive resolution: if we're consistently slow, render fewer pixels
+    g.perfT = (g.perfT || 0) + realDt; g.perfN = (g.perfN || 0) + 1;
+    if (g.perfT > 2.5) {
+      var avg = g.perfT / g.perfN;
+      if (avg > 0.027 && g.dpr > 1) { g.dpr = Math.max(1, g.dpr - 0.5); renderer.setPixelRatio(g.dpr); onResize(); }
+      g.perfT = 0; g.perfN = 0;
+    }
     // time scale (hit-stop + slow-mo)
     var ts = 1;
     if (g.hitStop > 0) { g.hitStop -= realDt; ts = 0.12; }
@@ -307,7 +316,7 @@
       c.st.L = c.st.L0;
     }
     chaseCam(dt, g.t < 0.05);
-    if (g.t > 0.35 && g.t - dt <= 0.35) F.pop(g.firstRun ? 'ORDER UP!' : 'AGAIN!', null, 0, 0, 'big', 1.2);
+    if (g.t > 0.35 && g.t - dt <= 0.35) F.pop(g.firstRun || g.rounds === 1 ? 'ORDER UP!' : TT.pick(['ORDER UP!', 'SAME AGAIN!', 'ANOTHER ROUND!', 'THREE MORE!']), null, 0, 0, 'big', 1.2);
     if (g.t >= g.introDur) {
       g.mode = 'play'; g.t = 0;
       for (var j = 0; j < g.cups.length; j++) { g.cups[j].group.position.y = 0.048; g.cups[j].group.scale.set(1, 1, 1); g.cups[j].group.visible = true; }
@@ -326,6 +335,7 @@
     while (g.acc >= h && steps < 40) { physicsStep(h); g.acc -= h; steps++; }
     placeGoblin(pl.s);
     g.runTime += dt;
+    footsteps(pl);
     // ghost recording (20 Hz)
     g.recT += dt;
     while (g.recT >= 0.05) { g.recT -= 0.05; g.rec.push(Math.round(pl.s * 100) / 100); }
@@ -354,6 +364,24 @@
     if (pl.s >= path.length - 0.02) return deliver();
     if (allDry) return fail('dry');
     if (g.timeLeft <= 0) { g.timeLeft = 0; return fail('time'); }
+  }
+
+  function footsteps(pl) {
+    var idx = Math.floor(goblin.phase / Math.PI);
+    var gx = goblin.root.position.x, gz = goblin.root.position.z;
+    var sp = Math.abs(pl.v);
+    if (idx !== g.lastStep) {
+      g.lastStep = idx;
+      if (sp > 0.45) {
+        A.step(0.1 + Math.min(0.22, sp * 0.05), 0.9 + Math.random() * 0.25);
+        if (sp > 2.4) F.puff(gx, 0.04, gz, 0xd9c6a4, 1, 0.45);
+      }
+    }
+    // skid when braking hard from speed
+    if (pl.a < -2.4 && pl.v > 1.8) {
+      if (!g.skidding) { g.skidding = true; A.skid(TT.clamp(pl.v / 4.3, 0.3, 0.8)); }
+      if (g.time - (g.lastSkid || 0) > 0.06) { g.lastSkid = g.time; F.puff(gx, 0.05, gz, 0xe0cfb0, 2, 0.55); }
+    } else if (pl.v < 1.0 || pl.a > 0) g.skidding = false;
   }
 
   function physicsStep(h) {
@@ -650,10 +678,10 @@
     deliverCam(dt);
     if (T > 2.5) {
       g.mode = 'results'; g.t = 0;
-      U.show('result-hud');
-      U.result.classList.remove('hidden');
+      U.show('result');
       U.showReceipt(g.result, A);
       U.showBest();
+      U.armAgain();
     }
   }
 
@@ -678,9 +706,9 @@
     failCam(dt);
     if (g.t > 1.9) {
       g.mode = 'results'; g.t = 0;
-      U.show('result-hud');
-      U.result.classList.remove('hidden');
+      U.show('result');
       U.showReceipt(g.result, A);
+      U.armAgain();
     }
   }
 
@@ -880,6 +908,7 @@
   }
 
   TT.boot = boot;
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
-  else boot();
+  var bootLater = function () { setTimeout(boot, 30); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bootLater);
+  else bootLater();
 })();

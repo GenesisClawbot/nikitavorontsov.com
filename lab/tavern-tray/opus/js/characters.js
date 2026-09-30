@@ -509,7 +509,7 @@
       { geo: G.geo.sphereLo, m: M(0, -0.35, 0, 0, 0, 0, 0.065, 0.065, 0.065), c: SKIN, t: 0.014 }]));
     var armR = new THREE.Group(); armR.position.set(-0.2, 0.12, 0); body.add(armR);
     // upper arm up-and-out to elbow, forearm up to the palm under the tray centre
-    var elbow = new THREE.Vector3(-0.2, 0.3, 0.02), palm = new THREE.Vector3(0.14, 0.72, 0.06);
+    var elbow = new THREE.Vector3(-0.23, 0.3, 0.2), palm = new THREE.Vector3(0.14, 0.72, 0.06);
     armR.add(mk([
       segment(new THREE.Vector3(0, 0, 0), elbow, 0.055, SHIRT),
       segment(elbow, palm, 0.05, SHIRT),
@@ -588,13 +588,11 @@
     g.neck.rotation.z = (st.dizzy || 0) * Math.sin(st.time * 7) * 0.25;
     // eyes: blink, panic widen
     g.blinkT -= dt;
-    var lid = 0.25;
+    var panicLid = st.panic || 0;
+    var lid = 0.25 - panicLid * 0.2; // panic = wide eyes
     if (g.blinkT < 0) { lid = 1; if (g.blinkT < -0.12) g.blinkT = 1.5 + Math.random() * 3; }
     if (st.dizzy > 0.2) lid = 0.6;
     if (g.sad > 0.3) lid = Math.max(lid, 0.55);
-    var eyeScale = 1 + panic * 0.25;
-    g.eyes.scale.setScalar(eyeScale);
-    g.pupils.scale.setScalar(1 - panic * 0.3);
     g.lids.scale.y = TT.damp(g.lids.scale.y, lid, 30, dt);
     g.lids.position.y = 0.337 * (1 - g.lids.scale.y);
     g.sweat.visible = panic > 0.35;

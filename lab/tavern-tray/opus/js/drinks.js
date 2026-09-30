@@ -162,8 +162,8 @@
     var d = c.def, st = c.st, Lg = c.L;
     var pos = Lg.geo.attributes.position, nor = Lg.geo.attributes.normal;
     var k = (d.r1 - d.r0) / d.H;
-    var Lv = st.L;
-    if (Lv < 0.002) { c.liquid.visible = false; return; }
+    var Lv = st.L + (st.foam || 0);
+    if (st.L < 0.002) { c.liquid.visible = false; return; }
     c.liquid.visible = true;
     var i, t;
     for (i = 0; i < Lg.top.length; i++) {
