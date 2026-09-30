@@ -8,6 +8,9 @@ test("homepage exposes current identity and LOAF", async () => {
   const html = await read("index.html");
   assert.match(html, /Nikita Vorontsov/);
   assert.match(html, /href=["']\.\/loaf\//);
+  assert.match(html, /class="project-tile tile-zookworks"\s+href="\.\/zookworks\/"/);
+  assert.match(html, /id="scene-zookworks"/);
+  assert.match(html, /data-chapter="2"><span>ZOOKWORKS<\/span>/);
   assert.match(html, /I build products, explore frontier AI/);
   assert.match(html, /https:\/\/char-gen\.com\//);
   assert.match(html, /href=["']\.\/lab\/runbook\//);
@@ -36,4 +39,16 @@ test("packaged LOAF points at the personal domain", async () => {
   assert.match(css, /\.\.\/fonts\/bricolage-latin\.woff2/);
   assert.match(manifest.sourceCommit, /^[a-f0-9]{40}$/);
   assert.equal(manifest.publicPath, "/loaf/");
+});
+
+test("packaged ZOOKWORKS points at the personal domain", async () => {
+  const html = await read("zookworks/index.html");
+  const manifest = JSON.parse(await read("zookworks/source.json"));
+  assert.match(html, /rel=["']canonical["'][^>]+https:\/\/nikitavorontsov\.com\/zookworks\//);
+  assert.match(html, /property=["']og:image["'][^>]+\/zookworks\/og\.jpg/);
+  assert.match(html, /data-domain=["']nikitavorontsov\.com["']/);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com/);
+  assert.match(await read("zookworks/THIRD_PARTY_NOTICES.txt"), /three/);
+  assert.match(manifest.sourceCommit, /^[a-f0-9]{40}$/);
+  assert.equal(manifest.publicPath, "/zookworks/");
 });

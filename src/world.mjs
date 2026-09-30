@@ -74,7 +74,7 @@ const fragmentShader = `
   }
 `;
 
-export async function createWorld(host, onLost) {
+export async function createWorld(host, images, onLost) {
   const renderer = new WebGLRenderer({
     alpha: false,
     antialias: false,
@@ -94,10 +94,9 @@ export async function createWorld(host, onLost) {
   let material;
   try {
     const loader = new TextureLoader();
+    // One texture per chapter, in page order, then the dragon sketch last.
     const results = await Promise.allSettled(
-      ["dragon.webp", "loaf.webp", "dragon-sketch.webp"].map((file) =>
-        loader.loadAsync(`/assets/home/${file}`),
-      ),
+      [...images.scenes, images.sketch].map((url) => loader.loadAsync(url)),
     );
     textures = results
       .filter((result) => result.status === "fulfilled")
@@ -121,7 +120,7 @@ export async function createWorld(host, onLost) {
       uniforms: {
         uFrom: { value: textures[0] },
         uTo: { value: textures[0] },
-        uSketch: { value: textures[2] },
+        uSketch: { value: textures[textures.length - 1] },
         uMix: { value: 0 },
         uPaint: { value: 1 },
         uIsDragon: { value: 1 },

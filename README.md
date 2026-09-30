@@ -19,7 +19,7 @@ repository root and does not run Vite. The build only empties its own output
 directory, preserving LOAF and all existing experiment routes.
 
 `assets/site.css` contains the homepage design; `src/home.mjs` coordinates the
-two-chapter scroll sequence and motion preferences. `src/reference-motion.mjs`
+scroll tour (one chapter per `.scene`, currently CharGen, LOAF and ZOOKWORKS) and motion preferences. `src/reference-motion.mjs`
 adds the project-tile springs and the portrait frame's pointer-driven depth. WebGL is loaded near the tour
 on larger screens. Mobile, reduced-motion and failed-WebGL paths keep ordinary
 images and real links. Fonts, icons, artwork and compiled scripts are local.
@@ -46,3 +46,15 @@ node --test site.test.mjs
 ```
 
 The packager copies only LOAF's built `dist/` tree, rewrites public metadata for `https://nikitavorontsov.com/loaf/`, and records the exact source commit in `loaf/source.json`.
+
+ZOOKWORKS ships the same way from its own checkout. Its build already targets `/zookworks/`, so the packager only copies `dist/` and records the source commit; it refuses a checkout with uncommitted changes.
+
+```sh
+cd /path/to/zookworks
+npm test
+npm run build
+
+cd /path/to/nikita-site
+node scripts/publish-zookworks.mjs --source-dir /path/to/zookworks
+node --test site.test.mjs
+```

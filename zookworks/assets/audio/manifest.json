@@ -1,0 +1,879 @@
+{
+  "version": 1,
+  "music": {
+    "countdown": {
+      "src": [
+        "music/countdown.ogg",
+        "music/countdown.m4a"
+      ],
+      "gain": 1.0,
+      "loop": false,
+      "bpm": 60
+    },
+    "event": {
+      "src": [
+        "music/event.ogg",
+        "music/event.m4a"
+      ],
+      "gain": 0.9,
+      "loop": true,
+      "loopStart": 4.1054,
+      "loopEnd": 62.2897,
+      "bpm": 131.99,
+      "take": "art/audio-raw/music/takes/event-bb2.mp3"
+    },
+    "lab": {
+      "src": [
+        "music/lab.ogg",
+        "music/lab.m4a"
+      ],
+      "gain": 0.85,
+      "loop": true,
+      "loopStart": 12.6875,
+      "loopEnd": 76.6914,
+      "bpm": 90.0,
+      "take": "art/audio-raw/music/takes/lab-bb1.mp3"
+    },
+    "lose": {
+      "src": [
+        "music/lose.ogg",
+        "music/lose.m4a"
+      ],
+      "gain": 1.0,
+      "loop": false,
+      "take": "art/audio-raw/stingers/lose-bb-b.mp3"
+    },
+    "menu": {
+      "src": [
+        "music/menu.ogg",
+        "music/menu.m4a"
+      ],
+      "gain": 1.0,
+      "loop": true,
+      "loopStart": 10.25,
+      "loopEnd": 77.448,
+      "bpm": 100.0,
+      "take": "art/audio-raw/music/takes/menu-bb2.mp3"
+    },
+    "results": {
+      "src": [
+        "music/results.ogg",
+        "music/results.m4a"
+      ],
+      "gain": 1.0,
+      "loop": false,
+      "take": "art/audio-raw/stingers/results-bb-b.mp3"
+    },
+    "versus": {
+      "src": [
+        "music/versus.ogg",
+        "music/versus.m4a"
+      ],
+      "gain": 0.95,
+      "loop": true,
+      "loopStart": 13.9033,
+      "loopEnd": 98.8448,
+      "bpm": 129.96,
+      "take": "art/audio-raw/music/takes/versus-bbi1.mp3"
+    },
+    "win": {
+      "src": [
+        "music/win.ogg",
+        "music/win.m4a"
+      ],
+      "gain": 1.0,
+      "loop": false,
+      "take": "art/audio-raw/stingers/win-bb-b.mp3"
+    }
+  },
+  "sfx": {
+    "bar-knock": {
+      "src": [
+        "sfx/bar-knock.ogg",
+        "sfx/bar-knock.m4a"
+      ],
+      "gain": 0.8
+    },
+    "beep-countdown": {
+      "src": [
+        "sfx/beep-countdown.ogg",
+        "sfx/beep-countdown.m4a"
+      ],
+      "gain": 0.7
+    },
+    "beep-go": {
+      "src": [
+        "sfx/beep-go.ogg",
+        "sfx/beep-go.m4a"
+      ],
+      "gain": 0.8
+    },
+    "buzzer": {
+      "src": [
+        "sfx/buzzer.ogg",
+        "sfx/buzzer.m4a"
+      ],
+      "gain": 0.7
+    },
+    "camera-shutter": {
+      "src": [
+        "sfx/camera-shutter.ogg",
+        "sfx/camera-shutter.m4a"
+      ],
+      "gain": 0.7
+    },
+    "clang-metal": {
+      "src": [
+        "sfx/clang-metal-1.ogg",
+        "sfx/clang-metal-1.m4a"
+      ],
+      "gain": 0.7,
+      "variants": [
+        [
+          "sfx/clang-metal-1.ogg",
+          "sfx/clang-metal-1.m4a"
+        ],
+        [
+          "sfx/clang-metal-2.ogg",
+          "sfx/clang-metal-2.m4a"
+        ]
+      ]
+    },
+    "crowd-ambience-loop": {
+      "src": [
+        "sfx/crowd-ambience-loop.ogg",
+        "sfx/crowd-ambience-loop.m4a"
+      ],
+      "gain": 0.5,
+      "loop": true,
+      "loopStart": 0,
+      "loopEnd": 20.0156
+    },
+    "crowd-applause": {
+      "src": [
+        "sfx/crowd-applause.ogg",
+        "sfx/crowd-applause.m4a"
+      ],
+      "gain": 0.8
+    },
+    "crowd-cheer": {
+      "src": [
+        "sfx/crowd-cheer-1.ogg",
+        "sfx/crowd-cheer-1.m4a"
+      ],
+      "gain": 0.8,
+      "variants": [
+        [
+          "sfx/crowd-cheer-1.ogg",
+          "sfx/crowd-cheer-1.m4a"
+        ],
+        [
+          "sfx/crowd-cheer-2.ogg",
+          "sfx/crowd-cheer-2.m4a"
+        ]
+      ]
+    },
+    "crowd-gasp": {
+      "src": [
+        "sfx/crowd-gasp.ogg",
+        "sfx/crowd-gasp.m4a"
+      ],
+      "gain": 0.8
+    },
+    "fall-over": {
+      "src": [
+        "sfx/fall-over.ogg",
+        "sfx/fall-over.m4a"
+      ],
+      "gain": 0.8
+    },
+    "flip-kick": {
+      "src": [
+        "sfx/flip-kick.ogg",
+        "sfx/flip-kick.m4a"
+      ],
+      "gain": 0.7
+    },
+    "footstep-concrete": {
+      "src": [
+        "sfx/footstep-concrete-1.ogg",
+        "sfx/footstep-concrete-1.m4a"
+      ],
+      "gain": 0.45,
+      "variants": [
+        [
+          "sfx/footstep-concrete-1.ogg",
+          "sfx/footstep-concrete-1.m4a"
+        ],
+        [
+          "sfx/footstep-concrete-2.ogg",
+          "sfx/footstep-concrete-2.m4a"
+        ],
+        [
+          "sfx/footstep-concrete-3.ogg",
+          "sfx/footstep-concrete-3.m4a"
+        ],
+        [
+          "sfx/footstep-concrete-4.ogg",
+          "sfx/footstep-concrete-4.m4a"
+        ]
+      ]
+    },
+    "paint": {
+      "src": [
+        "sfx/paint.ogg",
+        "sfx/paint.m4a"
+      ],
+      "gain": 0.6
+    },
+    "part-mirror": {
+      "src": [
+        "sfx/part-mirror.ogg",
+        "sfx/part-mirror.m4a"
+      ],
+      "gain": 0.6
+    },
+    "part-remove": {
+      "src": [
+        "sfx/part-remove.ogg",
+        "sfx/part-remove.m4a"
+      ],
+      "gain": 0.7
+    },
+    "part-snap": {
+      "src": [
+        "sfx/part-snap.ogg",
+        "sfx/part-snap.m4a"
+      ],
+      "gain": 0.8
+    },
+    "piston-pop": {
+      "src": [
+        "sfx/piston-pop-1.ogg",
+        "sfx/piston-pop-1.m4a"
+      ],
+      "gain": 0.7,
+      "variants": [
+        [
+          "sfx/piston-pop-1.ogg",
+          "sfx/piston-pop-1.m4a"
+        ],
+        [
+          "sfx/piston-pop-2.ogg",
+          "sfx/piston-pop-2.m4a"
+        ]
+      ]
+    },
+    "record-chime": {
+      "src": [
+        "sfx/record-chime.ogg",
+        "sfx/record-chime.m4a"
+      ],
+      "gain": 0.8
+    },
+    "ring-shrink-alarm": {
+      "src": [
+        "sfx/ring-shrink-alarm.ogg",
+        "sfx/ring-shrink-alarm.m4a"
+      ],
+      "gain": 0.7
+    },
+    "servo-short": {
+      "src": [
+        "sfx/servo-short.ogg",
+        "sfx/servo-short.m4a"
+      ],
+      "gain": 0.6
+    },
+    "star-earned": {
+      "src": [
+        "sfx/star-earned-1.ogg",
+        "sfx/star-earned-1.m4a"
+      ],
+      "gain": 0.8,
+      "variants": [
+        [
+          "sfx/star-earned-1.ogg",
+          "sfx/star-earned-1.m4a"
+        ],
+        [
+          "sfx/star-earned-2.ogg",
+          "sfx/star-earned-2.m4a"
+        ],
+        [
+          "sfx/star-earned-3.ogg",
+          "sfx/star-earned-3.m4a"
+        ]
+      ],
+      "ordered": true
+    },
+    "thud-heavy": {
+      "src": [
+        "sfx/thud-heavy-1.ogg",
+        "sfx/thud-heavy-1.m4a"
+      ],
+      "gain": 0.9,
+      "variants": [
+        [
+          "sfx/thud-heavy-1.ogg",
+          "sfx/thud-heavy-1.m4a"
+        ],
+        [
+          "sfx/thud-heavy-2.ogg",
+          "sfx/thud-heavy-2.m4a"
+        ]
+      ]
+    },
+    "thud-light": {
+      "src": [
+        "sfx/thud-light-1.ogg",
+        "sfx/thud-light-1.m4a"
+      ],
+      "gain": 0.6,
+      "variants": [
+        [
+          "sfx/thud-light-1.ogg",
+          "sfx/thud-light-1.m4a"
+        ],
+        [
+          "sfx/thud-light-2.ogg",
+          "sfx/thud-light-2.m4a"
+        ]
+      ]
+    },
+    "train-tick": {
+      "src": [
+        "sfx/train-tick.ogg",
+        "sfx/train-tick.m4a"
+      ],
+      "gain": 0.4
+    },
+    "ui-back": {
+      "src": [
+        "sfx/ui-back.ogg",
+        "sfx/ui-back.m4a"
+      ],
+      "gain": 0.5
+    },
+    "ui-error": {
+      "src": [
+        "sfx/ui-error.ogg",
+        "sfx/ui-error.m4a"
+      ],
+      "gain": 0.6
+    },
+    "ui-slider-tick": {
+      "src": [
+        "sfx/ui-slider-tick.ogg",
+        "sfx/ui-slider-tick.m4a"
+      ],
+      "gain": 0.35
+    },
+    "ui-tap": {
+      "src": [
+        "sfx/ui-tap.ogg",
+        "sfx/ui-tap.m4a"
+      ],
+      "gain": 1.0
+    },
+    "ui-toggle": {
+      "src": [
+        "sfx/ui-toggle.ogg",
+        "sfx/ui-toggle.m4a"
+      ],
+      "gain": 0.5
+    },
+    "wheel-roll-loop": {
+      "src": [
+        "sfx/wheel-roll-loop.ogg",
+        "sfx/wheel-roll-loop.m4a"
+      ],
+      "gain": 0.5,
+      "loop": true,
+      "loopStart": 0,
+      "loopEnd": 4.0171
+    },
+    "whistle": {
+      "src": [
+        "sfx/whistle.ogg",
+        "sfx/whistle.m4a"
+      ],
+      "gain": 0.7
+    },
+    "whoosh": {
+      "src": [
+        "sfx/whoosh-1.ogg",
+        "sfx/whoosh-1.m4a"
+      ],
+      "gain": 0.5,
+      "variants": [
+        [
+          "sfx/whoosh-1.ogg",
+          "sfx/whoosh-1.m4a"
+        ],
+        [
+          "sfx/whoosh-2.ogg",
+          "sfx/whoosh-2.m4a"
+        ]
+      ]
+    }
+  },
+  "voice": {
+    "apex-intro": {
+      "src": [
+        "vo/apex-intro.ogg",
+        "vo/apex-intro.m4a"
+      ],
+      "text": "And here comes Apex. The champion.",
+      "gain": 1.0
+    },
+    "apex-taunt": {
+      "src": [
+        "vo/apex-taunt.ogg",
+        "vo/apex-taunt.m4a"
+      ],
+      "text": "Apex has never lost in this hall.",
+      "gain": 1.0
+    },
+    "bar-clear-1": {
+      "src": [
+        "vo/bar-clear-1.ogg",
+        "vo/bar-clear-1.m4a"
+      ],
+      "text": "Clear!",
+      "gain": 1.0
+    },
+    "bar-clear-2": {
+      "src": [
+        "vo/bar-clear-2.ogg",
+        "vo/bar-clear-2.m4a"
+      ],
+      "text": "Over it. Lovely!",
+      "gain": 1.0
+    },
+    "bar-fail": {
+      "src": [
+        "vo/bar-fail.ogg",
+        "vo/bar-fail.m4a"
+      ],
+      "text": "Oh, it clipped the bar!",
+      "gain": 1.0
+    },
+    "bar-up": {
+      "src": [
+        "vo/bar-up.ogg",
+        "vo/bar-up.m4a"
+      ],
+      "text": "That bar is going up!",
+      "gain": 1.0
+    },
+    "better-luck": {
+      "src": [
+        "vo/better-luck.ogg",
+        "vo/better-luck.m4a"
+      ],
+      "text": "Ah, better luck next time.",
+      "gain": 1.0
+    },
+    "clamp-crank-intro": {
+      "src": [
+        "vo/clamp-crank-intro.ogg",
+        "vo/clamp-crank-intro.m4a"
+      ],
+      "text": "Uh oh. It's Clamp and Crank.",
+      "gain": 1.0
+    },
+    "clamp-crank-taunt": {
+      "src": [
+        "vo/clamp-crank-taunt.ogg",
+        "vo/clamp-crank-taunt.m4a"
+      ],
+      "text": "Clamp and Crank do not play nice!",
+      "gain": 1.0
+    },
+    "count-1": {
+      "src": [
+        "vo/count-1.ogg",
+        "vo/count-1.m4a"
+      ],
+      "text": "One!",
+      "gain": 1.0
+    },
+    "count-2": {
+      "src": [
+        "vo/count-2.ogg",
+        "vo/count-2.m4a"
+      ],
+      "text": "Two!",
+      "gain": 1.0
+    },
+    "count-3": {
+      "src": [
+        "vo/count-3.ogg",
+        "vo/count-3.m4a"
+      ],
+      "text": "Three!",
+      "gain": 1.0
+    },
+    "count-go": {
+      "src": [
+        "vo/count-go.ogg",
+        "vo/count-go.m4a"
+      ],
+      "text": "Go!",
+      "gain": 1.0
+    },
+    "finish": {
+      "src": [
+        "vo/finish.ogg",
+        "vo/finish.m4a"
+      ],
+      "text": "Across the line!",
+      "gain": 1.0
+    },
+    "flip-1": {
+      "src": [
+        "vo/flip-1.ogg",
+        "vo/flip-1.m4a"
+      ],
+      "text": "Oh, it's gone over!",
+      "gain": 1.0
+    },
+    "flip-2": {
+      "src": [
+        "vo/flip-2.ogg",
+        "vo/flip-2.m4a"
+      ],
+      "text": "That's upside down!",
+      "gain": 1.0
+    },
+    "goal": {
+      "src": [
+        "vo/goal.ogg",
+        "vo/goal.m4a"
+      ],
+      "text": "Goal! Get in!",
+      "gain": 1.0
+    },
+    "into-pit": {
+      "src": [
+        "vo/into-pit.ogg",
+        "vo/into-pit.m4a"
+      ],
+      "text": "Into the pit!",
+      "gain": 1.0
+    },
+    "intro-ball": {
+      "src": [
+        "vo/intro-ball.ogg",
+        "vo/intro-ball.m4a"
+      ],
+      "text": "It's Zookball on the Ball Court!",
+      "gain": 1.0
+    },
+    "intro-championship": {
+      "src": [
+        "vo/intro-championship.ogg",
+        "vo/intro-championship.m4a"
+      ],
+      "text": "The Night Hall. This is the Championship!",
+      "gain": 1.0
+    },
+    "intro-dash": {
+      "src": [
+        "vo/intro-dash.ogg",
+        "vo/intro-dash.m4a"
+      ],
+      "text": "Welcome to the Sprint Hall!",
+      "gain": 1.0
+    },
+    "intro-highjump": {
+      "src": [
+        "vo/intro-highjump.ogg",
+        "vo/intro-highjump.m4a"
+      ],
+      "text": "Up the Jump Tower. It's high jump!",
+      "gain": 1.0
+    },
+    "intro-hill": {
+      "src": [
+        "vo/intro-hill.ogg",
+        "vo/intro-hill.m4a"
+      ],
+      "text": "Hill climb! Grip is everything.",
+      "gain": 1.0
+    },
+    "intro-hurdles": {
+      "src": [
+        "vo/intro-hurdles.ogg",
+        "vo/intro-hurdles.m4a"
+      ],
+      "text": "Welcome to the Obstacle Hall. Hurdles!",
+      "gain": 1.0
+    },
+    "intro-sumo": {
+      "src": [
+        "vo/intro-sumo.ogg",
+        "vo/intro-sumo.m4a"
+      ],
+      "text": "Into the Push Pit. It's sumo!",
+      "gain": 1.0
+    },
+    "intro-tug": {
+      "src": [
+        "vo/intro-tug.ogg",
+        "vo/intro-tug.m4a"
+      ],
+      "text": "Tug of war, right over the pit!",
+      "gain": 1.0
+    },
+    "intro-wobble": {
+      "src": [
+        "vo/intro-wobble.ogg",
+        "vo/intro-wobble.m4a"
+      ],
+      "text": "King of the Wobble. Stay on your feet!",
+      "gain": 1.0
+    },
+    "lab-build": {
+      "src": [
+        "vo/lab-build.ogg",
+        "vo/lab-build.m4a"
+      ],
+      "text": "Right, let's build something brilliant.",
+      "gain": 1.0
+    },
+    "lab-welcome": {
+      "src": [
+        "vo/lab-welcome.ogg",
+        "vo/lab-welcome.m4a"
+      ],
+      "text": "Welcome to the Lab!",
+      "gain": 1.0
+    },
+    "last-standing": {
+      "src": [
+        "vo/last-standing.ogg",
+        "vo/last-standing.m4a"
+      ],
+      "text": "Last zook standing!",
+      "gain": 1.0
+    },
+    "lead-change-1": {
+      "src": [
+        "vo/lead-change-1.ogg",
+        "vo/lead-change-1.m4a"
+      ],
+      "text": "And there's a new leader!",
+      "gain": 1.0
+    },
+    "lead-change-2": {
+      "src": [
+        "vo/lead-change-2.ogg",
+        "vo/lead-change-2.m4a"
+      ],
+      "text": "Oh, it's hit the front!",
+      "gain": 1.0
+    },
+    "lead-change-3": {
+      "src": [
+        "vo/lead-change-3.ogg",
+        "vo/lead-change-3.m4a"
+      ],
+      "text": "Coming through on the inside!",
+      "gain": 1.0
+    },
+    "near-edge": {
+      "src": [
+        "vo/near-edge.ogg",
+        "vo/near-edge.m4a"
+      ],
+      "text": "Right on the edge!",
+      "gain": 1.0
+    },
+    "neck-and-neck": {
+      "src": [
+        "vo/neck-and-neck.ogg",
+        "vo/neck-and-neck.m4a"
+      ],
+      "text": "It's neck and neck!",
+      "gain": 1.0
+    },
+    "off-1": {
+      "src": [
+        "vo/off-1.ogg",
+        "vo/off-1.m4a"
+      ],
+      "text": "And they're off!",
+      "gain": 1.0
+    },
+    "off-2": {
+      "src": [
+        "vo/off-2.ogg",
+        "vo/off-2.m4a"
+      ],
+      "text": "Away they go!",
+      "gain": 1.0
+    },
+    "out": {
+      "src": [
+        "vo/out.ogg",
+        "vo/out.m4a"
+      ],
+      "text": "Out of the ring!",
+      "gain": 1.0
+    },
+    "photo-finish": {
+      "src": [
+        "vo/photo-finish.ogg",
+        "vo/photo-finish.m4a"
+      ],
+      "text": "Photo finish!",
+      "gain": 1.0
+    },
+    "plod-intro": {
+      "src": [
+        "vo/plod-intro.ogg",
+        "vo/plod-intro.m4a"
+      ],
+      "text": "Here's Plod. Slow, steady, much loved.",
+      "gain": 1.0
+    },
+    "plod-plodding": {
+      "src": [
+        "vo/plod-plodding.ogg",
+        "vo/plod-plodding.m4a"
+      ],
+      "text": "Plod is... plodding.",
+      "gain": 1.0
+    },
+    "push": {
+      "src": [
+        "vo/push.ogg",
+        "vo/push.m4a"
+      ],
+      "text": "Big push!",
+      "gain": 1.0
+    },
+    "record": {
+      "src": [
+        "vo/record.ogg",
+        "vo/record.m4a"
+      ],
+      "text": "A new record!",
+      "gain": 1.0
+    },
+    "righted": {
+      "src": [
+        "vo/righted.ogg",
+        "vo/righted.m4a"
+      ],
+      "text": "Back on its feet!",
+      "gain": 1.0
+    },
+    "ring-shrink": {
+      "src": [
+        "vo/ring-shrink.ogg",
+        "vo/ring-shrink.m4a"
+      ],
+      "text": "The ring is shrinking!",
+      "gain": 1.0
+    },
+    "start-great": {
+      "src": [
+        "vo/start-great.ogg",
+        "vo/start-great.m4a"
+      ],
+      "text": "Oh, what a start!",
+      "gain": 1.0
+    },
+    "start-slow": {
+      "src": [
+        "vo/start-slow.ogg",
+        "vo/start-slow.m4a"
+      ],
+      "text": "Ooh, a sleepy start there.",
+      "gain": 1.0
+    },
+    "stumble": {
+      "src": [
+        "vo/stumble.ogg",
+        "vo/stumble.m4a"
+      ],
+      "text": "Ooh, a big wobble there!",
+      "gain": 1.0
+    },
+    "time-warning": {
+      "src": [
+        "vo/time-warning.ogg",
+        "vo/time-warning.m4a"
+      ],
+      "text": "Ten seconds to go!",
+      "gain": 1.0
+    },
+    "tug-on": {
+      "src": [
+        "vo/tug-on.ogg",
+        "vo/tug-on.m4a"
+      ],
+      "text": "Tug is on!",
+      "gain": 1.0
+    },
+    "tut-fell": {
+      "src": [
+        "vo/tut-fell.ogg",
+        "vo/tut-fell.m4a"
+      ],
+      "text": "It fell over. Let's see why.",
+      "gain": 1.0
+    },
+    "tut-legs": {
+      "src": [
+        "vo/tut-legs.ogg",
+        "vo/tut-legs.m4a"
+      ],
+      "text": "Try dragging those legs longer.",
+      "gain": 1.0
+    },
+    "tut-mirror": {
+      "src": [
+        "vo/tut-mirror.ogg",
+        "vo/tut-mirror.m4a"
+      ],
+      "text": "Mirror it. Saves time!",
+      "gain": 1.0
+    },
+    "tut-teach": {
+      "src": [
+        "vo/tut-teach.ogg",
+        "vo/tut-teach.m4a"
+      ],
+      "text": "Now, teach it to walk!",
+      "gain": 1.0
+    },
+    "tut-test": {
+      "src": [
+        "vo/tut-test.ogg",
+        "vo/tut-test.m4a"
+      ],
+      "text": "Tap Test to see it move!",
+      "gain": 1.0
+    },
+    "winner-1": {
+      "src": [
+        "vo/winner-1.ogg",
+        "vo/winner-1.m4a"
+      ],
+      "text": "Winner!",
+      "gain": 1.0
+    },
+    "winner-2": {
+      "src": [
+        "vo/winner-2.ogg",
+        "vo/winner-2.m4a"
+      ],
+      "text": "What a zook!",
+      "gain": 1.0
+    }
+  }
+}

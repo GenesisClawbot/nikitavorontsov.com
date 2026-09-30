@@ -57,5 +57,19 @@
     }
   ],
   "exports": "scripts/prepare-home-assets.mjs",
-  "portrait_source": "portfolio-preview/portrait.png"
+  "portrait_source": "portfolio-preview/portrait.png",
+  "in_game_captures": [
+    {
+      "asset": "zookworks-card",
+      "source": "ZOOKWORKS, challenge C1 (sumo) at 11 s, 1920x1080 WebGL capture with the HUD hidden, cropped 900x450",
+      "created": "2026-09-28",
+      "note": "Real in-game frame"
+    },
+    {
+      "asset": "zookworks",
+      "source": "ZOOKWORKS, challenge E1 (high jump) at 12 s, 1920x1080 WebGL capture with the HUD hidden",
+      "created": "2026-09-28",
+      "note": "Real in-game frame"
+    }
+  ]
 }

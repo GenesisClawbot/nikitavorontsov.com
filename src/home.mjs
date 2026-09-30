@@ -31,6 +31,22 @@ const referenceMotion = createReferenceMotion();
 let manualPaint = null;
 let preloadObserver;
 const state = { from: 0, to: 0, mix: 0, paint: 1, progress: 0 };
+// The tour's timeline scales with its chapters: every offset below is the
+// original two-chapter value times 2/count (a crossfade centred at 0.52 with
+// stops at 0.24 and 0.825 for two chapters). CSS sizes the tour from --chapters.
+const count = scenes.length;
+const k = 2 / count;
+const half = 0.13 * k;
+const bounds = Array.from(
+  { length: count - 1 },
+  (_, i) => (i + 1) / count + 0.02 * k,
+);
+journey.style.setProperty("--chapters", String(count));
+const positions = scenes.map((_, i) =>
+  i === 0
+    ? 0.24 * k
+    : (bounds[i - 1] + half + (i === count - 1 ? 1 : bounds[i] - half)) / 2,
+);
 
 function updateButtons() {
   document.body.dataset.motion = motionEnabled ? "on" : "off";
@@ -54,7 +70,7 @@ function updatePaint(value) {
 }
 
 function update(p) {
-  const chapter = p < 0.52 ? 0 : 1;
+  const chapter = bounds.filter((b) => p >= b).length;
   if (chapter !== observedChapter) {
     if (chapter !== 0) manualPaint = null;
     // Move focus before making a focused scene inert during keyboard scrolling.
@@ -62,7 +78,7 @@ function update(p) {
       (scene, index) =>
         index !== chapter && scene.contains(document.activeElement),
     );
-    if (outgoing) chapters[chapter].focus({ preventScroll: true });
+    if (outgoing) chapters[chapter]?.focus({ preventScroll: true });
     observedChapter = chapter;
     journey.dataset.chapter = String(chapter);
     scenes.forEach((scene, index) => {
@@ -75,21 +91,31 @@ function update(p) {
     });
   }
   // Fade the outgoing copy completely before the next title appears.
-  const weights = [1 - smooth(0.43, 0.5, p), smooth(0.54, 0.61, p)];
-  scenes.forEach((scene, index) => {
-    gsap.set(scene, { autoAlpha: weights[index] });
+  scenes.forEach((scene, i) => {
+    const fadeIn =
+      i === 0
+        ? 1
+        : smooth(bounds[i - 1] + 0.02 * k, bounds[i - 1] + 0.09 * k, p);
+    const fadeOut =
+      i === count - 1
+        ? 1
+        : 1 - smooth(bounds[i] - 0.09 * k, bounds[i] - 0.02 * k, p);
+    gsap.set(scene, { autoAlpha: fadeIn * fadeOut });
   });
   gsap.set(".journey-progress span", { scaleX: p });
+  const crossing = bounds.findIndex((b) => p >= b - half && p < b + half);
   Object.assign(
     state,
-    p < 0.39
-      ? { from: 0, to: 0, mix: 0 }
-      : p < 0.65
-        ? { from: 0, to: 1, mix: smooth(0.39, 0.65, p) }
-        : { from: 1, to: 1, mix: 0 },
+    crossing >= 0
+      ? {
+          from: crossing,
+          to: crossing + 1,
+          mix: smooth(bounds[crossing] - half, bounds[crossing] + half, p),
+        }
+      : { from: chapter, to: chapter, mix: 0 },
   );
   state.progress = p;
-  updatePaint(manualPaint ?? smooth(0.015, 0.29, p));
+  updatePaint(manualPaint ?? smooth(0.015 * k, 0.29 * k, p));
 }
 
 async function loadWorld() {
@@ -101,6 +127,12 @@ async function loadWorld() {
     if (version !== worldVersion || !timeline) return;
     const next = await createWorld(
       document.querySelector(".world-canvas"),
+      {
+        scenes: scenes.map(
+          (scene) => scene.querySelector(".scene-art:not(.sketch-art)").src,
+        ),
+        sketch: document.querySelector(".sketch-art").src,
+      },
       () => {
         journey.classList.remove("webgl-ready");
         journey.dataset.renderer = "static";
@@ -171,7 +203,7 @@ function setupMotion() {
       },
     });
     if (staticChapter >= 0) {
-      const progress = [0.24, 0.82][staticChapter];
+      const progress = positions[staticChapter];
       window.scrollTo({
         top: timeline.start + (timeline.end - timeline.start) * progress,
         behavior: "instant",
@@ -208,10 +240,10 @@ reveal.addEventListener("input", () => {
 });
 chapters.forEach((link) =>
   link.addEventListener("click", (event) => {
-    if (!timeline) return;
-    event.preventDefault();
     const chapter = Number(link.dataset.chapter);
-    const positions = [0.24, 0.82];
+    // A link with no matching scene falls back to the plain anchor jump.
+    if (!timeline || !(chapter in positions)) return;
+    event.preventDefault();
     const target =
       timeline.start + (timeline.end - timeline.start) * positions[chapter];
     history.replaceState(null, "", link.getAttribute("href"));
@@ -267,8 +299,7 @@ function resolveChapterHash() {
   if (timeline && index >= 0) {
     ScrollTrigger.refresh();
     window.scrollTo({
-      top:
-        timeline.start + (timeline.end - timeline.start) * [0.24, 0.82][index],
+      top: timeline.start + (timeline.end - timeline.start) * positions[index],
       behavior: "instant",
     });
   }
