@@ -4,7 +4,7 @@
   "reasoning": "max",
   "browser_feedback_during_generation": false,
   "parent_game_repairs": false,
-  "browser_checks": "Agent-operated Chrome: poor construction failure, reinforced crossing, all three deliveries, retry and fresh-round reset.",
+  "browser_checks": "Agent-operated Chrome after freezing each game. Model-specific observations are recorded below.",
   "models": {
     "gpt61-sol": {
       "model": "openai/gpt-6.1-sol",
@@ -19,7 +19,8 @@
         "runtime.test.js": "f099a9f901065c4d4e0f10b769ca5ad61d95cea8ddf882850fd878d792150a33",
         "style.css": "ae534aee028783d3338b0e171de0ef6c2df421b4ca78d5ab3b409cd5300499ba",
         "three.global.js": "d7e303b2d349436a8cfdcec421bd03f56f5b43ec30681689d5c5fad6dd1a60d0"
-      }
+      },
+      "browser_checks": "Poor construction failed; stronger construction crossed; all three deliveries, retry and fresh-round reset checked."
     },
     "gpt6-sol": {
       "model": "openai/gpt-6-sol",
@@ -31,7 +32,29 @@
         "index.html": "3974d811f944ef2589bb51bfb7a6fcba298482980bd3cd2f1dd1de1ba0d932c3",
         "styles.css": "300fb84c8301a59762152f1ca57a3e8f974d41a1f1de13afca7dbd5d6662fc5c",
         "three.global.js": "d7e303b2d349436a8cfdcec421bd03f56f5b43ec30681689d5c5fad6dd1a60d0"
-      }
+      },
+      "browser_checks": "Poor construction failed; stronger construction crossed; all three deliveries, retry and fresh-round reset checked."
+    },
+    "gpt6-astra": {
+      "model": "openai/gpt-6-astra",
+      "generation_status": "complete",
+      "cost_usd": 5.4185915,
+      "media_cost_usd": 0,
+      "files_sha256": {
+        "README.md": "194cc708b58cda4ddd3ae234c1da78cd066cd41537d87b388c7035615481632e",
+        "THREE-LICENSE.txt": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+        "bridge-model.js": "a10c8bf50c989f3e70fe00817c68dcc2493301a69d6978d9fd9e58741a8f1a94",
+        "game.js": "f1e566a46fdf986edd46b5bed7e391a205f8c41bc470fc434d64e2df0b260be3",
+        "index.html": "828cda21609774e8307722072eff898f2dfd8f1944e0579888baf907210da2bc",
+        "package.json": "7e50461b6e3975b27d825de7d0af366da2708589e0ab205ea3a087b19a7d8cb5",
+        "styles.css": "08a3713c2c241ee4059349d4f32fbdd56de4f3fcdfd3abc9061cf814dfc92502",
+        "tests/model.test.js": "8518db669d8a5b184d2ae09c907e49fa2b3c2a63ddac7627e88cd0204e624743",
+        "tests/ui.test.js": "62e26d311c9711f012473087cbcff5940127c1cf4e871bd9989052bee146a1b8",
+        "three.global.js": "d7e303b2d349436a8cfdcec421bd03f56f5b43ec30681689d5c5fad6dd1a60d0"
+      },
+      "browser_checks": "All timber failed at bay 3. Centre iron passed for 11 bolts. Iron at bays 1/5 failed for 12; moving it to bays 2/4 passed for 12. Retry, keyboard editing/undo and full clear/refund checked. No console errors captured. 390px layout has no horizontal overflow.",
+      "simulation": "Fixed-bay material capacity, adjacent bonuses and overload fatigue; no free geometry or validated structural analysis.",
+      "fun_verdict": "No new verdict from Nikita yet."
     }
   },
   "limitations": [
@@ -39,5 +62,14 @@
     "Toy capacity-based puzzles, not validated structural simulations.",
     "Real phone hardware and audio were not tested.",
     "GPT-6 Sol mouse/touch construction was not tested."
-  ]
+  ],
+  "nikita_feedback": {
+    "date": "2026-09-30",
+    "applies_to": [
+      "gpt61-sol",
+      "gpt6-sol"
+    ],
+    "judgement": "Both games were boring: replacing the same decks and adding braces left little engineering or challenge.",
+    "source": "Direct feedback from Nikita; separate from functional test results."
+  }
 }
