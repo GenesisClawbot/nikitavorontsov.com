@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#172b2d">
+  <title>Bridge the Bad Idea — Goblin Public Works</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <main class="app">
+    <header class="masthead">
+      <div class="brand">
+        <div class="mascot" aria-hidden="true">
+          <svg viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 33 3 24l9 25 11 1M58 33l15-9-9 25-11 1" fill="#a7cd5b" stroke="#263e35" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M15 38c0-17 10-27 23-27s23 10 23 27v7c0 14-10 24-23 24S15 59 15 45v-7Z" fill="#a7cd5b" stroke="#263e35" stroke-width="3"/>
+            <path d="M19 25c2-13 13-20 25-17 8 2 12 8 13 16H19Z" fill="#ffcc59" stroke="#263e35" stroke-width="3" stroke-linejoin="round"/>
+            <path d="M35 7h6v17h-6z" fill="#f18b54" stroke="#263e35" stroke-width="2"/>
+            <circle cx="29" cy="38" r="7" fill="#fff7dc" stroke="#263e35" stroke-width="2"/>
+            <circle cx="47" cy="38" r="7" fill="#fff7dc" stroke="#263e35" stroke-width="2"/>
+            <circle cx="31" cy="39" r="2.5" fill="#263e35"/><circle cx="45" cy="39" r="2.5" fill="#263e35"/>
+            <path d="m39 42 4 5-7 1" fill="#82ab44" stroke="#263e35" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M30 54c5 5 12 5 17 0" stroke="#263e35" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="25" cy="51" r="2" fill="#e79076"/><circle cx="52" cy="51" r="2" fill="#e79076"/>
+          </svg>
+        </div>
+        <div class="brand-copy">
+          <p class="eyebrow">GOBLIN PUBLIC WORKS <span class="eyebrow-star">✳</span> EXPERIMENT NO. 004</p>
+          <h1>BRIDGE THE <span>BAD IDEA.</span></h1>
+          <p class="subtitle">Reinforce six spans. Roll one loaded cart. Try not to invent a waterfall.</p>
+        </div>
+      </div>
+      <aside class="ticket" aria-label="Current delivery">
+        <div class="ticket-top"><span>DELIVERY DOCKET</span><strong id="jobNumber">01 / 03</strong></div>
+        <div class="ticket-body">
+          <span class="ticket-stamp" id="cargoStamp" aria-hidden="true">01</span>
+          <div><span class="ticket-kicker" id="cargoKicker">THE LIGHT ONE</span><strong class="ticket-name" id="cargoName">EMOTIONAL TURNIPS</strong></div>
+        </div>
+        <div class="ticket-bottom"><span>PEAK LOAD <b id="peakLoad">4.7</b></span><span>MIDDLE SPANS STRAIN MOST ↗</span></div>
+      </aside>
+    </header>
+
+    <section class="workshop" aria-label="Bridge building game">
+      <div class="statusbar">
+        <div class="phase" id="phaseBadge"><span class="phase-light"></span><span id="phaseText">BUILD PHASE</span></div>
+        <div class="delivery-progress" aria-label="Three deliveries">
+          <span class="progress-step active" data-step="0">1</span><span class="progress-link"></span>
+          <span class="progress-step" data-step="1">2</span><span class="progress-link"></span>
+          <span class="progress-step" data-step="2">3</span>
+          <span class="progress-caption">DELIVERIES</span>
+        </div>
+        <div class="status-numbers">
+          <div class="safety warning" id="safety"><span class="status-icon" aria-hidden="true">!</span><strong id="safetyText">4 SHAKY SPANS</strong></div>
+          <div class="budget" id="budget"><span class="bolt-icon" aria-hidden="true">✦</span><strong id="boltsLeft">6</strong><span>BOLTS LEFT</span><small id="budgetTotal">/ 12</small></div>
+        </div>
+      </div>
+
+      <div class="scene" id="scene">
+        <canvas id="game" tabindex="0" role="application" aria-describedby="inspectionText" aria-label="Interactive six-span bridge. Left and right arrows choose a span; down chooses a joint; Space places a part; Enter tests the cart."></canvas>
+        <div class="toast" id="toast" role="status" aria-live="polite"></div>
+        <div class="result" id="result" role="dialog" aria-labelledby="resultTitle" aria-describedby="resultMessage" hidden>
+          <div class="result-top"><span id="resultKicker">ENGINEERING REPORT</span><span class="result-seal" id="resultSeal" aria-hidden="true">!</span></div>
+          <h2 id="resultTitle">OOPS.</h2>
+          <p id="resultMessage"></p>
+          <div class="result-actions"><button class="result-primary" id="resultAction" type="button">PATCH &amp; RETRY <span aria-hidden="true">→</span></button><button class="result-secondary" id="resultReset" type="button">RESET BRIDGE</button></div>
+        </div>
+      </div>
+
+      <div class="inspection" id="inspection" aria-live="polite"><span class="inspection-bulb" aria-hidden="true">✎</span><span id="inspectionText">Pick a part below, then tap a plank to swap it. Tap the round joints underneath to add trusses.</span></div>
+
+      <div class="bench">
+        <div class="parts-area">
+          <div class="bench-heading"><div><span class="step-tag">01</span><strong>THE BUILD BENCH</strong></div><span>Choose a part, then tap the bridge. Keys <kbd>1</kbd>–<kbd>4</kbd>.</span></div>
+          <div class="parts" role="group" aria-label="Construction parts">
+            <button type="button" class="part" data-tool="scrap" aria-pressed="false" title="Replace a span with a scrap plank (1 bolt, holds 2.5)">
+              <span class="part-icon icon-scrap" aria-hidden="true"><i></i><i></i></span>
+              <span class="part-words"><strong>SCRAP</strong><small>holds 2.5</small></span>
+              <span class="part-cost"><b>1</b> ✦</span>
+            </button>
+            <button type="button" class="part selected" data-tool="beam" aria-pressed="true" title="Replace a span with a bolted beam (2 bolts, holds 4.4)">
+              <span class="part-icon icon-beam" aria-hidden="true"><i></i><i></i></span>
+              <span class="part-words"><strong>BEAM</strong><small>holds 4.4</small></span>
+              <span class="part-cost"><b>2</b> ✦</span>
+            </button>
+            <button type="button" class="part" data-tool="iron" aria-pressed="false" title="Replace a span with an iron deck (3 bolts, holds 6.2)">
+              <span class="part-icon icon-iron" aria-hidden="true"><i></i><i></i></span>
+              <span class="part-words"><strong>IRON</strong><small>holds 6.2</small></span>
+              <span class="part-cost"><b>3</b> ✦</span>
+            </button>
+            <button type="button" class="part" data-tool="truss" aria-pressed="false" title="Toggle a truss below a joint (2 bolts, adds 1.6 strength to both neighboring spans)">
+              <span class="part-icon icon-truss" aria-hidden="true"><i></i><i></i></span>
+              <span class="part-words"><strong>TRUSS</strong><small>+1.6 both sides</small></span>
+              <span class="part-cost"><b>2</b> ✦</span>
+            </button>
+          </div>
+        </div>
+        <div class="actions-area">
+          <div class="bench-heading"><div><span class="step-tag">02</span><strong>THE BIG MOMENT</strong></div></div>
+          <button class="test-button" id="testButton" type="button"><span class="button-text" id="testButtonText">TEST THE BRIDGE</span><span class="button-arrow" aria-hidden="true">➜</span></button>
+          <button class="reset-button" id="resetButton" type="button">↺ &nbsp;START FROM SCRAP</button>
+        </div>
+      </div>
+    </section>
+    <footer class="footer"><span>TIP: Orange diamonds mark weak spans. Keyboard: 1–4 pick parts, arrow keys + Space build, Enter tests.</span><span class="footer-right">BUILT TO CODE. NOT A GOOD CODE.</span></footer>
+  </main>
+</body>
+</html>

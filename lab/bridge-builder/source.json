@@ -1,0 +1,43 @@
+{
+  "date": "2026-09-30",
+  "brief": "Make a small, funny browser game about a goblin engineer building a bridge so a laden cart can cross a ravine. Let player construction choices affect whether the cart reaches the other side. Include a short build phase, a visible test run, clear success or failure and a quick retry. Choose the controls, mechanics and visual approach yourself. Keep it small enough to play in a few minutes.\n",
+  "reasoning": "max",
+  "browser_feedback_during_generation": false,
+  "parent_game_repairs": false,
+  "browser_checks": "Agent-operated Chrome: poor construction failure, reinforced crossing, all three deliveries, retry and fresh-round reset.",
+  "models": {
+    "gpt61-sol": {
+      "model": "openai/gpt-6.1-sol",
+      "generation_status": "stopped after repeated upstream rate limit; no model finish call",
+      "cost_usd": 0.8724381,
+      "files_sha256": {
+        "THREE-LICENSE.txt": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+        "bridge-core.js": "c9d138037768bc9e078f4f192bd0e5accfb1b6402911a6108de3571f94708c45",
+        "bridge.test.js": "75a3e0d225b5065bf332d633e992fa87ac8e4d814d8c5702640f14cf373ffc89",
+        "game.js": "50ef69b512571ed7c04cf2e1623a8ee01f527bf9370d0706794ce7f030734a68",
+        "index.html": "973c734cdaa13682f91182c21d310e12e57647c8d7ece9a970cc82e0329599d4",
+        "runtime.test.js": "f099a9f901065c4d4e0f10b769ca5ad61d95cea8ddf882850fd878d792150a33",
+        "style.css": "ae534aee028783d3338b0e171de0ef6c2df421b4ca78d5ab3b409cd5300499ba",
+        "three.global.js": "d7e303b2d349436a8cfdcec421bd03f56f5b43ec30681689d5c5fad6dd1a60d0"
+      }
+    },
+    "gpt6-sol": {
+      "model": "openai/gpt-6-sol",
+      "generation_status": "complete",
+      "cost_usd": 1.0942889,
+      "files_sha256": {
+        "THREE-LICENSE.txt": "8b378ebe60e2fe500158cb0ac71cb5e8b7d92953c2abcc63a0eb90499653b5bc",
+        "game.js": "026402a0a99965134dbc34abcc4e7696ce4a0883e9efda560be283da284516e3",
+        "index.html": "3974d811f944ef2589bb51bfb7a6fcba298482980bd3cd2f1dd1de1ba0d932c3",
+        "styles.css": "300fb84c8301a59762152f1ca57a3e8f974d41a1f1de13afca7dbd5d6662fc5c",
+        "three.global.js": "d7e303b2d349436a8cfdcec421bd03f56f5b43ec30681689d5c5fad6dd1a60d0"
+      }
+    }
+  },
+  "limitations": [
+    "One generated game per model; no general model ranking.",
+    "Toy capacity-based puzzles, not validated structural simulations.",
+    "Real phone hardware and audio were not tested.",
+    "GPT-6 Sol mouse/touch construction was not tested."
+  ]
+}
