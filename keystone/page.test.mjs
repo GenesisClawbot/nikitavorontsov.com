@@ -12,7 +12,8 @@ test("Keystone privacy policy covers ads, purchases, analytics, children and rig
   for (const name of ["Google AdMob", "RevenueCat", "GameAnalytics"]) assert.match(html, new RegExp(name));
   assert.match(html, /not made for children under 13/);
   assert.match(html, /ico\.org\.uk/);
-  assert.match(html, /mailto:nikitavorontsov@hotmail\.com/);
+  assert.match(html, /mailto:contact@char-gen\.com/);
+  assert.doesNotMatch(html, /hotmail/);
   // A privacy page should not load third-party fonts or trackers.
   assert.doesNotMatch(html, /fonts\.googleapis\.com|plausible|googletagmanager/);
 });
