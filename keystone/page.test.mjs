@@ -4,9 +4,9 @@ import { readFile } from "node:fs/promises";
 
 const read = (name) => readFile(new URL(`./${name}`, import.meta.url), "utf8");
 
-test("Keystone privacy policy covers ads, purchases, analytics, children and rights", async () => {
+test("Wobblock privacy policy covers ads, purchases, analytics, children and rights", async () => {
   const html = await read("privacy/index.html");
-  assert.match(html, /<title>Keystone privacy policy<\/title>/);
+  assert.match(html, /<title>Wobblock privacy policy<\/title>/);
   assert.match(html, /rel="canonical" href="https:\/\/nikitavorontsov\.com\/keystone\/privacy\/"/);
   assert.match(html, /Last updated \d{1,2} \w+ \d{4}/);
   for (const name of ["Google AdMob", "RevenueCat", "GameAnalytics"]) assert.match(html, new RegExp(name));
