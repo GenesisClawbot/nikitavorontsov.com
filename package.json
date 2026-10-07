@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
+    "prebuild": "node scripts/install-site-analytics.mjs",
     "build": "vite build",
     "test": "node --test site.test.mjs */*.test.mjs",
     "check:links": "node scripts/check-homepage-links.mjs"

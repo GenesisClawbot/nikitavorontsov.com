@@ -102,7 +102,8 @@ test('uses only the three deployed local fonts', () => {
 
 test('states the AI disclosure and privacy boundary', () => {
   assert.match(html, /Maintained by Nikita Vorontsov\. Built with AI\./);
-  assert.match(html, /No account, upload, analytics, or saved score\./);
+  assert.match(html, /No account, uploaded game data, or saved score\./);
+  assert.match(html, /Plausible counts page visits only\./);
 });
 
 test('includes responsive and reduced-motion contracts', () => {
@@ -135,11 +136,11 @@ test('sets min-width zero on every direct grid child', () => {
   }
 });
 
-test('contains no third-party runtime, analytics, fetch, or em dash', () => {
+test('keeps game code local without input uploads or game analytics', () => {
   const source = `${html}\n${main}\n${game}`;
   assert.doesNotMatch(source, /<script[^>]+https?:\/\//i);
   assert.doesNotMatch(source, /\bfetch\s*\(/);
-  assert.doesNotMatch(source, /google-analytics|gtag\(|plausible|posthog|segment/i);
+  assert.doesNotMatch(`${main}\n${game}`, /google-analytics|gtag\(|plausible|posthog|segment/i);
   assert.doesNotMatch(source, /—/);
   assert.doesNotMatch(source, /\.\.\/index\.html/);
 });

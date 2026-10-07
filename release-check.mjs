@@ -17,10 +17,15 @@ const root = await get("/");
 const loaf = await get("/loaf/");
 await get("/loaf/og.png");
 await get("/pr-warrant/");
+const film = await get("/lab/meaning-of-life/");
+const analytics = await get("/analytics.js");
 if (!root.includes('rel="canonical" href="https://nikitavorontsov.com/"')) throw new Error("root canonical is wrong");
 if (!root.includes("./loaf/")) throw new Error("root LOAF link is missing");
 if (!loaf.includes('rel="canonical" href="https://nikitavorontsov.com/loaf/"')) throw new Error("LOAF canonical is wrong");
-if (!loaf.includes('data-domain="nikitavorontsov.com"')) throw new Error("Plausible domain is wrong");
+for (const [path, html] of [["/", root], ["/loaf/", loaf], ["/lab/meaning-of-life/", film]]) {
+  if (!html.includes('<script defer src="/analytics.js"></script>')) throw new Error(`${path} is missing shared analytics`);
+}
+if (!analytics.includes('const domain = "nikitavorontsov.com"')) throw new Error("Plausible domain is wrong");
 if (!loaf.includes('src="./assets/')) throw new Error("LOAF JavaScript is not relative");
 
 const manifestResponse = await fetch(`${base}/loaf/source.json`, { headers: { "user-agent": "LOAF-release-check/1.0" } });

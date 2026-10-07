@@ -4,6 +4,7 @@ import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
+import { withSiteAnalytics } from "./install-site-analytics.mjs";
 
 const execFileAsync = promisify(execFile);
 
@@ -45,6 +46,7 @@ const sourceCommit = stdout.trim();
 await rm(outputDir, { recursive: true, force: true });
 await mkdir(outputDir, { recursive: true });
 await cp(distDir, outputDir, { recursive: true });
+await writeFile(resolve(outputDir, "index.html"), withSiteAnalytics(html));
 
 await writeFile(
   resolve(outputDir, "source.json"),

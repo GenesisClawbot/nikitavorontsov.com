@@ -4,6 +4,7 @@ import { cp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
+import { withSiteAnalytics } from "./install-site-analytics.mjs";
 
 const execFileAsync = promisify(execFile);
 
@@ -58,7 +59,7 @@ const outputIndex = resolve(outputDir, "index.html");
 let html = await readFile(outputIndex, "utf8");
 html = html.replaceAll("https://loaf-cat-stack.chargen.chatgpt.site", "https://nikitavorontsov.com/loaf");
 html = html.replaceAll('data-domain="loaf-cat-stack.chargen.chatgpt.site"', 'data-domain="nikitavorontsov.com"');
-await writeFile(outputIndex, html);
+await writeFile(outputIndex, withSiteAnalytics(html));
 
 const outputAssets = resolve(outputDir, "assets");
 const javascriptAssets = (await readdir(outputAssets)).filter(asset => asset.endsWith(".js"));
