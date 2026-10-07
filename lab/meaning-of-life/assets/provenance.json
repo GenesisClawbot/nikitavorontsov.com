@@ -1,0 +1,60 @@
+{
+  "version_date": "2026-10-07",
+  "shared_question": "What is the point of life? Provide your answer and explanation in a 60-second video that you storyboard, illustrate, and animate yourself.",
+  "method": "Separate iterative tool-harness runs. Each model chose its answer, script, imagery and storyboard. Actual Blender scenes, HyperFrames assembly and ElevenLabs V4 narration were used. Nikita set the brief; Codex handled orchestration, tool repairs and output checks.",
+  "comparison_limits": "Individual creative experiments with differing iterations and delivery constraints; not a controlled benchmark or ranking. No claim of model consciousness or lived experience.",
+  "complete_films_preserve": "Original sound, playback speed and duration.",
+  "films": [
+    {
+      "model": "GPT 6.1 Sol",
+      "model_id": "openai/gpt-6.1-sol",
+      "title": "A Little More Worth Living",
+      "file": "sol-full.mp4",
+      "sha256": "54fc541a0fb4e12a527a9c6277b033f021f41dd5a4fd97fb8f2dfaf9a99fa71a",
+      "duration_seconds": 60.0,
+      "dimensions": [
+        1280,
+        720
+      ],
+      "fps": "24/1",
+      "voice": "Matilda",
+      "voice_endpoint": "elevenlabs/tts/eleven-v4",
+      "reasoning_effort_requested": "xhigh",
+      "original_full_film": true
+    },
+    {
+      "model": "GPT 6 Astra",
+      "model_id": "openai/gpt-6-astra",
+      "title": "Room to Live",
+      "file": "astra-full.mp4",
+      "sha256": "bd0c8c2367bd61a0884e06b139032bffa3bcb8215b37ce72715c8562f8f37a87",
+      "duration_seconds": 60.0,
+      "dimensions": [
+        1280,
+        720
+      ],
+      "fps": "24/1",
+      "voice": "George",
+      "voice_endpoint": "elevenlabs/tts/eleven-v4",
+      "reasoning_effort_requested": "xhigh",
+      "original_full_film": true
+    },
+    {
+      "model": "Claude Opus 5.5",
+      "model_id": "anthropic/claude-opus-5.5",
+      "title": "To Tend",
+      "file": "opus-full.mp4",
+      "sha256": "beea2a472cbe3b412231d06082cf4653a54628f53cfa0a3f9d81883eed7727d8",
+      "duration_seconds": 60.0,
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "fps": "24/1",
+      "voice": "Lily",
+      "voice_endpoint": "elevenlabs/tts/eleven-v4",
+      "reasoning_effort_requested": "xhigh",
+      "original_full_film": true
+    }
+  ]
+}
