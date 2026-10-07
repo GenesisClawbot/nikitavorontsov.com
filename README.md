@@ -31,6 +31,23 @@ Generated image originals can be exported using:
 `node scripts/prepare-home-assets.mjs /path/to/originals`.
 Source prompts and output URLs are documented in `docs/homepage-assets.json`.
 
+## Site-wide analytics
+
+`/analytics.js` is the single Plausible configuration for the whole domain.
+`npm run build` installs its reference in every tracked or new, non-ignored HTML
+page, including the homepage, labs, previews and privacy page. Commit the updated
+HTML with the shared file: GitHub Pages serves the repository root as static files.
+The game packagers apply the same reference. `npm test` catches missing or duplicate
+references when a new page is added.
+Archived labs' security policies permit only Plausible's script path and event
+endpoint alongside their existing local resources.
+
+New pages collect pageviews only. Their form inputs, files and gameplay are not
+sent to Plausible. LOAF and ZOOKWORKS retain their existing custom events;
+ZOOKWORKS retains manual pageviews to avoid counting its startup twice. Local
+development and other hosts do not load the tracker. Changes take effect for
+future visits and cannot recover earlier untracked traffic.
+
 ## Local release
 
 Build LOAF from its canonical source checkout, then package that `dist/` output into this repository:

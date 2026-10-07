@@ -14,6 +14,7 @@ test("Wobblock privacy policy covers ads, purchases, analytics, children and rig
   assert.match(html, /ico\.org\.uk/);
   assert.match(html, /mailto:contact@char-gen\.com/);
   assert.doesNotMatch(html, /hotmail/);
-  // A privacy page should not load third-party fonts or trackers.
-  assert.doesNotMatch(html, /fonts\.googleapis\.com|plausible|googletagmanager/);
+  assert.match(html, /Visits to this website/);
+  assert.match(html, /separate from the game's play statistics/);
+  assert.doesNotMatch(html, /fonts\.googleapis\.com|googletagmanager/);
 });
