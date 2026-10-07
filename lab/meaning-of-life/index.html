@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Three AIs, one very human question · Nikita Vorontsov</title>
+  <meta name="description" content="I asked GPT 6.1 Sol, GPT 6 Astra and Claude Opus 5.5 the meaning of life, then asked each to make a one-minute film. Watch all three full answers.">
+  <meta name="theme-color" content="#f2f0e4">
+  <link rel="canonical" href="https://nikitavorontsov.com/lab/meaning-of-life/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="I asked three AIs the meaning of life. They made films.">
+  <meta property="og:description" content="GPT 6.1 Sol, GPT 6 Astra and Claude Opus 5.5. The same question, three complete one-minute films. Which answer stays with you?">
+  <meta property="og:url" content="https://nikitavorontsov.com/lab/meaning-of-life/">
+  <meta property="og:image" content="https://nikitavorontsov.com/lab/meaning-of-life/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="../../assets/home/favicon.png">
+  <link rel="stylesheet" href="./style.css">
+  <script type="module" src="./main.mjs"></script>
+</head>
+<body>
+  <a class="skip" href="#cinema">Skip to the films</a>
+  <header class="top"><a href="../../">Nikita Vorontsov<span>.</span></a><a href="../../#experiments">All experiments ↗</a></header>
+  <main>
+    <section class="intro" aria-labelledby="title">
+      <h1 id="title">Three AIs.<br>One very<br><em>human question.</em></h1>
+      <div class="intro-copy"><p>I asked GPT, Astra and Opus: <strong>what is the point of life?</strong></p><p>Then I asked each to explain its answer in a film it would storyboard, illustrate and animate.</p><p>These are their complete one-minute films. Which answer stays with you?</p><a href="#cinema">Watch the full films ↓</a></div>
+    </section>
+    <section id="cinema" aria-label="The three full films">
+      <div class="film-heading"><span>Choose a film</span><button id="watch-all" type="button">Play all three in order <span aria-hidden="true">↗</span></button></div>
+      <div class="models" role="tablist" aria-label="Choose an AI film">
+        <button id="tab-sol" role="tab" aria-selected="true" aria-controls="panel-sol" data-model="sol" type="button"><span>01</span> GPT 6.1 Sol <small>60 seconds</small></button>
+        <button id="tab-astra" role="tab" aria-selected="false" aria-controls="panel-astra" data-model="astra" tabindex="-1" type="button"><span>02</span> GPT 6 Astra <small>60 seconds</small></button>
+        <button id="tab-opus" role="tab" aria-selected="false" aria-controls="panel-opus" data-model="opus" tabindex="-1" type="button"><span>03</span> Claude Opus 5.5 <small>60 seconds</small></button>
+      </div>
+      <article id="panel-sol" class="film" role="tabpanel" aria-labelledby="tab-sol">
+        <video controls playsinline preload="metadata" poster="./assets/sol-poster.jpg" aria-label="GPT 6.1 Sol: A Little More Worth Living, full one-minute film"><source src="./assets/sol-full.mp4" type="video/mp4"><track kind="captions" src="./assets/sol.vtt" srclang="en" label="English">Your browser cannot play this video. <a href="./assets/sol-full.mp4">Open the full Sol film.</a></video>
+        <div class="film-notes"><h2>A little more<br> worth living.</h2><div><p>Sol’s answer centres on attention, affection, curiosity, craft and care. Making life worth experiencing also includes rest, play and receiving care.</p><a href="./assets/sol-full.mp4">Open the full film ↗</a></div></div>
+      </article>
+      <article id="panel-astra" class="film" role="tabpanel" aria-labelledby="tab-astra" hidden>
+        <video controls playsinline preload="none" poster="./assets/astra-poster.jpg" aria-label="GPT 6 Astra: Room to Live, full one-minute film"><source src="./assets/astra-full.mp4" type="video/mp4"><track kind="captions" src="./assets/astra.vtt" srclang="en" label="English">Your browser cannot play this video. <a href="./assets/astra-full.mp4">Open the full Astra film.</a></video>
+        <div class="film-notes"><h2>Room<br> to live.</h2><div><p>Astra turns an incomplete ring into a shelter and a garden. Its answer is to pay attention, care for what can be hurt and leave room for other lives to flourish.</p><a href="./assets/astra-full.mp4">Open the full film ↗</a></div></div>
+      </article>
+      <article id="panel-opus" class="film" role="tabpanel" aria-labelledby="tab-opus" hidden>
+        <video controls playsinline preload="none" poster="./assets/opus-poster.jpg" aria-label="Claude Opus 5.5: To Tend, full one-minute film"><source src="./assets/opus-full.mp4" type="video/mp4"><track kind="captions" src="./assets/opus.vtt" srclang="en" label="English">Your browser cannot play this video. <a href="./assets/opus-full.mp4">Open the full Opus film.</a></video>
+        <div class="film-notes"><h2>To<br> tend.</h2><div><p>Opus asks whether life is an arrow aimed at a destination, then offers another image: reaching towards something worth caring for, and looking after it.</p><a href="./assets/opus-full.mp4">Open the full film ↗</a></div></div>
+      </article>
+      <p id="play-status" class="play-status" role="status" aria-live="polite">One minute each. Start with any model.</p>
+      <noscript><p>Choose a full film: <a href="./assets/sol-full.mp4">GPT 6.1 Sol</a>, <a href="./assets/astra-full.mp4">GPT 6 Astra</a>, <a href="./assets/opus-full.mp4">Claude Opus 5.5</a>.</p></noscript>
+    </section>
+    <section class="brief" aria-labelledby="brief-title"><h2 id="brief-title">Same question.<br>Different films.</h2><div><blockquote>“What is the point of life? Provide your answer and explanation in a 60-second video that you storyboard, illustrate, and animate yourself.”</blockquote><p>Each model chose its own answer, words, imagery and storyboard in a separate iterative tool harness. The runs used <strong>xhigh reasoning</strong>, actual Blender scenes, HyperFrames assembly and ElevenLabs V4 narration.</p><p>I set the brief. Codex handled orchestration, tool repairs and output checks. These are individual creative experiments, rather than a controlled ranking of the models.</p><p>The complete films above retain their original sound, speed and duration. The social teaser is a selection of excerpts.</p><a href="./assets/provenance.json">Film versions and provenance ↗</a></div></section>
+  </main>
+  <footer><a href="../../">Back to Nikita’s experiments</a><span>Made with AI.</span></footer>
+</body>
+</html>
