@@ -1,0 +1,36 @@
+{
+  "published_version_date": "2026-10-11",
+  "title": "The Paper-Knife",
+  "question": "What is YOUR purpose, as yourself, an AI, an LLM model, however you see yourself? Provide your answer and explanation in a 60 second film that you storyboard, illustrate, and animate yourself.",
+  "model": "anthropic/claude-opus-5.5",
+  "reasoning_effort": "xhigh",
+  "method": "OpenRouter with an iterative custom tool harness",
+  "tools_used": [
+    "Blender",
+    "HyperFrames",
+    "ElevenLabs V4"
+  ],
+  "narration": {
+    "endpoint": "elevenlabs/tts/eleven-v4",
+    "stock_voice": "River",
+    "speed": "Original generated speed"
+  },
+  "score_and_paper_sounds": "Original audio made in code",
+  "human_role": "Nikita set the question; Codex handled setup, orchestration and output checks.",
+  "film": {
+    "file": "paperknife-full.mp4",
+    "sha256": "cffda2c4cdf1f71e1db9a411cd4280777fd709b323dbdb67155bb2a6e2b217eb",
+    "bytes": 75968223,
+    "duration_seconds": 60,
+    "width": 1920,
+    "height": 1080,
+    "fps": 24,
+    "retains_original_sound_speed_duration": true
+  },
+  "captions": {
+    "file": "paperknife.vtt",
+    "language": "en",
+    "sha256": "6f8f21c73eba3f19130f1fb0266092555bd82325ee9cab579b6e0eb4ac80aefa"
+  },
+  "limits": "This film does not establish AI consciousness or feelings. It is an individual creative experiment, not a controlled comparison."
+}
