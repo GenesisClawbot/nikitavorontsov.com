@@ -1,6 +1,9 @@
 (() => {
   const domain = "nikitavorontsov.com";
   if (![domain, `www.${domain}`].includes(window.location.hostname)) return;
+  // Email fallbacks can contain credentials. Never track a books URL that failed to clear them.
+  if (/^\/books(?:\/|$)/.test(window.location.pathname) &&
+      (window.location.search || window.location.hash)) return;
   if (document.getElementById("site-plausible")) return;
 
   window.plausible = window.plausible || function () {
