@@ -23,6 +23,7 @@ function runPage(html, pathname, failHistory = false) {
     document: {
       getElementById: id => scripts.find(s => s.id === id),
       createElement: () => ({ dataset: {} }),
+      querySelectorAll: () => [],
       head: { append: s => scripts.push(s) },
     },
   });
