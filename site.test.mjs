@@ -103,6 +103,7 @@ test("shared tracker uses automatic pageviews except for the existing manual gam
     const document = {
       getElementById: (id) => scripts.find((script) => script.id === id),
       createElement: () => ({ dataset: {} }),
+      querySelectorAll: () => [],
       head: { append: (script) => scripts.push(script) },
     };
     const context = vm.createContext({ window, document });
