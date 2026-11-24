@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="850" viewBox="0 0 720 850" role="img" aria-labelledby="title desc">
+<title id="title">How the two runs were combined</title>
+<desc id="desc">Run speaker diarisation on the same recording with and without a speaker-count range. Project both runs onto the same Scribe word indices. For each word, keep a name if only one run names it, keep a shared name if both agree, and otherwise use the higher score. The old rule favoured the ranged run on exact ties. In the fictional example, both names score 90, so Name A from the ranged run wins.</desc>
+<defs><pattern id="paper" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.15" fill="#e1d8c7"/></pattern></defs>
+<rect width="720" height="850" fill="#fcf8ee"/><rect x="12" y="12" width="696" height="826" rx="20" fill="url(#paper)" opacity=".68"/>
+<g fill="#243243" font-family="DejaVu Sans,sans-serif">
+<g id="heading">
+ <text x="34" y="46" font-size="22" font-weight="bold" fill="#665022">THE ORIGINAL FUSION RULE</text>
+ <text x="34" y="101" font-size="37" font-weight="bold">How I combined the two runs</text>
+ <text x="35" y="139" font-size="23">Same recording, two diarisation runs.</text>
+</g>
+<g id="two-runs" stroke="#344456" stroke-width="2.3" stroke-linejoin="round">
+ <path d="M49 163 Q182 161 330 164 Q346 164 346 180 L345 219 Q346 231 331 231 L48 231 Q35 230 35 218 L35 177 Q36 162 49 163Z" fill="#e4f0e9"/>
+ <path d="M386 163 Q531 160 669 163 Q685 162 685 179 L684 219 Q684 232 669 232 L386 231 Q373 232 373 220 L373 177 Q374 163 386 163Z" fill="#edf3f9"/>
+ <path d="M188 238 L189 256 Q189 266 202 266 L345 267 M531 238 L530 255 Q530 265 518 266 L376 267 M359 267 L359 284 M351 276 L359 284 L367 276" fill="none" stroke-linecap="round"/>
+</g>
+<text x="190" y="205" text-anchor="middle" font-size="24" font-weight="bold">Speaker-count range</text>
+<text x="528" y="205" text-anchor="middle" font-size="24" font-weight="bold">No count range</text>
+<g id="join">
+ <path d="M35 294 Q191 291 360 294 T684 294 L683 358 Q520 361 347 358 T35 360Z" fill="#e8edf1" stroke="#49627d" stroke-width="2"/>
+ <text x="360" y="334" text-anchor="middle" font-size="25" font-weight="bold">Align both to the same Scribe word indices</text>
+</g>
+<g id="per-word-rule">
+ <path d="M49 382 Q191 380 368 382 T670 382 Q685 382 684 396 L685 596 Q684 610 671 610 L47 610 Q34 608 35 595 L34 396 Q36 382 49 382Z" fill="#fffdf8" stroke="#344456" stroke-width="2.4"/>
+ <path d="M36 595 Q38 613 53 613 L671 612 M683 396 Q689 505 686 591" fill="none" stroke="#344456" stroke-width="1.25" opacity=".3"/>
+ <text x="54" y="421" font-size="24" font-weight="bold">FOR EACH WORD</text>
+ <g font-size="24">
+  <text x="54" y="449"><tspan font-weight="bold">Only one name:</tspan><tspan>&#160;keep it.</tspan></text>
+  <text x="54" y="482"><tspan font-weight="bold">Same name:</tspan><tspan>&#160;keep the shared name.</tspan></text>
+  <text x="54" y="515"><tspan font-weight="bold">Different names:</tspan><tspan>&#160;keep the higher score.</tspan></text>
+  <text x="54" y="548"><tspan font-weight="bold">Exact tie:</tspan><tspan>&#160;the old rule favoured the ranged run.</tspan></text>
+  <text x="54" y="581"><tspan font-weight="bold">Both blank:</tspan><tspan>&#160;leave the word unnamed.</tspan></text>
+ </g>
+</g>
+<g id="fictional-tie">
+ <path d="M39 640 Q207 637 376 639 T681 640 L684 812 Q494 814 343 811 T36 814Z" fill="#fff0bb" stroke="#a98438" stroke-width="2"/>
+ <text x="54" y="674" font-size="21" font-weight="bold" fill="#665022">FICTIONAL EXAMPLE · WORD INDEX 42</text>
+ <text x="54" y="718" font-size="23">With range: <tspan font-weight="bold">A, score 90</tspan></text>
+ <text x="54" y="754" font-size="23">No range: <tspan font-weight="bold">B, score 90</tspan></text>
+ <text x="54" y="790" font-size="25" font-weight="bold">Exact tie → A wins under the old rule.</text>
+</g>
+</g></svg>

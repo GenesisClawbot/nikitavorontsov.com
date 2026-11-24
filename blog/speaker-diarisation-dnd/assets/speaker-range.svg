@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="628" viewBox="0 0 760 628" role="img" aria-labelledby="title desc">
+  <title id="title">Same voice, two outcomes</title>
+  <desc id="desc">In the second recording, forcing the speaker count merged an unenrolled guest with enrolled speakers and put the wrong names on 820 words. Leaving the count open kept the guest unnamed. The waveform is schematic.</desc>
+  <defs>
+    <pattern id="red-hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(33)">
+      <path d="M2 -2l1 14" fill="none" stroke="#ad5747" stroke-width="1.4" opacity=".24"/>
+    </pattern>
+    <pattern id="teal-hatch" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(33)">
+      <path d="M2 -2l1 16" fill="none" stroke="#368479" stroke-width="1.5" opacity=".23"/>
+    </pattern>
+    <style>
+      text {font-family:"DejaVu Sans",sans-serif;fill:#272e2b}
+      .small {font-size:27px;font-weight:600}
+      .body {font-size:31px;font-weight:500}
+      .line {fill:none;stroke:#363c35;stroke-width:3.1;stroke-linecap:round;stroke-linejoin:round}
+      .echo {fill:none;stroke:#363c35;stroke-width:1.45;stroke-linecap:round;stroke-linejoin:round;opacity:.35}
+    </style>
+  </defs>
+  <rect width="760" height="628" rx="30" fill="#fcf8ee"/>
+  <path d="M46 108Q222 111 432 103T706 105" stroke="#dabc74" stroke-width="4" fill="none" stroke-linecap="round" opacity=".72"/>
+  <path d="M49 112Q267 114 510 108" stroke="#dabc74" stroke-width="1.5" fill="none" stroke-linecap="round" opacity=".6"/>
+  <text x="45" y="52" font-size="24" font-weight="700" letter-spacing="3" fill="#655938">SECOND RECORDING</text>
+  <text x="44" y="94" font-size="43" font-weight="700" letter-spacing="-1.2">Same voice, two outcomes</text>
+
+  <!-- One schematic audio input, not an actual waveform. -->
+  <path d="M45 128Q182 125 404 129Q452 128 481 131L485 177Q382 178 244 176L45 178Z" fill="#f0e5c7"/>
+  <path class="echo" d="M46 128q127-4 217 0m-216 51q104 1 162-3"/>
+  <path d="M65 152l10 -1 7 -12 8 26 8 -33 9 37 8 -28 8 17 7 -7 13 1" class="line"/>
+  <text x="158" y="162" class="small">Guest not enrolled</text>
+  <!-- Branch each treatment from the same guest input. -->
+  <path class="line" d="M76 184Q70 195 70 213Q70 243 70 268Q70 290 94 291M85 281l13 10-13 9M70 267Q68 393 71 455Q71 481 95 481M87 470l12 12-13 9"/>
+  <path class="echo" d="M72 187Q66 217 67 268M68 310Q65 418 68 456Q66 478 90 484"/>
+
+  <!-- Forced count -->
+  <path d="M108 212Q279 205 450 210Q604 212 708 208L710 353Q514 356 353 352Q213 351 108 356Z" fill="#fae9df"/>
+  <path d="M627 212Q680 208 708 209L710 352 633 355Z" fill="url(#red-hatch)"/>
+  <path d="M108 212Q279 205 450 210Q604 212 708 208L710 353Q514 356 353 352Q213 351 108 356Z" fill="none" stroke="#9b4d3f" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M104 216Q100 303 104 355Q170 359 251 356M402 207Q571 212 706 204Q715 222 712 260" fill="none" stroke="#9b4d3f" stroke-width="1.4" stroke-linecap="round" opacity=".35"/>
+  <text x="134" y="253" class="small" fill="#7c392d">Ran with a 7–9 speaker range</text>
+  <text x="133" y="299" font-size="37" font-weight="700" letter-spacing="-.7">820 words mislabelled</text>
+  <text x="135" y="335" class="body">Guest merged into other voices.</text>
+  <path d="M649 233q14 2 26 25m-25 1q10-17 27-26" fill="none" stroke="#9b4d3f" stroke-width="4" stroke-linecap="round"/>
+  <path d="M137 306q91 3 180-2" fill="none" stroke="#be6a57" stroke-width="2.6" stroke-linecap="round" opacity=".75"/>
+
+  <!-- Open count -->
+  <path d="M107 393Q244 388 425 393Q611 393 706 388L711 535Q504 538 342 534Q213 534 108 538Z" fill="#e6efe6"/>
+  <path d="M626 392Q677 389 707 389L711 534 633 536Z" fill="url(#teal-hatch)"/>
+  <path d="M107 393Q244 388 425 393Q611 393 706 388L711 535Q504 538 342 534Q213 534 108 538Z" fill="none" stroke="#397368" stroke-width="3.2" stroke-linejoin="round"/>
+  <path d="M104 397Q99 484 103 537Q170 542 251 538M406 388Q554 390 704 385Q715 397 710 437" fill="none" stroke="#397368" stroke-width="1.4" stroke-linecap="round" opacity=".37"/>
+  <text x="134" y="435" class="small" fill="#2f6258">Speaker count left open</text>
+  <text x="133" y="480" font-size="37" font-weight="700" letter-spacing="-.65">Guest left unnamed</text>
+  <text x="135" y="516" class="body">No name forced onto that voice.</text>
+  <path d="M647 427l10 11q11-16 24-23" fill="none" stroke="#397368" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M137 489q81 3 159-2" fill="none" stroke="#549488" stroke-width="2.4" stroke-linecap="round" opacity=".7"/>
+  <path d="M48 579q82 2 160-2m-158 5q54 1 99-1" fill="none" stroke="#a98f50" stroke-width="2" stroke-linecap="round" opacity=".55"/>
+  <text x="45" y="604" font-size="23" fill="#5e635b">One test recording · Schematic, not audio data</text>
+</svg>

@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="848" viewBox="0 0 760 848" role="img" aria-labelledby="title desc">
+  <title id="title">One recording, two tracks</title>
+  <desc id="desc">The same test recording is sent to Scribe for timestamped words and to pyannote for anonymous speaker turns and scores for each voiceprint. Voiceprints come from human-verified clips. Local logic keeps each person's best score then checks the lead over the runner-up. It leaves uncertain voices unnamed. The resulting turns are aligned to the fixed, cached Scribe words and scored against hand-checked references.</desc>
+  <defs>
+    <pattern id="hatch" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(33)">
+     <path d="M3 -3l1 17" fill="none" stroke="#397368" stroke-width="1.3" opacity=".25"/>
+    </pattern>
+    <style>
+      text {font-family:"DejaVu Sans",sans-serif;fill:#272e2b}
+      .cap {font-size:23px;font-weight:700;letter-spacing:2.9px;fill:#655938}
+      .label {font-size:32px;font-weight:700;letter-spacing:-.65px}
+      .body {font-size:28px;letter-spacing:-.32px}
+      .line {fill:none;stroke:#454c44;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+      .echo {fill:none;stroke:#454c44;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;opacity:.34}
+      .inkbox {stroke:#596d59;stroke-width:2.8;stroke-linejoin:round}
+    </style>
+  </defs>
+  <rect width="760" height="848" rx="30" fill="#fcf8ee"/>
+  <text x="44" y="48" class="cap">SPEAKER ID TEST HARNESS</text>
+  <text x="42" y="95" font-size="44" font-weight="700" letter-spacing="-1.25">One recording, two tracks</text>
+  <path d="M44 109Q212 113 433 106T714 106M47 114Q267 116 513 109" stroke="#dabc74" stroke-width="3.5" fill="none" stroke-linecap="round" opacity=".7"/>
+  
+  <!-- Shared input and parallel branches -->
+  <path d="M225 134Q374 130 536 135L534 186Q376 189 225 187Z" fill="#f0e5c7"/>
+  <path d="M225 134Q374 130 536 135M225 187Q379 188 534 186" class="echo"/>
+  <path d="M253 160l9 -1 6 -11 7 23 8 -29 8 33 7 -24 7 13 7 -6 12 1" class="line"/>
+  <text x="340" y="171" class="label">Recording</text>
+  <path d="M378 191q0 24-14 24l-164 1q-16 0-16 16v12m-9-9 9 11 10-11M378 193q1 21 17 21l162 2q20 0 20 16l-1 12m-9-9 9 11 10-11" class="line"/>
+  <path d="M363 219l-161 1Q179 220 180 240M400 219l155 1Q581 219 580 239" class="echo"/>
+
+  <!-- Scribe track, cached text stays fixed -->
+  <path d="M47 253Q179 248 322 253L326 390Q197 386 47 390Z" fill="#f5ead4" class="inkbox"/>
+  <path d="M43 257l1 136q115 0 186-1M182 249l141 1q4 29 3 51" class="echo"/>
+  <text x="64" y="293" class="label">Scribe</text>
+  <text x="64" y="333" class="body">Timestamped</text>
+  <text x="64" y="364" class="body">words, cached</text>
+  
+  <!-- pyannote track, prints feed scores -->
+  <path d="M396 253Q539 248 709 252L711 390Q525 387 397 390Z" fill="#e6efe6" class="inkbox"/>
+  <path d="M394 256l-1 135q74 3 169 0M529 250l181-2 4 67" class="echo"/>
+  <path d="M654 253l55-1 2 137-47-1Z" fill="url(#hatch)"/>
+  <text x="413" y="293" class="label">pyannote</text>
+  <text x="414" y="333" class="body">Anonymous turns +</text>
+  <text x="414" y="364" class="body">per-print scores</text>
+  
+  <!-- Human source and local matching. Left lane carries fixed words. -->
+  <path d="M186 393q-1 37 0 68v163q0 25 19 26l19 2m-10-10 13 10-13 9" class="line"/>
+  <path d="M181 400q-3 116 0 228 1 27 23 28l8 1" class="echo"/>
+  <text x="30" y="545" class="body" fill="#655938">Words stay</text>
+  <text x="62" y="576" class="body" fill="#655938">fixed</text>
+  <path d="M369 407Q553 403 710 407L714 472Q542 469 372 472Z" fill="#f1e8cc" stroke="#b39b63" stroke-width="2.4" stroke-dasharray="7 5" stroke-linejoin="round"/>
+  <text x="385" y="435" font-size="24" font-weight="700">Voiceprints from</text>
+  <text x="385" y="461" font-size="24">human-verified clips</text>
+  <path d="M683 443q11-13 10-31l-2-17m-7 10 7-11 9 9" class="line"/>
+  <path d="M422 392Q422 401 405 401L354 402Q340 402 340 420L340 492m-8-10 8 11 9-11" class="line"/>
+  
+  <!-- Local acceptance and temporal join -->
+  <path d="M218 498Q444 493 706 497L710 601Q512 603 221 602Z" fill="#e6efe6" class="inkbox"/>
+  <path d="M216 503l-1 102 134-1M509 496q91-1 198-2" class="echo"/>
+  <text x="236" y="532" class="label">Local match</text>
+  <text x="237" y="563" font-size="26">Best score per person; check lead</text>
+  <text x="237" y="591" font-size="26">over runner-up. If unsure, no name.</text>
+  <path d="M554 605q0 12-1 27m-9-10 9 11 9-11" class="line"/>
+  <path d="M233 639Q442 636 707 638L710 698Q505 701 233 699Z" fill="#f5ead4" class="inkbox"/>
+  <path d="M229 645l1 58 137-1M551 635l152-1" class="echo"/>
+  <text x="251" y="679" font-size="28" font-weight="700" letter-spacing="-.5">Align turns to words by time</text>
+  <path d="M502 704q0 10-1 26m-9-10 9 11 9-11" class="line"/>
+
+  <!-- Evaluation -->
+  <path d="M233 735Q434 730 706 733L710 798Q496 800 233 798Z" fill="#f3e5ba" stroke="#8b733f" stroke-width="2.8" stroke-linejoin="round"/>
+  <path d="M228 740l1 61 126-1M563 730l144-1" class="echo"/>
+  <text x="251" y="761" font-size="27" font-weight="700">Score against hand-checked</text>
+  <text x="251" y="789" font-size="27" font-weight="700">reference labels</text>
+  <text x="46" y="827" font-size="20" fill="#5e635b">Schematic · No audio or identities shown</text>
+</svg>

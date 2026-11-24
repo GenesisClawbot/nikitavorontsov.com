@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="680" viewBox="0 0 720 680" role="img" aria-labelledby="title desc">
+<title id="title">What a wider margin cost</title><desc id="desc">Local replay of one saved open-count output. With floor fixed at 60 and 11,732 scored words, margins of 5 and 10 each produced 10,236 named words including 48 wrong names. Margin 15 produced 7,885 named words including 35 wrong names. This added 2,351 blanks for 13 fewer wrong names.</desc>
+<defs><pattern id="dot" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.15" fill="#ddd5c4"/></pattern></defs>
+<rect width="720" height="680" fill="#fcf8ee"/><rect x="12" y="12" width="696" height="656" rx="20" fill="url(#dot)" opacity=".68"/>
+<g fill="#243243" font-family="DejaVu Sans,sans-serif">
+<text x="34" y="46" font-size="21" font-weight="bold" fill="#665022">REPLAYING THE MATCHING RULE</text>
+<text x="34" y="101" font-size="40" font-weight="bold">What a wider margin cost</text>
+<text x="35" y="139" font-size="23">One saved unbounded output · Floor fixed at 60</text>
+<path d="M47 166 Q202 163 370 166 T671 166 Q686 165 685 181 L684 501 Q685 516 670 516 L47 516 Q35 517 34 502 L34 181 Q34 167 47 166Z" fill="#fffdf8" stroke="#344456" stroke-width="2.4"/>
+<path d="M36 495 Q38 519 53 519 L670 518 M684 181 Q690 323 686 504" fill="none" stroke="#344456" stroke-width="1.2" opacity=".32"/>
+<text x="55" y="207" font-size="22" font-weight="bold">11,732 SCORED WORDS IN EACH TRACK</text>
+<g id="margin-0">
+<text x="55" y="249" font-size="25" font-weight="bold">Margin ≥5 or ≥10</text>
+<text x="666" y="249" text-anchor="end" font-size="22" font-weight="bold" fill="#863925">48 wrong names</text>
+<rect x="55" y="265" width="610" height="45" rx="7" fill="#eadfc8"/>
+<path d="M62 265 Q321.1 264 587.2 265 V310 H62 Q55 310 55 303 V272 Q55 265 62 265 Z" fill="#345273"/>
+<text x="69" y="295" font-size="23" font-weight="bold" fill="#fff">10,236 named</text>
+<text x="662" y="338" font-size="21" text-anchor="end">1,496 blank</text>
+</g>
+<g id="margin-1">
+<text x="55" y="379" font-size="25" font-weight="bold">Margin ≥15</text>
+<text x="666" y="379" text-anchor="end" font-size="22" font-weight="bold" fill="#863925">35 wrong names</text>
+<rect x="55" y="395" width="610" height="45" rx="7" fill="#eadfc8"/>
+<path d="M62 395 Q260.0 394 465.0 395 V440 H62 Q55 440 55 433 V402 Q55 395 62 395 Z" fill="#345273"/>
+<text x="69" y="425" font-size="23" font-weight="bold" fill="#fff">7,885 named</text>
+<text x="662" y="468" font-size="21" text-anchor="end">3,847 blank</text>
+</g>
+<text x="55" y="494" font-size="20">Wrong names are included in the named totals.</text>
+<path d="M36 542 Q199 539 378 541 T683 542 L684 617 Q514 620 340 617 T36 619Z" fill="#fff0bb" stroke="#a98438" stroke-width="2"/>
+<text x="54" y="577" font-size="24" font-weight="bold">2,351 extra blanks, 13 fewer wrong names</text>
+<text x="54" y="605" font-size="21">Margin ≥15 compared with ≥5 or ≥10.</text>
+</g></svg>

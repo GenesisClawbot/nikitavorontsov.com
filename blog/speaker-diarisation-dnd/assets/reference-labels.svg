@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="720" height="988" viewBox="0 0 720 988" role="img" aria-labelledby="title desc">
+<title id="title">How the word reference was built</title>
+<desc id="desc">Frozen Scribe word indices, then model clusters to seed review, then human checks and relabelling, then a versioned JSONL reference. Of 13,027 words, 11,732 were scored and 1,295 were unscored. Predictions were joined by word index and only labelled rows were scored. Model seeding can favour the same segmenter, so this is not a blind gold standard.</desc>
+<defs>
+ <pattern id="paper" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.15" fill="#e1d8c7"/></pattern>
+ <path id="card" d="M51 0 Q199 -2 365 0 T669 0 Q685 0 684 16 L683 77 Q685 91 671 91 L50 91 Q36 92 35 76 L35 15 Q35 1 51 0Z"/>
+ <path id="sketch" d="M36 72 Q39 94 52 94 L666 93 M683 13 Q688 38 685 75"/>
+ <path id="arrow" d="M360 100 L359 124 M351 116 L359 124 L368 116"/>
+ <style>
+ text{font-family:"DejaVu Sans",sans-serif;fill:#243243}
+ .small{font-size:22px}
+ .step{font-size:26px;font-weight:bold}
+ .ink{stroke:#344456;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+ .sketch{stroke:#344456;stroke-width:1.2;fill:none;opacity:.29}
+ </style>
+</defs>
+<rect width="720" height="988" fill="#fcf8ee"/>
+<rect x="12" y="12" width="696" height="964" rx="20" fill="url(#paper)" opacity=".68"/>
+<g id="heading">
+ <text x="34" y="47" class="small" font-weight="bold" fill="#665022">SESSION 1 · REFERENCE WORKFLOW</text>
+ <text x="34" y="105" font-size="39" font-weight="bold">How the reference was built</text>
+</g>
+<g id="freeze-indices" transform="translate(0 135)">
+ <use xlink:href="#card" class="ink" fill="#fffdf8"/><use xlink:href="#sketch" class="sketch"/>
+ <text x="55" y="38" class="step">Freeze Scribe word indices</text>
+ <text x="55" y="70" class="small">Every transcript word keeps a stable index.</text>
+ <use xlink:href="#arrow" class="ink" fill="none"/>
+</g>
+<g id="seed-review" transform="translate(0 270)">
+ <use xlink:href="#card" class="ink" fill="#fff0bb"/><use xlink:href="#sketch" class="sketch"/>
+ <text x="55" y="38" class="step">Seed the review with model clusters</text>
+ <text x="55" y="70" class="small">Use the model's speaker groupings as a start.</text>
+ <use xlink:href="#arrow" class="ink" fill="none"/>
+</g>
+<g id="human-review" transform="translate(0 405)">
+ <use xlink:href="#card" class="ink" fill="#fffdf8"/><use xlink:href="#sketch" class="sketch"/>
+ <text x="55" y="38" class="step">Check and relabel by hand</text>
+ <text x="55" y="70" class="small">A reviewer checks and corrects the labels.</text>
+ <use xlink:href="#arrow" class="ink" fill="none"/>
+</g>
+<g id="reference" transform="translate(0 540)">
+ <use xlink:href="#card" class="ink" fill="#e4f0e9"/><use xlink:href="#sketch" class="sketch"/>
+ <text x="55" y="38" class="step">Save the versioned word reference</text>
+ <text x="55" y="70" class="small">JSONL with a row for each word index.</text>
+</g>
+<g id="scoring">
+ <path d="M36 659 Q200 655 346 659 T681 658 L684 826 Q490 829 338 826 T36 828Z" fill="#edf3f9" stroke="#49627d" stroke-width="2"/>
+ <text x="55" y="697" class="step">Join predictions on word index</text>
+ <text x="55" y="730" class="small">Score only rows with a reference label.</text>
+ <text x="55" y="778" font-size="26" font-weight="bold">11,732 scored · 1,295 unscored</text>
+ <text x="55" y="808" class="small">13,027 words in total</text>
+</g>
+<g id="limitation">
+ <path d="M36 853 Q201 850 379 852 T681 853 L684 950 Q470 953 281 950 T36 952Z" fill="#fff0bb" stroke="#a98438" stroke-width="2"/>
+ <text x="55" y="890" class="step">Not a blind gold standard</text>
+ <text x="55" y="925" class="small">Model seeding can favour the same segmenter.</text>
+</g>
+</svg>
