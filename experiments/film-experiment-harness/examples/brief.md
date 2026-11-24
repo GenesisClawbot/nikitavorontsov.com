@@ -1,0 +1,1 @@
+Make a short Blender test film of a cube turning under a light. Write the scene in Python, render one small PNG and inspect it. Revise the scene if needed, then render a short MP4 and deliver its relative path. Keep the resolution and frame count low for this test.
