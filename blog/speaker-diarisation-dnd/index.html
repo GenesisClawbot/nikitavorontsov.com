@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f2f0e4">
+  <title>Speaker diarisation at my D&amp;D table | Nikita Vorontsov</title>
+  <meta name="description" content="An audio evaluation for D&amp;D recaps: how I tested speaker identification with Scribe and pyannote, built checked references, and found what a speaker count could break.">
+  <link rel="canonical" href="https://nikitavorontsov.com/blog/speaker-diarisation-dnd/">
+  <link rel="icon" href="/assets/home/favicon.png" type="image/png">
+  <link rel="preload" href="/assets/home/fonts/anton.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/home/fonts/dm-sans-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/assets/site.css">
+  <link rel="stylesheet" href="/blog/blog.css">
+  <script defer src="/analytics.js"></script>
+  <meta property="og:site_name" content="Nikita Vorontsov">
+  <meta property="og:title" content="Speaker diarisation at my D&amp;D table">
+  <meta property="og:type" content="article">
+  <meta property="og:description" content="An audio evaluation for D&amp;D recaps: how I tested speaker identification with Scribe and pyannote, built checked references, and found what a speaker count could break.">
+  <meta property="og:url" content="https://nikitavorontsov.com/blog/speaker-diarisation-dnd/">
+  <meta property="og:image" content="https://nikitavorontsov.com/blog/speaker-diarisation-dnd/assets/social.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Pencil illustration of dice and an audio recorder at a tabletop game.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Speaker diarisation at my D&amp;D table">
+  <meta name="twitter:description" content="An audio evaluation for D&amp;D recaps: how I tested speaker identification with Scribe and pyannote, built checked references, and found what a speaker count could break.">
+  <meta name="twitter:image" content="https://nikitavorontsov.com/blog/speaker-diarisation-dnd/assets/social.jpg">
+  <meta property="article:author" content="https://nikitavorontsov.com/#about">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Speaker diarisation at my D&D table",
+  "description": "An audio evaluation for D&D recaps: how I tested speaker identification with Scribe and pyannote, built checked references, and found what a speaker count could break.",
+  "image": [
+    "https://nikitavorontsov.com/blog/speaker-diarisation-dnd/assets/social.jpg"
+  ],
+  "author": {
+    "@type": "Person",
+    "name": "Nikita Vorontsov",
+    "url": "https://nikitavorontsov.com/#about"
+  },
+  "publisher": {
+    "@type": "Person",
+    "name": "Nikita Vorontsov",
+    "url": "https://nikitavorontsov.com/"
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://nikitavorontsov.com/blog/speaker-diarisation-dnd/"
+  },
+  "url": "https://nikitavorontsov.com/blog/speaker-diarisation-dnd/",
+  "inLanguage": "en-GB"
+}
+  </script>
+</head>
+<body class="blog-body">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <header class="site-header blog-header">
+    <a class="wordmark" href="/" aria-label="Nikita Vorontsov home">NV<span>.</span></a>
+    <nav aria-label="Primary navigation">
+      <a href="/#work">Work</a>
+      <a href="/#experiments">Experiments</a>
+      <a href="/blog/">Blog</a>
+      <a href="/#about">About</a>
+      <a class="contact-link" href="mailto:nikitavorontsov@hotmail.com">Let’s talk
+        <img class="icon" src="/assets/home/icons/arrow-up-right.svg" alt=""></a>
+    </nav>
+  </header>
+  <main id="main-content" class="article-container">
+    <nav class="post-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← All posts</a></nav>
+    <article class="blog-article" aria-labelledby="post-title"><header><p class="eyebrow byline">Nikita Vorontsov</p><h1 id="post-title">Speaker diarisation at my D&amp;D table</h1><p class="subtitle"><em>How I built an evaluation to see who was getting the wrong name, and why giving the model more clues sometimes made it worse.</em></p><p class="article-jump"><a href="#methods">Jump to methods and score tables</a></p></header><figure class="article-hero"><img src="assets/table-hero.webp" alt="Pencil illustration of dice and a recorder at a D&amp;D table." fetchpriority="high" width="1200" height="800" decoding="async"><figcaption>Illustration made with ChatGPT Images.</figcaption></figure><p>There are usually six or seven of us at my D&amp;D table, including me and my two brothers. When I went through the speaker labels, I kept seeing my name where I didn’t remember speaking. All three of us got mixed up. When I counted the swaps between me and one of my brothers, nearly all went in one direction.</p>
+<figure class="panel pair"><h2>How often did we get each other’s name?</h2><p>Reconstructed speaker labels from my old recap system</p><div class="bars"><div><b>His words labelled as mine</b><span>414 / 786 (52.7%)</span><i aria-hidden="true" style="--pct:52.7%"></i></div><div><b>My words labelled as his</b><span>17 / 3,764 (0.45%)</span><i aria-hidden="true" style="--pct:0.45%"></i></div></div><figcaption>Each bar is a share of that person’s scored words. In this recording, most of the mix-ups went one way.</figcaption></figure>
+
+<p>I started with ElevenLabs Scribe v2 for our D&amp;D recaps. The words were good enough to work with most of the time, but it kept mixing us up when we talked over each other or when the DM dropped into a character voice. I tried other transcription services and models to see if I could find one that handled our table better.</p>
+<p>I kept running into the same problem: a transcript could get a line word for word and still put it under the wrong name. So for this test I kept the words I already had and changed how I assigned the speakers. That way I could see whether the names improved without changing the transcript underneath them.</p>
+<h2 id="who-spoke-and-when">Who spoke, and when?</h2>
+<p>On a two-person call, or in a doctor–patient consultation, a lot of the recording can be one person asking a question and the other answering. There’s overlap in those settings too. At our table, the DM can be halfway through a line in character when one of us jumps in and somebody else starts answering them. On a room recording, those voices can all land on the same track.</p>
+<p><a href="https://aclanthology.org/2025.findings-naacl.280/">Remme and Tang found more speaker confusion in tabletop recordings</a> than in the meeting recordings they tested. They looked at players changing their voices in character, which is a problem even when only one person is speaking.</p>
+<p><strong>Diarisation</strong> tracks when each voice is active. The output can say <code>Speaker 3</code> is talking between two timestamps, even if the system has no idea who Speaker 3 is. <strong>Speaker identification</strong> tries to put a name to that voice by comparing it with samples from people I know were there.</p>
+<p>I used the saved Scribe v2 words and timestamps. Every comparison on that recording got the same words, including any Scribe had got wrong. I ran pyannote Precision-2 separately for the speaker turns.</p>
+<figure><img src="assets/pipeline.svg" alt="The same recording goes to Scribe for fixed words and to pyannote for speaker turns. The harness aligns them and compares the predicted labels with checked references." loading="lazy" width="760" height="848" decoding="async"><figcaption>One recording, two outputs, one set of word indices.</figcaption></figure>
+<p>To join the two, I took each word’s midpoint and looked up who was speaking then. If a word runs from 10.42 to 10.68 seconds, the lookup happens at 10.55. If someone else starts at 10.50, they get the whole word. I used pyannote’s <strong>exclusive</strong> timeline for this, so there’s at most one speaker at a time. If somebody talks over it, a word can be left unnamed or assigned to the wrong person.</p>
+<h2 id="how-i-checked-the-names">How I checked the names</h2>
+<p>Each word already had a number in the cached transcript, so I used that as the key. For the first recording, I started from suggested speaker groups and listened back to correct the names. One review sheet flagged 117 turns where two runs disagreed and put the 14 biggest in front of me. Handy when I wanted a place to start listening; a poor way to pick a representative sample.</p>
+<figure><img src="assets/reference-labels.svg" alt="The first transcript has 13,027 word indices. Cluster suggestions were reviewed by hand. 11,732 words got a reference label; 1,295 were unscored." loading="lazy" width="720" height="988" decoding="async"><figcaption>I used model suggestions to start the review, so this reference wasn’t blind.</figcaption></figure>
+<p>There were <strong>13,027 words</strong> in the first transcript and <strong>11,732</strong> with a reference label I could score against. I left the remaining 1,295 out of the score. Once a word had a reference name, though, it stayed in the score even if a system chose to leave it blank.</p>
+<aside class="panel metric"><h2>How to read the scores</h2><p>Imagine 100 words I can check. The system names 80 of them, and gets four of those names wrong.</p><dl><dt>WDER: word-level diarisation error rate</dt><dd>4 wrong names ÷ 100 scored words = <b>4%</b> in this eval</dd><dt>Coverage: how much got a name</dt><dd>80 named words ÷ 100 scored words = <b>80%</b></dd><dt>Named precision: how often a name was right</dt><dd>76 correct names ÷ 80 named words = <b>95%</b></dd></dl><p>Word error rate (WER) measures the words themselves. I kept Scribe’s words fixed here.</p></aside>
+<p>The reference itself has a bias. Some of the labels came from listening to chunks pyannote had already grouped. If it slipped a few words from a second person into a group, it was easier to miss those words when I labelled the group as a whole. I’d use a separately annotated recording to check whether an apparent gain generalises.</p>
+<h2 id="getting-a-useful-voice-sample">Getting a useful voice sample</h2>
+<p>A voiceprint is a reference made from a short recording. The idea is to compare how people sound across different sentences. Two recordings of me saying the same thing won’t have identical waveforms. In a system like <a href="https://huggingface.co/speechbrain/spkrec-ecapa-voxceleb">SpeechBrain’s ECAPA-TDNN</a>, a model turns each clip into numbers called an <strong>embedding</strong> and compares the results. <a href="https://www.pyannote.ai/speaker-identification">Pyannote</a> gave me scores for its matches, which is what I used here.</p>
+<p>The first samples weren’t as clean as I thought. One could be a few seconds of talking, a long silence, then a bit more talking, with another voice in the background. I wanted 30 seconds of speech rather than a 30-second clip. The next script took stretches from groups I’d checked by ear and joined them into a sample.</p>
+<figure><img src="assets/enrolment.svg" alt="Check speaker groups by ear, assemble segments at least two seconds long, aim for 30 seconds and skip below eight. Keep the strongest print score for each person." loading="lazy" width="760" height="852" decoding="async"><figcaption>What went into a voiceprint in the pilot.</figcaption></figure>
+<p>I kept more than one voiceprint per person. That helped when the DM sounded quite different in character. For each person I kept their best score, then looked at the gap between the top two <strong>people</strong>. If my voiceprints come first and second, that doesn’t tell me whether my brother is close behind.</p>
+<figure><img src="assets/match-margin.svg" alt="Illustrative scores: 82 against 81 fails the margin rule. A score of 90 against 76 passes with a 14 point lead. The example uses a 75 point floor." loading="lazy" width="720" height="810" decoding="async"><figcaption>Made-up scores illustrating the stricter 75-point setting.</figcaption></figure>
+<p>I tried a few settings. The rule in the comparisons below used a minimum score of 60 and asked for a lead of at least five points. A stricter check used 75. The match score is how strongly the service matched a voice to an enrolled person. I didn’t interpret 90 as a 90% chance of being right.</p>
+<h2 id="trying-the-same-recording-with-and-without-a-headcount">Trying the same recording with and without a headcount</h2>
+<p>I sent the same recording to pyannote twice. One request said to look for <strong>six to eight speakers</strong>; the other let it work out the count. Both sets of speaker labels went onto the same Scribe words, so I could compare the names each pass gave each word.</p>
+<p>A <strong>combined run</strong> is what my script did with those two sets of labels. It took a name over a blank and kept the name when both returned the same one. If they gave different names, it used the one with the higher match score. On a tie, it picked the pass I’d given the speaker range to. So if the pass with the range said Alex at 90 and the other said Sam at 90, that word ended up with Alex’s name. Those are made-up names to show the rule.</p>
+<figure><img src="assets/combine-runs.svg" alt="Word by word, prefer a named result to a blank. When the names differ, keep the higher score. At the same score, use the result from the run with a speaker range." loading="lazy" width="720" height="850" decoding="async"><figcaption>Example labels only. The tie rule is the one I used.</figcaption></figure>
+<p>The first time I tried that rule, <strong>6.6% of the scored words got the wrong name</strong>. To check how repeatable that was, I sent the request with the six-to-eight range three more times. Each time I combined the new reply with the <em>same saved reply</em> from the request without a range. The recording, the words and my script stayed the same.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-labelledby="comparison-table-caption-1"><table><caption id="comparison-table-caption-1">Same recording and reference: 11,732 scored words</caption><thead><tr><th scope="col">Run</th><th scope="col">Wrong names</th><th scope="col">Wrong-name rate</th><th scope="col">Words given a name</th></tr></thead><tbody><tr><th scope="row">No speaker range, on its own</th><td>48</td><td>0.41%</td><td>87.25%</td></tr><tr><th scope="row">New pass with range + saved pass (1)</th><td>1,280</td><td>10.91%</td><td>92.29%</td></tr><tr><th scope="row">New pass with range + saved pass (2)</th><td>1,280</td><td>10.91%</td><td>92.29%</td></tr><tr><th scope="row">New pass with range + saved pass (3)</th><td>606</td><td>5.17%</td><td>91.84%</td></tr></tbody></table></div>
+<p class="tablenote">Some reference labels were checked by hand from groups the model had suggested. I repeated only the request with a speaker range, so this doesn’t tell me how much the pass without a range varies.</p>
+<figure><img src="assets/repeat-calls.svg" alt="Same 11,732 scored words. The open-count run made 48 wrong assignments. The three combined runs made 1,280, 1,280 and 606." loading="lazy" width="720" height="760" decoding="async"><figcaption>The three attempts use the same saved labels from the pass with no speaker range.</figcaption></figure>
+<p>In two of the three tries, the run with the range mixed two of us into one group. The best scores for three different people were <strong>90, 85 and 82</strong>. The five-point lead let the name through. The open-count run had also scored its answer at 90, and my tie rule overrode <strong>584 names</strong> that the open-count run had got right.</p>
+<p>The run with no range got 48 names wrong on the same reference, with 87.25% coverage. I had one saved open-count response for this comparison, so I don’t know if it would give me the same 48 on another call. What I could see was that my way of combining the results gave the extra run a route to overwrite a good answer.</p>
+<h2 id="the-recording-with-a-guest">The recording with a guest</h2>
+<p>On a second recording, I carried over the same voiceprints. There was someone there I hadn’t made a print for. I tried a range of <strong>seven to nine speakers</strong> and got 820 words from that person assigned to other people. With the count left open, the system could leave that voice unnamed.</p>
+<figure><img src="assets/speaker-range.svg" alt="A seven-to-nine-speaker range put the wrong name on 820 guest words. Leaving the count open let the system leave the guest unnamed." loading="lazy" width="760" height="628" decoding="async"><figcaption>Two settings on a different recording, this time with a guest.</figcaption></figure>
+<p>That’s the setting I’d rather have when somebody joins the table without a voiceprint. I’d leave an unfamiliar voice unnamed and let the person checking the transcript decide. There’s a note in the methods about what I could and couldn’t verify when I checked this recording again.</p>
+<h2 id="how-much-would-i-leave-blank">How much would I leave blank?</h2>
+<p>I took the saved open-count response from the first recording and changed just the rule for accepting a name. The minimum score stayed at 60. I raised the gap needed between the top two people. No new audio went to the model for this check.</p>
+<figure><img src="assets/margin-sweep.svg" alt="With a fixed score floor of 60, gaps of five or ten gave 10,236 named words, including 48 wrong. A gap of 15 gave 7,885 names, including 35 wrong." loading="lazy" width="720" height="680" decoding="async"><figcaption>One saved output; only the matching rule changes.</figcaption></figure>
+<p>Five points and ten points gave the same answers. At fifteen, I got rid of <strong>13 wrong names</strong>, but I also lost <strong>2,338 names the system had got right</strong>. I was rejecting whole groups of speech at a time, so I didn’t get a smooth trade-off. At our table I’d rather review the few suspect groups than lose that much of the transcript.</p>
+<p>I also gave the original combined result to a language model and asked it to fill the blanks. In one case it picked up a clue about a character voice from the words. Filling the gaps across the whole recording brought coverage up to 99.7% and raised the wrong-name rate from 6.6% to 10.5%. I’d use it for suggestions I can check.</p>
+<h2 id="what-i-d-change-on-the-next-recording">What I’d change on the next recording</h2>
+<p>If I can get a separate mic track for each person, I’d save those tracks before mixing. At a physical table I’d start by checking whether I can make out the quietest person while someone nearer the mic is speaking. I didn’t compare microphones here. This eval only sees the words Scribe produced, so it can’t count any it missed.</p>
+<p>For the next test I’d keep one recording aside and label it before looking at predictions. I’d keep a row for each person and a column for the names they were given, including a blank column. That would show me whether I’ve got better at telling us apart or whether I’ve just stopped naming one of us.</p>
+<details id="methods"><summary>Methods, caveats and full score tables</summary><h3>Rebuilding the baseline</h3>
+<p>The first recording had 13,027 indexed Scribe words. The final reference file uses half-open spans: a row with start 42 and end 43 labels word 42 only. I joined the final labels to the saved production turn table. The rebuild gave 2,895 wrong names; the original scorecard reported 2,903. The word indices weren’t all covered by the surviving turn table, so I use the rebuild for pair counts and the original scorecard for the baseline in the table below. The older reference in the HTML report assigns 1,591 words to one brother; the final reference assigns 786. The pair figures use the final file.</p>
+<p>Across the three of us, the rebuilt baseline assigned 652 of 5,179 scored words to the wrong brother. The saved open-count run did that five times and left 837 of those words blank. For the pair in the opening, the combined swap rate was 431 / 4,550, or 9.47%. That sums errors in both directions and divides by all scored words spoken by the two of us.</p>
+<h3>Other checks I tried</h3>
+<p>I gave Scribe’s anonymous speaker groups the best possible mapping to people after the fact and got 74.2% speaker-label accuracy in that check. I couldn’t see a difference from its speaker-library setting in my setup. In a separate pyannote run, its chosen print scored around 34 while another scored around 90. That’s why I used the returned score list to rank the candidates locally instead of taking the selected name as given.</p>
+<h3>Original scorecard and repeat calls</h3>
+<p>The first recording used 11,732 reference-labelled words for these comparisons. The old baseline had a bug saving speaker assignments. Some reference labels were informed by earlier pyannote clusters. Those two issues make this a comparison of the runs I had, rather than a controlled comparison of vendors.</p>
+<div class="table-wrap" tabindex="0" role="region" aria-labelledby="comparison-table-caption-0"><table><caption id="comparison-table-caption-0">First recording: original scorecard</caption><thead><tr><th scope="col">Run</th><th scope="col">Wrong-name rate</th><th scope="col">Coverage</th></tr></thead><tbody><tr><th scope="row">Stored baseline</th><td>24.7%</td><td>100%</td></tr><tr><th scope="row">Earlier acoustic pass</th><td>3.5%</td><td>57.4%</td></tr><tr><th scope="row">Original combined pass</th><td>6.6%</td><td>93.3%</td></tr><tr><th scope="row">Combined pass + LLM gap-fill</th><td>10.5%</td><td>99.7%</td></tr></tbody></table></div>
+<p>The raw speaker-turn responses for the original acoustic runs are missing. The reports grouped some results into display turns, which erases speaker changes inside a turn. I used the original scorecard for the historical acoustic numbers. To check repeatability I reused the audio after checking its hashes, recreated ten prints from the same reference clips, and sent the same request bodies. These are new responses for the same recordings. I could pin the model name, Precision-2, but not prove the hosted backend had stayed unchanged since the first calls.</p>
+
+<h3>The guest check</h3>
+<p>The original hard-tier check reported 99.2% named precision at 87.6% coverage on the second recording. The repeat gave 87.5% coverage on the recovered reference, which has 17,149 labelled words out of 19,719. That reference was built from the open-count result’s own clusters, excludes mixed or unreviewed material, and lacks earlier turn-level corrections. The repeat can’t independently confirm that precision figure. It does show what the two rules did with the guest-labelled cluster: the open-count response left all 987 words blank, while the combined output gave 877 of them someone else’s name. Those are separate counts from the original 820.</p>
+<h3>Reusing the eval</h3>
+<p>I’d version the audio hash, model name, request settings, saved word and turn responses, and reference revision together, subject to consent and retention limits. I’d also test for duplicate reference labels, invalid word IDs and timestamp gaps. An overlap-aware benchmark would need a rule for what to score when two people are speaking at once. The synthetic Python example here is for the scoring part; it contains no audio or participant data.</p>
+<p>A separate <a href="https://link.springer.com/article/10.1007/s10772-024-10108-6">embedding-based study of identical twins</a> found they were harder to distinguish in its setup. I didn’t test why my brothers and I were confused, or isolate family resemblance from recording conditions.</p></details><details><summary>Python scoring example (synthetic)</summary><p>Python 3, no dependencies. Uses made-up labels and the same scoring definitions.</p><pre><code>"""Synthetic illustration of word-level attribution scoring. Python 3, no dependencies.
+
+The denominator in this example is every word with a hand-checked label.
+Use None for abstention; do not pass unscored references as None.
+Not the historical pilot scorer and not an audio or voiceprint demo.
+"""
+from collections import Counter
+
+
+def score(reference, prediction):
+    if len(reference) != len(prediction) or not reference:
+        raise ValueError("Provide equally sized, non-empty lists of scored words.")
+    if any(label is None for label in reference):
+        raise ValueError("Exclude unscored references before calling score().")
+    confusion = Counter(zip(reference, prediction))
+    total = len(reference)
+    named = sum(p is not None for p in prediction)
+    correct = sum(n for (actual, pred), n in confusion.items() if actual == pred)
+    return {
+        "coverage": named / total,
+        "named_precision": correct / named if named else None,
+        "wrong_name_rate": (named - correct) / total,
+        "unknown_rate": (total - named) / total,
+        "confusion_counts": confusion,
+    }
+
+
+if __name__ == "__main__":
+    result = score(
+        ["A"] * 50 + ["B"] * 50,
+        ["A"] * 38 + ["B"] * 2 + [None] * 10
+        + ["B"] * 38 + ["A"] * 2 + [None] * 10,
+    )
+    assert result["coverage"] == .80
+    assert result["named_precision"] == .95
+    assert result["wrong_name_rate"] == .04
+    assert result["unknown_rate"] == .20
+    assert result["confusion_counts"]["A", "B"] == 2
+    assert score(["A"], [None])["named_precision"] is None
+    for key, value in result.items():
+        print(f"{key}: {value}")
+</code></pre></details></article>
+  </main>
+  <footer class="blog-footer">
+    <a href="/">Nikita Vorontsov</a>
+    <a href="/blog/">Blog</a>
+    <a href="#main-content">Back to content ↑</a>
+  </footer>
+</body>
+</html>

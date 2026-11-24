@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="852" viewBox="0 0 760 852" role="img" aria-labelledby="title desc">
+  <title id="title">How I built and matched voiceprints</title>
+  <desc id="desc">In the pilot, a person verified who was speaking in candidate clusters. The enrolment script assembled speech segments at least two seconds long, aimed for 30 seconds and skipped a print with less than eight seconds. Pyannote returned voiceprints representing vocal features; the pilot did not see their underlying coordinates. A person could have several prints. At matching time, the pilot kept each person's best print score and compared the scores of the top two distinct people. The A and B labels and tiles are fictitious.</desc>
+  <defs>
+    <pattern id="hatch" width="11" height="11" patternUnits="userSpaceOnUse" patternTransform="rotate(33)">
+      <path d="M2 -2l1 16" fill="none" stroke="#368479" stroke-width="1.5" opacity=".27"/>
+    </pattern>
+    <style>
+      text{font-family:"DejaVu Sans",sans-serif;fill:#272e2b}
+      .cap{font-size:22px;font-weight:700;letter-spacing:2.9px;fill:#655938}
+      .head{font-size:43px;font-weight:700;letter-spacing:-1.2px}
+      .label{font-size:32px;font-weight:700;letter-spacing:-.65px}
+      .body{font-size:28px;letter-spacing:-.35px}
+      .num{font-size:30px;font-weight:700;fill:#63583d;text-anchor:middle}
+      .line{fill:none;stroke:#454c44;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+      .echo{fill:none;stroke:#454c44;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round;opacity:.35}
+      .box{stroke:#596d59;stroke-width:2.8;stroke-linejoin:round}
+      .goldbox{stroke:#8d774e;stroke-width:2.8;stroke-linejoin:round}
+      .tag{fill:#fcf8ee;stroke:#7d8b70;stroke-width:2;stroke-linejoin:round}
+    </style>
+  </defs>
+
+  <rect width="760" height="852" rx="30" fill="#fcf8ee"/>
+  <text x="45" y="49" class="cap">SPEAKER ID TEST HARNESS</text>
+  <text x="43" y="95" class="head">How I built voiceprints</text>
+  <path d="M45 110Q223 113 435 106T710 108M48 115q191 5 474-6" fill="none" stroke="#dabc74" stroke-width="3.3" stroke-linecap="round" opacity=".7"/>
+
+  <!-- The line links the stages without crossing labels. -->
+  <path class="line" d="M83 198q-1 15 0 33m-8-8 8 9 9-9M83 302q-2 28 0 55m-8-8 8 9 9-9M83 432q-1 31 0 61m-9-10 9 11 9-11M83 568q-2 66 0 114m-9-13 9 14 9-13"/>
+  <path class="echo" d="M79 196l1 27m-1 83q-2 28 0 44m1 78l-2 50m1 97q-3 51 0 91"/>
+
+  <!-- 1: verified examples -->
+  <path d="M61 151q22-10 41 0 11 16 2 34-18 13-40 4-12-15-3-38z" fill="#f0e4c6" class="goldbox"/>
+  <text x="83" y="179" class="num">1</text>
+  <path d="M133 136Q293 132 466 135Q604 137 706 134L711 218Q532 220 326 217L132 220Z" fill="#f5ead4" class="goldbox"/>
+  <path class="echo" d="M129 143l-2 80q85 2 148 0m223-91l208-2"/>
+  <text x="151" y="171" class="label">Check who’s speaking</text>
+  <text x="151" y="204" class="body">A person verifies the speaker clusters.</text>
+
+  <!-- 2: assemble useful speech duration -->
+  <path d="M61 252q23-10 42 0 10 16 2 34-18 13-41 5-12-15-3-39z" fill="#f0e4c6" class="goldbox"/>
+  <text x="83" y="280" class="num">2</text>
+  <path d="M132 240Q341 236 706 238L711 345Q571 347 345 346L132 348Z" fill="#f5ead4" class="goldbox"/>
+  <path class="echo" d="M128 246l-1 105 137 1m232-116q107 0 211-2"/>
+  <text x="151" y="275" class="label">Join usable speech</text>
+  <text x="151" y="308" class="body">Use segments of 2 s or longer.</text>
+  <text x="151" y="336" class="body">Aim for 30 s; skip if under 8 s.</text>
+  <path d="M575 263q10-2 48-2l-1 15-46 1zm55 0 32-2 1 15-32 1zm38 0 17-1 1 14-18 1z" fill="#e0cc96" stroke="#907e4f" stroke-width="1.4" stroke-linejoin="round"/>
+
+  <!-- 3: pyannote's opaque voiceprint -->
+  <path d="M61 381q22-10 42 0 11 16 2 34-18 13-41 4-12-15-3-38z" fill="#e6efe6" class="box"/>
+  <text x="83" y="409" class="num">3</text>
+  <path d="M132 367Q341 363 706 365L712 472Q571 474 345 473L132 475Z" fill="#e6efe6" class="box"/>
+  <path d="M647 366l59-1 6 107-59 1Z" fill="url(#hatch)"/>
+  <path class="echo" d="M128 373l-1 105 137 1m232-116q107 0 211-2"/>
+  <text x="151" y="403" class="label">Make a pyannote voiceprint</text>
+  <text x="151" y="437" class="body">A learned representation of the voice.</text>
+  <text x="151" y="466" class="body">Its internals weren’t exposed.</text>
+
+  <!-- 4: compare print scores within a person first -->
+  <path d="M61 512q22-11 42 0 11 16 2 34-18 13-41 4-12-15-3-38z" fill="#e6efe6" class="box"/>
+  <text x="83" y="541" class="num">4</text>
+  <path d="M132 493Q346 489 707 491L710 650Q551 653 345 648L132 651Z" fill="#e6efe6" class="box"/>
+  <path class="echo" d="M128 501l-1 153 150 1m229-166 197-2"/>
+  <text x="151" y="527" class="label">Keep several prints per person</text>
+  <text x="151" y="560" class="body">Keep each person’s highest print score.</text>
+  <path d="M152 582L397 580l3 52-248-1Z" class="tag"/>
+  <path d="M429 582l250-2 3 51-252 1Z" class="tag"/>
+  <text x="171" y="614" font-size="25" font-weight="700">Person A</text>
+  <text x="449" y="614" font-size="25" font-weight="700">Person B</text>
+  <path d="M300 596h20l1 18h-20zM329 595h21l1 19-21 1zM358 596h20l2 18h-21zM578 595h21l1 18-21 1zM608 595h21l1 19h-21zM638 595h21l1 19h-21z" class="tag"/>
+  <path d="M329 595h21l1 19-21 1zM638 595h21l1 19h-21z" fill="#8eb5a3" stroke="#587d6e" stroke-width="2" stroke-linejoin="round"/>
+  
+  <!-- 5: compare different people -->
+  <path d="M61 699q22-10 42 0 11 16 2 34-18 13-41 4-12-15-3-38z" fill="#f0e4c6" class="goldbox"/>
+  <text x="83" y="727" class="num">5</text>
+  <path d="M132 678Q346 674 707 677L710 772Q551 775 346 772L132 775Z" fill="#f3e5ba" class="goldbox"/>
+  <path class="echo" d="M128 684l-1 95 150-1m229-105 197-1"/>
+  <text x="151" y="714" class="label">Compare the top two people</text>
+  <text x="151" y="749" class="body">Compare their best scores.</text>
+  <text x="46" y="822" font-size="22" fill="#5e635b">Schematic · No real audio, identities or voiceprints</text>
+</svg>

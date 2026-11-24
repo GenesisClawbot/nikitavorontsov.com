@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="810" viewBox="0 0 720 810" role="img" aria-labelledby="title desc">
+  <title id="title">Speaker ID: the runner-up matters</title>
+  <desc id="desc">Illustrative scores, not measured data. Match if the top score is at least 75 and leads the next distinct person by at least 5 points. Scores 82 and 81 lead to abstention; scores 90 and 76 pass.</desc>
+  <defs>
+    <pattern id="paper" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#ddd5c4"/></pattern>
+    <style>
+      text { font-family: "DejaVu Sans", sans-serif; fill: #243243; }
+      .small {font-size: 21px}
+      .label {font-size: 25px; font-weight: bold}
+      .number {font-size: 25px; font-weight: bold; fill: #fff;}
+      .card {stroke: #344456; stroke-width: 2.4; stroke-linejoin: round}
+      .sketch {fill:none; stroke:#344456; stroke-width:1.25; stroke-linecap:round; opacity:.3}
+      .threshold {stroke:#3c4b5b; stroke-width:2.5; stroke-dasharray:5 5}
+    </style>
+  </defs>
+  <rect width="720" height="810" fill="#fcf8ee"/>
+  <rect x="12" y="12" width="696" height="786" rx="20" fill="url(#paper)" opacity=".68"/>
+  <g id="heading">
+    <text x="34" y="46" class="small" font-weight="bold" style="fill:#665022;letter-spacing:1px">ILLUSTRATIVE SCORES · NOT MEASURED DATA</text>
+    <text x="34" y="102" font-size="42" font-weight="bold">The runner-up matters</text>
+    <text x="35" y="140" font-size="23">Compare the two highest-scoring distinct people.</text>
+  </g>
+  <g id="decision-rule">
+    <path d="M36 164 Q191 162 382 164 T679 165 L684 219 Q683 222 674 222 L36 221 Z" fill="#fff0bb" stroke="#a98438" stroke-width="1.8"/>
+    <text x="52" y="201" font-size="24" font-weight="bold">Match only if top ≥ 75 and gap ≥ 5 points.</text>
+  </g>
+  <g id="close-call">
+    <path class="card" d="M45 247 Q188 245 375 247 T672 248 Q685 248 685 262 L683 468 Q684 479 672 480 L48 480 Q35 481 35 468 L34 262 Q34 247 45 247Z" fill="#fffdf8"/>
+    <path class="sketch" d="M35 464 Q38 483 53 483 L674 482 M683 261 Q689 354 685 463"/>
+    <text x="54" y="286" class="label" style="fill:#863925">ABSTAIN</text>
+    <text x="667" y="286" text-anchor="end" class="small">1-point gap</text>
+    <text x="54" y="340" class="small">Person A</text>
+    <text x="54" y="390" class="small">Person B</text>
+    <rect x="174" y="313" width="470" height="38" rx="7" fill="#e8edf1"/>
+    <rect x="174" y="363" width="470" height="38" rx="7" fill="#e8edf1"/>
+    <rect x="174" y="313" width="385.4" height="38" rx="7" fill="#345273"/>
+    <rect x="174" y="363" width="380.7" height="38" rx="7" fill="#5a6673"/>
+    <path class="threshold" d="M526.5 303 V411"/>
+    <text x="511" y="340" text-anchor="end" class="number">82</text>
+    <text x="511" y="390" text-anchor="end" class="number">81</text>
+    <text x="526.5" y="447" text-anchor="middle" class="small">75 threshold</text>
+  </g>
+  <g id="clear-match">
+    <path class="card" d="M47 506 Q220 504 385 506 T672 506 Q684 505 684 520 L685 726 Q684 738 671 738 L46 738 Q34 737 34 724 L35 520 Q34 507 47 506Z" fill="#fffdf8"/>
+    <path class="sketch" d="M36 725 Q37 741 52 741 L672 740 M683 520 Q690 621 686 726"/>
+    <text x="54" y="545" class="label" style="fill:#185e47">MATCH PERSON A</text>
+    <text x="667" y="545" text-anchor="end" class="small">14-point gap</text>
+    <text x="54" y="599" class="small">Person A</text>
+    <text x="54" y="649" class="small">Person B</text>
+    <rect x="174" y="572" width="470" height="38" rx="7" fill="#e8edf1"/>
+    <rect x="174" y="622" width="470" height="38" rx="7" fill="#e8edf1"/>
+    <rect x="174" y="572" width="423" height="38" rx="7" fill="#26664f"/>
+    <rect x="174" y="622" width="357.2" height="38" rx="7" fill="#5a6673"/>
+    <path class="threshold" d="M526.5 562 V670"/>
+    <text x="511" y="599" text-anchor="end" class="number">90</text>
+    <text x="511" y="649" text-anchor="end" class="number">76</text>
+    <text x="526.5" y="706" text-anchor="middle" class="small">75 threshold</text>
+  </g>
+  <text x="35" y="779" class="small" style="fill:#465567">Score scale: 0–100. Scores are not probabilities.</text>
+</svg>
