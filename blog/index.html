@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f2f0e4">
   <title>Blog | Nikita Vorontsov</title>
-  <meta name="description" content="Technical writing by Nikita Vorontsov on AI evaluations, software engineering and the products I build.">
+  <meta name="description" content="Technical articles by Nikita Vorontsov on AI evaluation and software engineering, with worked examples, score tables and lessons from projects.">
   <link rel="canonical" href="https://nikitavorontsov.com/blog/">
   <link rel="icon" href="/assets/home/favicon.png" type="image/png">
   <link rel="preload" href="/assets/home/fonts/anton.woff2" as="font" type="font/woff2" crossorigin>
@@ -16,7 +16,7 @@
   <meta property="og:site_name" content="Nikita Vorontsov">
   <meta property="og:title" content="Blog">
   <meta property="og:type" content="website">
-  <meta property="og:description" content="Technical writing by Nikita Vorontsov on AI evaluations, software engineering and the products I build.">
+  <meta property="og:description" content="Technical articles by Nikita Vorontsov on AI evaluation and software engineering, with worked examples, score tables and lessons from projects.">
   <meta property="og:url" content="https://nikitavorontsov.com/blog/">
   <meta property="og:image" content="https://nikitavorontsov.com/blog/speaker-diarisation-dnd/assets/social.jpg">
   <meta property="og:image:width" content="1200">
@@ -24,8 +24,33 @@
   <meta property="og:image:alt" content="Pencil illustration of dice and an audio recorder at a tabletop game.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Blog">
-  <meta name="twitter:description" content="Technical writing by Nikita Vorontsov on AI evaluations, software engineering and the products I build.">
+  <meta name="twitter:description" content="Technical articles by Nikita Vorontsov on AI evaluation and software engineering, with worked examples, score tables and lessons from projects.">
   <meta name="twitter:image" content="https://nikitavorontsov.com/blog/speaker-diarisation-dnd/assets/social.jpg">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "@id": "https://nikitavorontsov.com/blog/#blog",
+  "name": "Nikita Vorontsov’s blog",
+  "description": "Technical articles by Nikita Vorontsov on AI evaluation and software engineering, with worked examples, score tables and lessons from projects.",
+  "url": "https://nikitavorontsov.com/blog/",
+  "inLanguage": "en-GB",
+  "author": {
+    "@type": "Person",
+    "name": "Nikita Vorontsov",
+    "url": "https://nikitavorontsov.com/#about"
+  },
+  "blogPost": [
+    {
+      "@type": "BlogPosting",
+      "@id": "https://nikitavorontsov.com/blog/speaker-diarisation-dnd/#article",
+      "headline": "Speaker diarisation at my D&D table",
+      "url": "https://nikitavorontsov.com/blog/speaker-diarisation-dnd/",
+      "description": "How I tested Scribe and pyannote on D&D recordings, scored speaker names word by word, and found a tie rule that overwrote correct labels."
+    }
+  ]
+}
+  </script>
 </head>
 <body class="blog-body">
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -46,18 +71,27 @@
       <h1>Blog<span>.</span></h1>
       <p>What I build, how I test it, and what I find along the way.</p>
     </header>
-    <section aria-label="Posts">
+    <section aria-labelledby="article-list-title">
+      <h2 class="blog-section-title" id="article-list-title">Latest article</h2>
       <article class="post-card">
         <a href="/blog/speaker-diarisation-dnd/">
           <img src="/blog/speaker-diarisation-dnd/assets/table-hero.webp" width="1200" height="800" decoding="async" alt="">
           <div class="post-card-copy">
-            <p class="eyebrow">AI evaluation</p>
-            <h2>Speaker diarisation at my D&amp;D table</h2>
-            <p>I built a test harness to work out who was getting the wrong name in our D&amp;D recaps. Repeating the same request exposed a problem with how I combined the results.</p>
+            <p class="eyebrow">AI evaluation <span class="card-read-time">· 9 min read</span></p>
+            <h3>Speaker diarisation at my D&amp;D table</h3>
+            <p>I kept the transcript fixed and tested which words got the wrong names. On a repeat call, my rule for combining two runs overwrote 584 labels the other run had got right.</p>
             <span class="post-card-action">Read the article <span aria-hidden="true">↗</span></span>
           </div>
         </a>
       </article>
+    </section>
+    <section class="blog-topics" aria-labelledby="blog-topics-title">
+      <h2 class="blog-section-title" id="blog-topics-title">Inside the article</h2>
+      <ul>
+        <li><a href="/blog/speaker-diarisation-dnd/#who-spoke-and-when">Speaker diarisation and word timing</a></li>
+        <li><a href="/blog/speaker-diarisation-dnd/#how-i-checked-the-names">Building a word-level reference</a></li>
+        <li><a href="/blog/speaker-diarisation-dnd/#methods">Methods and score tables</a></li>
+      </ul>
     </section>
   </main>
   <footer class="blog-footer">
