@@ -239,3 +239,51 @@
   line-height: 1.65;
 }
 .blog-article .debug-trace figcaption { margin: 0; }
+
+/* A shared reading rail for headings, prose and their evidence. */
+.article-container { max-width: 720px; }
+.blog-article .worked-example {
+  margin-block: .85em 1.6em;
+}
+.blog-article .worked-example > img,
+.blog-article .worked-example figcaption {
+  width: min(100%, 560px);
+  margin-inline: 0;
+}
+.blog-article .worked-example figcaption { margin-top: .35em; }
+.blog-article > .article-lede {
+  margin-block: 0 clamp(1.45rem, 4vw, 2.1rem);
+}
+.blog-article .article-lede p:last-child { margin-bottom: 0; }
+.blog-article .article-hero {
+  margin-block: 0 clamp(1.25rem, 3vw, 1.9rem);
+}
+.blog-article .article-hero > img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2.62 / 1;
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+.blog-article .article-hero figcaption {
+  width: 100%;
+  margin-top: .4rem;
+}
+.blog-article .article-contents {
+  padding: .7rem 0 .8rem;
+  border-block-end: 0;
+  margin-block: 0 1.4rem;
+}
+.blog-article .article-contents ul {
+  column-gap: 1.1rem;
+}
+.blog-article .methods-pipeline { margin: 1.25em auto; }
+.blog-article .methods-pipeline > img,
+.blog-article .methods-pipeline figcaption { width: min(100%, 380px); }
+@media (max-width: 520px) {
+  .blog-article .article-hero > img {
+    aspect-ratio: 1.84 / 1;
+    object-position: 50% 51%;
+  }
+}

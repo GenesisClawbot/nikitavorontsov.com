@@ -1,30 +1,27 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="720" height="660" viewBox="0 0 720 660" role="img" aria-labelledby="title desc">
-<title id="title">One word, two speakers</title>
-<desc id="desc">Fictional example. Word 42 spans 10.42 to 10.68 seconds. Its midpoint, 10.55, falls in Sam's turn after a speaker change at 10.50. The method predicts Sam for word 42, but the checked reference is Alex, so the scorer counts one wrong name.</desc>
-<defs><pattern id="paper" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.15" fill="#e1d8c7"/></pattern></defs>
-<rect width="720" height="660" fill="#fcf8ee"/><rect x="12" y="12" width="696" height="636" rx="19" fill="url(#paper)" opacity=".68"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="480" viewBox="0 0 720 480" role="img" aria-labelledby="title desc">
+<title id="title">Assigning one word with a midpoint</title>
+<desc id="desc">Fictional example. Word 42 spans 10.42 to 10.68 seconds. Its midpoint, 10.55, falls in Sam's turn after a speaker change at 10.50. The method predicts Sam; the checked reference is Alex, so this is one wrong name.</desc>
+<defs><pattern id="paper" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.2" fill="#ded4c3"/></pattern></defs>
+<rect width="720" height="480" rx="15" fill="#fcf8ee"/>
+<rect x="10" y="10" width="700" height="460" rx="12" fill="url(#paper)" opacity=".66"/>
 <g fill="#243243" font-family="DejaVu Sans,sans-serif">
-<text x="34" y="47" font-size="21" font-weight="bold" fill="#665022">FICTIONAL EXAMPLE · WORD INDEX 42</text>
-<text x="34" y="102" font-size="40" font-weight="bold">One word, two speakers</text>
-<path d="M46 130 Q203 126 361 129 T671 129 Q686 129 685 145 L684 375 Q685 387 670 387 L47 387 Q34 388 34 374 L34 145 Q35 130 46 130Z" fill="#fffdf8" stroke="#344456" stroke-width="2.4"/>
-<path d="M35 373 Q36 390 50 390 L672 390 M684 145 Q690 249 686 373" fill="none" stroke="#344456" stroke-width="1.25" opacity=".3"/>
-<text x="54" y="168" font-size="21" font-weight="bold">SCRIBE WORD SPAN</text>
-<path d="M126 184 Q357 181 593 184 L594 225 Q367 227 126 225Z" fill="#fff0bb" stroke="#a27d39" stroke-width="2"/>
-<text x="145" y="211" font-size="21">10.42 s</text><text x="576" y="211" text-anchor="end" font-size="21">10.68 s</text>
-<path d="M360 218 L359 326 M352 318 L359 327 L366 318" fill="none" stroke="#873a2b" stroke-width="2.6" stroke-linecap="round" stroke-dasharray="5 5"/>
-<text x="374" y="254" font-size="21" font-weight="bold" fill="#873a2b">10.55 s midpoint</text>
-<text x="54" y="286" font-size="21" font-weight="bold">SPEAKER TURNS</text>
-<path d="M90 301 Q170 300 270 301 L270 342 L90 342Z" fill="#e3eaf3" stroke="#4b6581" stroke-width="2"/>
-<path d="M270 301 Q446 300 630 301 L630 342 L270 342Z" fill="#e3efe8" stroke="#386750" stroke-width="2"/>
-<text x="180" y="328" text-anchor="middle" font-size="23" font-weight="bold">Alex</text><text x="485" y="328" text-anchor="middle" font-size="23" font-weight="bold">Sam</text>
-<circle cx="359" cy="326" r="5" fill="#873a2b"/>
-<path d="M270 343 l0 8" stroke="#344456" stroke-width="2"/>
-<text x="270" y="371" text-anchor="middle" font-size="20">10.50 s change</text>
-<path d="M36 414 Q181 412 356 414 T681 415 L685 609 Q505 612 332 609 T35 612Z" fill="#edf3f9" stroke="#49627d" stroke-width="2"/>
-<text x="54" y="453" font-size="23" font-weight="bold">COMPARE THE LABELS FOR WORD 42</text>
-<text x="54" y="492" font-size="24">Predicted from midpoint: <tspan font-weight="bold">Sam</tspan></text>
-<text x="54" y="528" font-size="24">Checked reference: <tspan font-weight="bold">Alex</tspan></text>
-<path d="M55 549 Q119 548 242 550" fill="none" stroke="#8f7468" stroke-width="1.4"/>
-<text x="54" y="584" font-size="25" font-weight="bold" fill="#863925">Scorer counts one wrong name.</text>
+<text x="32" y="46" font-size="26" font-weight="bold" fill="#665022">FICTIONAL EXAMPLE · WORD 42</text>
+<path d="M126 76 Q360 72 594 76 L595 128 Q367 132 126 128Z" fill="#fff0bb" stroke="#a27d39" stroke-width="2"/>
+<text x="146" y="111" font-size="27">10.42 s</text>
+<text x="574" y="111" text-anchor="end" font-size="27">10.68 s</text>
+<path d="M360 122 L359 251 M351 243 L359 252 L367 243" fill="none" stroke="#873a2b" stroke-width="3" stroke-linecap="round" stroke-dasharray="6 5"/>
+<text x="377" y="178" font-size="26" font-weight="bold" fill="#873a2b">Midpoint: 10.55 s</text>
+<text x="34" y="207" font-size="26" font-weight="bold">Speaker turns</text>
+<path d="M90 218 Q170 216 270 218 L270 274 L90 274Z" fill="#e3eaf3" stroke="#4b6581" stroke-width="2"/>
+<path d="M270 218 Q446 216 630 218 L630 274 L270 274Z" fill="#e3efe8" stroke="#386750" stroke-width="2"/>
+<text x="180" y="255" text-anchor="middle" font-size="29" font-weight="bold">Alex</text>
+<text x="485" y="255" text-anchor="middle" font-size="29" font-weight="bold">Sam</text>
+<circle cx="359" cy="249" r="6" fill="#873a2b"/>
+<path d="M270 276v8" stroke="#344456" stroke-width="2"/>
+<text x="270" y="310" text-anchor="middle" font-size="25">10.50 s change</text>
+<path d="M34 334 Q187 331 350 333 T684 335 L684 443 Q510 446 330 443 T34 445Z" fill="#edf3f9" stroke="#49627d" stroke-width="2"/>
+<text x="53" y="374" font-size="27">Predicted: <tspan font-weight="bold">Sam</tspan></text>
+<text x="376" y="374" font-size="27">Checked: <tspan font-weight="bold">Alex</tspan></text>
+<text x="53" y="422" font-size="30" font-weight="bold" fill="#863925">One wrong name</text>
 </g>
 </svg>
