@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f2f0e4">
   <title>Speaker diarisation at my D&amp;D table | Nikita Vorontsov</title>
-  <meta name="description" content="An audio evaluation for D&amp;D recaps: how I tested speaker identification with Scribe and pyannote, built checked references, and found what a speaker count could break.">
+  <meta name="description" content="How I tested Scribe and pyannote on D&amp;D recordings, scored speaker names word by word, and found a tie rule that overwrote correct labels.">
   <link rel="canonical" href="https://nikitavorontsov.com/blog/speaker-diarisation-dnd/">
   <link rel="icon" href="/assets/home/favicon.png" type="image/png">
   <link rel="preload" href="/assets/home/fonts/anton.woff2" as="font" type="font/woff2" crossorigin>
@@ -16,7 +16,7 @@
   <meta property="og:site_name" content="Nikita Vorontsov">
   <meta property="og:title" content="Speaker diarisation at my D&amp;D table">
   <meta property="og:type" content="article">
-  <meta property="og:description" content="An audio evaluation for D&amp;D recaps: how I tested speaker identification with Scribe and pyannote, built checked references, and found what a speaker count could break.">
+  <meta property="og:description" content="How I tested Scribe and pyannote on D&amp;D recordings, scored speaker names word by word, and found a tie rule that overwrote correct labels.">
   <meta property="og:url" content="https://nikitavorontsov.com/blog/speaker-diarisation-dnd/">
   <meta property="og:image" content="https://nikitavorontsov.com/blog/speaker-diarisation-dnd/assets/social.jpg">
   <meta property="og:image:width" content="1200">
@@ -24,34 +24,74 @@
   <meta property="og:image:alt" content="Pencil illustration of dice and an audio recorder at a tabletop game.">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Speaker diarisation at my D&amp;D table">
-  <meta name="twitter:description" content="An audio evaluation for D&amp;D recaps: how I tested speaker identification with Scribe and pyannote, built checked references, and found what a speaker count could break.">
+  <meta name="twitter:description" content="How I tested Scribe and pyannote on D&amp;D recordings, scored speaker names word by word, and found a tie rule that overwrote correct labels.">
   <meta name="twitter:image" content="https://nikitavorontsov.com/blog/speaker-diarisation-dnd/assets/social.jpg">
+  <meta property="article:tag" content="Speaker diarisation">
+  <meta property="article:tag" content="AI evaluation">
+  <meta property="article:tag" content="D&amp;D">
   <meta property="article:author" content="https://nikitavorontsov.com/#about">
   <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "headline": "Speaker diarisation at my D&D table",
-  "description": "An audio evaluation for D&D recaps: how I tested speaker identification with Scribe and pyannote, built checked references, and found what a speaker count could break.",
-  "image": [
-    "https://nikitavorontsov.com/blog/speaker-diarisation-dnd/assets/social.jpg"
-  ],
-  "author": {
-    "@type": "Person",
-    "name": "Nikita Vorontsov",
-    "url": "https://nikitavorontsov.com/#about"
-  },
-  "publisher": {
-    "@type": "Person",
-    "name": "Nikita Vorontsov",
-    "url": "https://nikitavorontsov.com/"
-  },
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": "https://nikitavorontsov.com/blog/speaker-diarisation-dnd/"
-  },
-  "url": "https://nikitavorontsov.com/blog/speaker-diarisation-dnd/",
-  "inLanguage": "en-GB"
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "Speaker diarisation at my D&D table",
+      "description": "How I tested Scribe and pyannote on D&D recordings, scored speaker names word by word, and found a tie rule that overwrote correct labels.",
+      "image": [
+        "https://nikitavorontsov.com/blog/speaker-diarisation-dnd/assets/social.jpg"
+      ],
+      "author": {
+        "@type": "Person",
+        "name": "Nikita Vorontsov",
+        "url": "https://nikitavorontsov.com/#about"
+      },
+      "publisher": {
+        "@type": "Person",
+        "name": "Nikita Vorontsov",
+        "url": "https://nikitavorontsov.com/"
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://nikitavorontsov.com/blog/speaker-diarisation-dnd/"
+      },
+      "url": "https://nikitavorontsov.com/blog/speaker-diarisation-dnd/",
+      "inLanguage": "en-GB",
+      "@id": "https://nikitavorontsov.com/blog/speaker-diarisation-dnd/#article",
+      "isPartOf": {
+        "@id": "https://nikitavorontsov.com/blog/#blog"
+      },
+      "keywords": [
+        "Speaker diarisation",
+        "AI evaluation",
+        "D&D"
+      ],
+      "timeRequired": "PT9M"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://nikitavorontsov.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Blog",
+          "item": "https://nikitavorontsov.com/blog/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "Speaker diarisation at my D&D table",
+          "item": "https://nikitavorontsov.com/blog/speaker-diarisation-dnd/"
+        }
+      ]
+    }
+  ]
 }
   </script>
 </head>
@@ -69,11 +109,21 @@
     </nav>
   </header>
   <main id="main-content" class="article-container">
-    <nav class="post-breadcrumb" aria-label="Breadcrumb"><a href="/blog/">← All posts</a></nav>
-    <article class="blog-article" aria-labelledby="post-title"><header><p class="eyebrow byline">Nikita Vorontsov</p><h1 id="post-title">Speaker diarisation at my D&amp;D table</h1><p class="subtitle"><em>How I built an evaluation to see who was getting the wrong name, and why giving the model more clues sometimes made it worse.</em></p><p class="article-jump"><a href="#methods">Jump to methods and score tables</a></p></header><figure class="article-hero"><img src="assets/table-hero.webp" alt="Pencil illustration of dice and a recorder at a D&amp;D table." fetchpriority="high" width="1200" height="800" decoding="async"><figcaption>Illustration made with ChatGPT Images.</figcaption></figure><p>There are usually six or seven of us at my D&amp;D table, including me and my two brothers. When I went through the speaker labels, I kept seeing my name where I didn’t remember speaking. All three of us got mixed up. When I counted the swaps between me and one of my brothers, nearly all went in one direction.</p>
+    <nav class="post-breadcrumb" aria-label="Breadcrumb"><ol><li><a href="/">Home</a></li><li><a href="/blog/">Blog</a></li><li aria-current="page">Speaker diarisation</li></ol></nav>
+    <article class="blog-article" aria-labelledby="post-title"><header><p class="eyebrow byline">Nikita Vorontsov</p><h1 id="post-title">Speaker diarisation at my D&amp;D table</h1><p class="subtitle"><em>How I built an evaluation to see who was getting the wrong name, and why giving the model more clues sometimes made it worse.</em></p><div class="post-meta"><span>9 min read</span><ul class="post-tags" aria-label="Topics"><li>Speaker diarisation</li><li>AI evaluation</li><li>D&amp;D</li></ul></div></header><figure class="article-hero"><img src="assets/table-hero.webp" alt="Pencil illustration of dice and a recorder at a D&amp;D table." fetchpriority="high" width="1200" height="800" decoding="async"><figcaption>Illustration made with ChatGPT Images.</figcaption></figure>
+    <nav class="article-contents" aria-label="On this page">
+      <p>On this page</p>
+      <ul>
+        <li><a href="#who-spoke-and-when">Word timing and speaker turns</a></li>
+        <li><a href="#how-i-checked-the-names">Checking the names</a></li>
+        <li><a href="#trying-the-same-recording-with-and-without-a-headcount">Combining the two runs</a></li>
+        <li><a href="#methods">Methods and score tables</a></li>
+      </ul>
+    </nav>
+    <p>There are usually six or seven of us at my D&amp;D table, including me and my two brothers. When I went through the speaker labels, I kept seeing my name where I didn’t remember speaking. All three of us got mixed up. When I counted the swaps between me and one of my brothers, nearly all went in one direction.</p>
 <figure class="panel pair"><h2>How often did we get each other’s name?</h2><p>Reconstructed speaker labels from my old recap system</p><div class="bars"><div><b>His words labelled as mine</b><span>414 / 786 (52.7%)</span><i aria-hidden="true" style="--pct:52.7%"></i></div><div><b>My words labelled as his</b><span>17 / 3,764 (0.45%)</span><i aria-hidden="true" style="--pct:0.45%"></i></div></div><figcaption>Each bar is a share of that person’s scored words. In this recording, most of the mix-ups went one way.</figcaption></figure>
 
-<p>I started with ElevenLabs Scribe v2 for our D&amp;D recaps. The words were good enough to work with most of the time, but it kept mixing us up when we talked over each other or when the DM dropped into a character voice. I tried other transcription services and models to see if I could find one that handled our table better.</p>
+<p>I started with <a href="https://elevenlabs.io/docs/overview/models#scribe-v2">ElevenLabs Scribe v2</a> for our D&amp;D recaps. The words were good enough to work with most of the time, but it kept mixing us up when we talked over each other or when the DM dropped into a character voice. I tried other transcription services and models to see if I could find one that handled our table better.</p>
 <p>I kept running into the same problem: a transcript could get a line word for word and still put it under the wrong name. So for this test I kept the words I already had and changed how I assigned the speakers. That way I could see whether the names improved without changing the transcript underneath them.</p>
 <h2 id="who-spoke-and-when">Who spoke, and when?</h2>
 <p>On a two-person call, or in a doctor–patient consultation, a lot of the recording can be one person asking a question and the other answering. There’s overlap in those settings too. At our table, the DM can be halfway through a line in character when one of us jumps in and somebody else starts answering them. On a room recording, those voices can all land on the same track.</p>
@@ -81,7 +131,8 @@
 <p><strong>Diarisation</strong> tracks when each voice is active. The output can say <code>Speaker 3</code> is talking between two timestamps, even if the system has no idea who Speaker 3 is. <strong>Speaker identification</strong> tries to put a name to that voice by comparing it with samples from people I know were there.</p>
 <p>I used the saved Scribe v2 words and timestamps. Every comparison on that recording got the same words, including any Scribe had got wrong. I ran pyannote Precision-2 separately for the speaker turns.</p>
 <figure><img src="assets/pipeline.svg" alt="The same recording goes to Scribe for fixed words and to pyannote for speaker turns. The harness aligns them and compares the predicted labels with checked references." loading="lazy" width="760" height="848" decoding="async"><figcaption>One recording, two outputs, one set of word indices.</figcaption></figure>
-<p>To join the two, I took each word’s midpoint and looked up who was speaking then. If a word runs from 10.42 to 10.68 seconds, the lookup happens at 10.55. If someone else starts at 10.50, they get the whole word. I used pyannote’s <strong>exclusive</strong> timeline for this, so there’s at most one speaker at a time. If somebody talks over it, a word can be left unnamed or assigned to the wrong person.</p>
+<p>To join the two, I took each word’s midpoint and looked up who was speaking then. If a word runs from 10.42 to 10.68 seconds, the lookup happens at 10.55. If someone else starts at 10.50, they get the whole word. I used <a href="https://www.pyannote.ai/blog/precision-2#exclusive-speaker-diarization">pyannote’s exclusive speaker timeline</a> for this, so there’s at most one speaker at a time. If somebody talks over it, a word can be left unnamed or assigned to the wrong person.</p>
+<figure class="worked-example"><img src="assets/word-midpoint.svg" alt="Fictional word 42 runs from 10.42 to 10.68 seconds. Its midpoint at 10.55 falls in Sam’s turn. The checked reference says Alex, which counts as one wrong name." loading="lazy" width="720" height="660" decoding="async"><figcaption>At 10.55 seconds the timeline says Sam. The reference for word 42 says Alex, so the scorer records a wrong name. Names and timings are made up.</figcaption></figure>
 <h2 id="how-i-checked-the-names">How I checked the names</h2>
 <p>Each word already had a number in the cached transcript, so I used that as the key. For the first recording, I started from suggested speaker groups and listened back to correct the names. One review sheet flagged 117 turns where two runs disagreed and put the 14 biggest in front of me. Handy when I wanted a place to start listening; a poor way to pick a representative sample.</p>
 <figure><img src="assets/reference-labels.svg" alt="The first transcript has 13,027 word indices. Cluster suggestions were reviewed by hand. 11,732 words got a reference label; 1,295 were unscored." loading="lazy" width="720" height="988" decoding="async"><figcaption>I used model suggestions to start the review, so this reference wasn’t blind.</figcaption></figure>
@@ -104,6 +155,16 @@
 <p class="tablenote">Some reference labels were checked by hand from groups the model had suggested. I repeated only the request with a speaker range, so this doesn’t tell me how much the pass without a range varies.</p>
 <figure><img src="assets/repeat-calls.svg" alt="Same 11,732 scored words. The open-count run made 48 wrong assignments. The three combined runs made 1,280, 1,280 and 606." loading="lazy" width="720" height="760" decoding="async"><figcaption>The three attempts use the same saved labels from the pass with no speaker range.</figcaption></figure>
 <p>In two of the three tries, the run with the range mixed two of us into one group. The best scores for three different people were <strong>90, 85 and 82</strong>. The five-point lead let the name through. The open-count run had also scored its answer at 90, and my tie rule overrode <strong>584 names</strong> that the open-count run had got right.</p>
+<figure class="debug-trace">
+  <div class="trace-label">Synthetic trace <span>Fictional word and labels</span></div>
+  <pre><code>word_index     137
+reference      Speaker B
+no_range       Speaker B   90
+with_range     Speaker A   90
+selected       Speaker A   exact tie
+scored         correct → wrong</code></pre>
+  <figcaption>One made-up word shows the tie path. In the actual rerun, that path overwrote 584 correct names.</figcaption>
+</figure>
 <p>The run with no range got 48 names wrong on the same reference, with 87.25% coverage. I had one saved open-count response for this comparison, so I don’t know if it would give me the same 48 on another call. What I could see was that my way of combining the results gave the extra run a route to overwrite a good answer.</p>
 <h2 id="the-recording-with-a-guest">The recording with a guest</h2>
 <p>On a second recording, I carried over the same voiceprints. There was someone there I hadn’t made a print for. I tried a range of <strong>seven to nine speakers</strong> and got 820 words from that person assigned to other people. With the count left open, the system could leave that voice unnamed.</p>
@@ -117,7 +178,7 @@
 <h2 id="what-i-d-change-on-the-next-recording">What I’d change on the next recording</h2>
 <p>If I can get a separate mic track for each person, I’d save those tracks before mixing. At a physical table I’d start by checking whether I can make out the quietest person while someone nearer the mic is speaking. I didn’t compare microphones here. This eval only sees the words Scribe produced, so it can’t count any it missed.</p>
 <p>For the next test I’d keep one recording aside and label it before looking at predictions. I’d keep a row for each person and a column for the names they were given, including a blank column. That would show me whether I’ve got better at telling us apart or whether I’ve just stopped naming one of us.</p>
-<details id="methods"><summary>Methods, caveats and full score tables</summary><h3>Rebuilding the baseline</h3>
+<details><summary>Methods, caveats and full score tables</summary><h3 id="methods">Rebuilding the baseline</h3>
 <p>The first recording had 13,027 indexed Scribe words. The final reference file uses half-open spans: a row with start 42 and end 43 labels word 42 only. I joined the final labels to the saved production turn table. The rebuild gave 2,895 wrong names; the original scorecard reported 2,903. The word indices weren’t all covered by the surviving turn table, so I use the rebuild for pair counts and the original scorecard for the baseline in the table below. The older reference in the HTML report assigns 1,591 words to one brother; the final reference assigns 786. The pair figures use the final file.</p>
 <p>Across the three of us, the rebuilt baseline assigned 652 of 5,179 scored words to the wrong brother. The saved open-count run did that five times and left 837 of those words blank. For the pair in the opening, the combined swap rate was 431 / 4,550, or 9.47%. That sums errors in both directions and divides by all scored words spoken by the two of us.</p>
 <h3>Other checks I tried</h3>
@@ -172,7 +233,9 @@ if __name__ == "__main__":
     assert score(["A"], [None])["named_precision"] is None
     for key, value in result.items():
         print(f"{key}: {value}")
-</code></pre></details></article>
+</code></pre></details>
+      <p class="after-post"><a href="/blog/">← Back to the blog</a></p>
+    </article>
   </main>
   <footer class="blog-footer">
     <a href="/">Nikita Vorontsov</a>
